@@ -1,0 +1,22 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+#include    crm2_country_geoip_fn_b01.conf;
+location /brand/ {
+   # include    crm2_country_geoip_fn_b02.conf;
+    alias    $project_path/web/brand/;
+}
+
+location /mobile {
+   # include    crm2_country_geoip_fn_b02.conf;
+    alias    $project_path/web/mobile188/mobile;
+    index  new_mobile.html;
+    try_files $uri$args $uri$args/ /mobile/index.html;
+}
+
+location / {
+   # include    crm2_country_geoip_fn_b02.conf;
+    root   $project_path/web/desktop188;
+    index  new_mobile.html;
+}

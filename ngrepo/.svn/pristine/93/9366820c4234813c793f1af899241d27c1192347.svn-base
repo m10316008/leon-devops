@@ -1,0 +1,43 @@
+body {
+    margin: 0px;
+    font-size: 11px;
+}
+
+.table1 {
+    border-collapse: collapse;
+}
+.table2 {
+    clear: both;
+    border-collapse: collapse;
+}
+.t2td{
+    height:auto;
+}
+.table2 ,td{
+    height:10px;
+}
+
+.table1, th {
+    font-size: 12px;
+    font-weight: normal;
+    min-width: 225px;
+}
+
+.table1, td {
+    height: 100px;
+    /*padding-left: 28px;*/
+    background-repeat: no-repeat;
+    vertical-align: top;
+    font-size: 12px;
+    text-align: right;
+}
+.sunday{
+    background-color: rgba(241, 167, 183, 0.27);
+}
+.table1, td, th {
+    border: 1px solid #4e92df;
+}
+
+.datepicker {
+    z-index: 9999 !important;
+}

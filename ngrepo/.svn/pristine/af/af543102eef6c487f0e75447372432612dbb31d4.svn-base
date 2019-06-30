@@ -1,0 +1,15 @@
+{
+  "name": "redirect",
+  "version": "1.0.0",
+  "description": "All https certs should place on certs folder, and must be small letter (CANNOT capital letter).",
+  "main": "redirect.js",
+  "scripts": {
+    "start": "node ./redirect.js",
+    "dev": "node ./node_modules/node-dev/bin/node-dev ./redirect.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-dev": "^3.1.3"
+  }
+}

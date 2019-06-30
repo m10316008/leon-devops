@@ -1,0 +1,17 @@
+include crm2_headers_cache.conf;
+
+include crm2_path_danger.conf;
+include crm2_cache.conf;
+
+location / {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /a/ {
+    default_type text/html;
+	content_by_lua_block {
+        local a = string.gsub(ngx.var.request_uri, "/a/", "");
+		a = "/landing.html?upline=" .. a;
+		ngx.redirect(a, 302);
+	}	
+}

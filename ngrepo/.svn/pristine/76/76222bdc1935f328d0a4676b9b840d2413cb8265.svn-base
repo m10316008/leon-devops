@@ -1,0 +1,15 @@
+proxy_set_header    X-Forwarded-For  $remote_addr;
+
+absolute_redirect off;
+
+if ($platform = IOSv1) {
+    proxy_pass https://d3aawhn7ooly53.cloudfront.net;
+}
+
+if ($platform = ANDROIDv2) {
+    proxy_pass https://dbqwp4z5zemvq.cloudfront.net;
+}
+
+if ($platform = '') {
+    proxy_pass https://d2wd1zlcubq7un.cloudfront.net;
+}

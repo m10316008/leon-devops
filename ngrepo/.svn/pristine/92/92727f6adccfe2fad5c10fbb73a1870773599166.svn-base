@@ -1,0 +1,9 @@
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /ve5/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /ve5/prod/brand/ /;
+        }

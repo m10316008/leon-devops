@@ -1,0 +1,7 @@
+location /s3image/ {
+    proxy_cache_valid      200  2m;
+    proxy_cache            STATIC;
+    proxy_cache_key "$uri";
+    add_header debug-label cache_root_any_html;
+    proxy_pass   http://crm2promotion.s3-website.ap-northeast-2.amazonaws.com;
+}

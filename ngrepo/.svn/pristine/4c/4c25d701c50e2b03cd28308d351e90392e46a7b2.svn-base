@@ -1,0 +1,101 @@
+[
+  {
+    "brand": "all",
+    "vcode": "all",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "",
+    "cf_proxied_1": "",
+    "disabled":0
+  },
+  {
+    "brand": "apple",
+    "vcode": "va1",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "h3535.top",
+    "cf_proxied_1": "protect.h3535.top",
+    "disabled":0
+  },
+  {
+    "brand": "funcity",
+    "vcode": "vb2",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "ldc88.co",
+    "cf_proxied_1": "protect.ldc88.co",
+    "disabled":0
+  },
+  {
+    "brand": "h9393",
+    "vcode": "vc3",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "c9393.top",
+    "cf_proxied_1": "protect.c9393.top",
+    "disabled":0
+  },
+  {
+    "brand": "mango",
+    "vcode": "ve5",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "mangove5fn.com",
+    "cf_proxied_1": "protect.mangove5fn.com",
+    "disabled":0
+  },
+  {
+    "brand": "ubs",
+    "vcode": "vf6",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "ubsvf6.com",
+    "cf_proxied_1": "protect.ubsvf6.com",
+    "disabled":0
+  },
+  {
+    "brand": "warrior",
+    "vcode": "vg7",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "warrior7.top",
+    "cf_proxied_1": "warrior7.top",
+    "disabled":0
+  },
+  {
+    "brand": "regal",
+    "vcode": "vh8",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "regalvh8.com",
+    "cf_proxied_1": "protect.regalvh8.com",
+    "disabled":1
+  },
+  {
+    "brand": "citi",
+    "vcode": "vi9",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "citivi9.com",
+    "cf_proxied_1": "protect.citivi9.com",
+    "disabled":1
+  },
+  {
+    "brand": "diamond",
+    "vcode": "vj10",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "vj10diamond.com",
+    "cf_proxied_1": "protect.vj10diamond.com",
+    "disabled":0
+  },
+  {
+    "brand": "rainbow",
+    "vcode": "vk11",
+    "uat1_url": "",
+    "uat2_url": "",
+    "cf_proxied_0": "vk11rainbow.com",
+    "cf_proxied_1": "protect.vk11rainbow.com",
+    "disabled":1
+  }
+]

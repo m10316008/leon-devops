@@ -1,0 +1,16 @@
+location = / {
+______DEFINED_CACHE______
+
+    rewrite ^(.*)$  /______BRAND______/______STAGE______/desktop188/landing.html break;
+    include crm2_frontend_s3bucket.conf;
+}
+
+location / {
+______DEFINED_CACHE______
+
+    rewrite ^(.*)$ /______BRAND______/______STAGE______/desktop188$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /______BRAND______/______STAGE______/desktop188/ /;
+}
+
+

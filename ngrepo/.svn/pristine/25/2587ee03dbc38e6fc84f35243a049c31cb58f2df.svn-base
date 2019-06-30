@@ -1,0 +1,13 @@
+proxy_buffering        on;
+
+proxy_cache_key "$uri";
+
+# Add nginx cache MISS or HIT header to response
+add_header cache-status $upstream_cache_status;
+
+# Fix nginx cache MISS for resource with changing cookie and header X-Cache: Miss from cloudfront
+proxy_hide_header       Set-Cookie;
+proxy_ignore_headers    Set-Cookie;
+proxy_set_header        Cookie "";
+
+include crm2_path_proxy_pass.conf;

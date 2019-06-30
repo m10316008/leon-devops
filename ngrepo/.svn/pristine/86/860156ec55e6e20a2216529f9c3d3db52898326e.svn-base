@@ -1,0 +1,15 @@
+[Unit]
+Description=Termserver
+
+[Service]
+ExecStart=/usr/bin/node /apps/nginxboss/bin/termserver
+Restart=always
+User=nobody
+Group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/apps/nginxboss/bin
+
+[Install]
+WantedBy=multi-user.target
+

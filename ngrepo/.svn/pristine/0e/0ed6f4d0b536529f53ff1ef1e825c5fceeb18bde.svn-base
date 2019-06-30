@@ -1,0 +1,24 @@
+location / {
+  include crm2_path_proxy_pass.conf;
+}
+
+
+
+location = /main.html {
+     absolute_redirect off;
+     return 302 /fnagent/;
+}
+
+location  /mobile/ {
+     absolute_redirect off;
+     return 302 /fnagent/;
+}
+
+location = /redirect.html {
+     absolute_redirect off;
+     return 302 /fnagent/;
+}
+
+location = /provider.html {
+  return 302 /fnagent/;
+}

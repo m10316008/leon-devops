@@ -1,0 +1,27 @@
+
+include crm2_cache_speed_up.conf;
+include crm2_odds256.conf;
+include crm2_danger.conf;
+
+location / {
+    absolute_redirect off;
+    rewrite ^(.*)$ /mobile$1 break;
+	include crm2_path_proxy_pass.conf;
+    proxy_redirect /mobile/ /;
+}
+#location = /mobile/static/js/apps_inject.js {
+#    return 302 /mobile/static/js/apps_inject_v2android.js;
+#}
+		
+location = /mobile/static/js/app-service.js {
+    rewrite ^(.*)$  /mobile/static/js/app-service.js break;    
+	include crm2_path_proxy_pass.conf;
+	sub_filter_types *;         
+	sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified t9 android');"  ;
+}
+#location = /mobile/static/js/app-service_v2android.js {
+#    rewrite ^(.*)$  /mobile/static/js/app-service_v2android.js break;    
+#	include crm2_path_proxy_pass.conf;
+#	sub_filter_types *;         
+#	sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified t9 ioa android');"  ;
+#}

@@ -1,0 +1,68 @@
+
+
+
+
+location /odds2/ {
+	add_header	vlabel old;
+    proxy_pass    http://node188.local:8091;
+}
+#location = /odds5/oddsHost6 {
+#	default_type  application/json;
+#	return 200 '{"oddsHost":{"type":6,"url":"https://erzhang1.com","desktop_url":"https://erzhang1.com"}}';
+#}
+
+location = /odds5/oddsHost6 {
+	default_type  application/json;
+	return 200 '{"oddsHost":{"type":6,"url":"https://ghu10.core.dist.cloudland2.com","desktop_url":"https://ghu10.core.dist.cloudland2.com"}}';
+}
+
+location /odds5/ {
+	proxy_buffering        on;
+	proxy_cache_valid      200  1m;
+	proxy_cache            STATIC;
+	proxy_cache_key "$uri$is_args$args";
+    proxy_pass    http://node188v2;
+}
+location /odds5/mid2rid {
+	proxy_buffering        on;
+	proxy_cache_valid      200  20s;
+	proxy_cache            STATIC;
+    proxy_pass    http://node188core;
+}
+
+#location /odds5/oddsHost6 {
+#    default_type application/json;
+#    return 200 '{"oddsHost": { "type": 6,"url": "https://ghu10.core.dist.cloudland2.com","desktop_url": "https://ghu10.core.dist.cloudland2.com"}}';
+#}
+
+#location = /odds5/oddsHost6 {
+	#proxy_buffering        on;
+	#proxy_cache_valid      200  1m;
+	#proxy_cache            STATIC;
+	#proxy_pass http://43.247.132.25:8091;
+	#default_type  application/json;
+	#return 200 '{"oddsHost":{"type":6,"url":"https://www.erzhang1.com"}}';
+	#return 200 '{"oddsHost":{"type":6,"url":"https://erzhang1.com"}}';        
+#}
+
+location /zh-cn/info-centre/ {	
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+    proxy_pass    http://result188v2;
+}
+
+location /public_result188 {
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+   	proxy_pass    http://result188v2;
+}
+
+location /smallSix/ {
+	#return 200 "{\"errorCode\":0,\"message\":\"操作成功\",\"result\":{\"businessCode\":0,\"data\":{\"serverTime\":\"2018-06-21 21:26:25\",\"fiveElements\":[0,0,0,0,0,0,0],\"chineseZodiac\":[0,0,0,0,0,0,0],\"color\":[0,0,0,0,0,0,0],\"preDrawTime\":\"2018-06-21 21:30:00\",\"preDrawIssue\":2018068,\"drawIssue\":2018069,\"drawTime\":\"2018-06-21 21:30:00\",\"preDrawCode\":\"\",\"sumTotal\":\"\",\"type\":6},\"message\":\"操作成功\"}}";
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+	proxy_pass    http://result188v2;
+}

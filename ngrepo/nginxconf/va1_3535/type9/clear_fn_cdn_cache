@@ -1,0 +1,12 @@
+
+
+systemctl stop openresty;
+sleep 1;
+
+rm -rf /usr/local/openresty/nginx/x_cache_fn/;
+
+sleep 1;
+
+
+
+

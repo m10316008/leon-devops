@@ -1,0 +1,25 @@
+proxy_set_header Host $proxy_host;
+location /brand/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vg7/prod/brand$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vg7/prod/brand/ /;
+}
+location = /loginjs.js {
+    rewrite /loginjs.js /login_agent.js;
+}
+
+location = /logincss.css {    
+    rewrite /logincss.css /brand/agent/logincss.css;
+}
+
+location = / {
+    return 302 /login;
+}
+
+location / {
+    include crm2_path_proxy_pass.conf;
+}

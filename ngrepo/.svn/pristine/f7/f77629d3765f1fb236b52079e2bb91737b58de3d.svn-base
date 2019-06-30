@@ -1,0 +1,299 @@
+const Sequelize = require('sequelize');
+var Machine = require('../db/machine');
+var SSH2Promise = require('ssh2-promise');
+var CIDR = require('cidr-js');
+const nbconfigs = require('../utils/nbconfigs');
+const encryptTools = require('../utils/encrypt-tools');
+const fs = require('fs');
+const path = require('path');
+var rsaPath = path.join(__dirname, '..', '.rsa');
+var pubPem = fs.readFileSync(path.join(rsaPath, 'mykey.pub'));
+var priPem = fs.readFileSync(path.join(rsaPath, 'mykey.pem'));
+const sleep = require('await-sleep');
+const awaitExec = require('await-exec');
+const compareVersions = require('compare-versions');
+var upgradenodejsPath = path.join(__dirname, '..', 'dev-tools','upgradenodejs');
+var nginxclientdeployPath = path.join(__dirname,'..','dev-tools','nginxclientdeploy');
+console.log('upgradenodejsPath:',upgradenodejsPath);
+const {
+    promisify
+} = require('util');
+const compressing = require('compressing');
+var workspacePath = path.join(__dirname, '..', 'public', 'workspace');
+var ngclientPath = path.join(workspacePath, 'nginxclient');
+var ngclientTar = 'nginxclient.tar.gz';
+const svn_ac = require('../dev-tools/svn');
+
+function ipSort(ipAddressArray) {
+    return ipAddressArray.sort(function (a, b) {
+        a = a.split('.');
+        b = b.split('.');
+        for (var i = 0; i < a.length; i++) {
+            if ((a[i] = parseInt(a[i])) < (b[i] = parseInt(b[i])))
+                return -1;
+            else if (a[i] > b[i])
+                return 1;
+        }
+        return 0;
+    });
+}
+
+async function getFullIp(mcode, ip, username, password, port) {
+    var rs;
+    var sshconfig = {
+        host: ip,
+        username: username,
+        password: password,
+        port: port,
+        readyTimeout:8000,
+        reconnect:false,
+        debug:function(debug){
+            //console.log(debug);
+        }
+    };
+    console.log(sshconfig);
+    var ssh = new SSH2Promise(sshconfig);
+    try {
+        console.log('start');
+        var ls = await ssh.exec('ls');
+        console.log('ls:',ls);
+
+        var fullip = await ssh.exec('ip a');
+        console.log('fullip:',fullip);
+        await ssh.close();
+        var regex = /inet\s+(\d+\.\d+\.\d+\.\d+)\/\d+\s+brd/g;
+        var skiplocalipex = /192\.168\./g;
+        var ips = [];
+        let m;
+        while ((m = regex.exec(fullip)) !== null) {
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+            m.forEach((match, groupIndex) => {
+                if (groupIndex == 1) {
+                    try {
+                        let n = skiplocalipex.test(match);
+                        if (n === false) {
+                            ips.push(match);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+            });
+        }
+        ips = ipSort(ips);
+        ipsStr = ips.join(',');
+        var data = {
+            fullip: ipsStr
+        };
+        rs = await Machine.update(data, {
+            where: {
+                mcode: mcode
+            }
+        }).then(affectedRows => {
+            return {
+                mcode: mcode,
+                success: 1,
+                primaryIp: ip,
+                ips: ips,
+                ipsStr: ipsStr
+            };
+            //return rs;
+        }).catch(err => {
+            rs = {
+                success: 0,
+                err: err
+            };
+        });
+    } catch (err) {
+        rs = {
+            success: 0,
+            err: err
+        }
+    }
+    return rs;
+}
+
+function netmaskCal(ips) {
+    var ips_arr = ips.split(',');
+    var CIDR = require('cidr-js');
+    var cidr = new CIDR();
+    var rs = cidr.getBlocks(ips_arr);
+    rs.forEach((item, key) => {
+        if (item.indexOf('/') === -1) {
+            console.log(key, item);
+            rs[key] = item + '/32'
+        }
+    });
+    return rs;
+}
+async function deployClient(mcode) {
+    var machine = await Machine.findOne({
+        where: {
+            mcode: mcode
+        }
+    });
+    var clientJson = {
+        mcode: machine.mcode,
+        vcode: machine.vcode,
+        bossip: nbconfigs.bosshost
+    };
+    var sshconfig = {
+        host: machine.dataValues.primaryIp,
+        username: encryptTools.privateDecrypt(machine.dataValues.username, priPem),
+        password: encryptTools.privateDecrypt(machine.dataValues.password, priPem),
+        port: machine.dataValues.primaryPort,
+        readyTimeout: 20000,
+        reconnect: false
+    };
+    console.log(sshconfig);
+    var ssh = new SSH2Promise(sshconfig);
+    try{
+        var sftp = new SSH2Promise.SFTP(ssh);
+    }catch(e){
+        console.log('err:',e);
+    }
+
+
+    //var checkservice = false;
+    /*try {
+        await sftp.getStat('/etc/systemd/system/nginxclient.service');
+        checkservice =true;
+    }catch(e){
+        checkservice =false;
+        await sftp.fastPut(workspacePath+'/nginxclient/dev-tools/nginxclient.service','/etc/systemd/system/nginxclient.service');
+        await ssh.exec('systemctl enable nginxclient');
+        console.log('err:',e);
+    }*/
+    await sftp.fastPut(workspacePath+'/nginxclient.service','/etc/systemd/system/nginxclient.service');
+    await ssh.exec('systemctl enable nginxclient');
+
+    //console.log('checkservice:',checkservice);
+    var cmd = 'node -v';
+    var sshRes= await ssh.exec(cmd);
+    if(/v\d+\.\d+\.\d+/.test(sshRes)){
+        //node find
+        var node_v = sshRes.replace('v','').trim();
+        console.log('compare:','8.0.0',node_v);
+        console.log('compareVersions:',compareVersions('8.0.0',node_v));
+        // check node version
+        if(compareVersions('8.0.0',node_v)==1){
+            console.log('need to upgrade nodejs first!!!');
+            await sftp.fastPut(upgradenodejsPath,'/apps/temp/upgradenodejs');
+            console.log('put success');
+            console.log('Start upgrade!!');
+            var sshRes = await ssh.exec('bash /apps/temp/upgradenodejs');
+            console.log('upgrade nodejs:',sshRes);
+        }else{
+            console.log('No need to upgrade nodejs!!!');
+        }
+    }else{
+        //node not installed right
+        console.log('nodejs not found!!!');
+        await sftp.fastPut(upgradenodejsPath,'/apps/temp/upgradenodejs');
+        console.log('Start upgrade!!');
+        var sshRes = await ssh.exec('bash /apps/temp/upgradenodejs');
+        console.log('upgrade nodejs:',sshRes);
+    }
+    var cmd = 'node -v';
+    var sshRes= await ssh.exec(cmd);
+    console.log('node ver:',sshRes);
+    var cmd = 'rm -rf /apps/nginxclient/';
+    var sshRes= await ssh.exec(cmd);
+    console.log('rm:',sshRes);
+    var cmd = 'mkdir -p /apps/nginxclient';
+    var sshRes=await ssh.exec(cmd);
+    console.log('mkdir:',sshRes);
+    await sleep(1000);
+    var ngclientTarPath = path.join(__dirname);
+    var sendNgClient = await sftp.fastPut(workspacePath + '/' + ngclientTar, '/apps/temp/nginxclient.tar.gz');
+    console.log(clientJson);
+    var cmd = 'chmod 775 /apps/temp/nginxclient.tar.gz';
+    var cmdResult = await ssh.exec(cmd);
+    var cmd = 'tar -zxvf /apps/temp/nginxclient.tar.gz -C /apps/nginxclient';
+    var cmdResult = await ssh.exec(cmd);
+    console.log('untar:', cmdResult);
+    var cmd = 'chmod 775 -R /apps/nginxclient/';
+    await sleep(1000);
+    var cmdResult = await ssh.exec(cmd);
+    await sftp.writeFile('/apps/nginxclient/client.json', JSON.stringify(clientJson));
+    await sftp.fastPut(nginxclientdeployPath, '/apps/temp/nginxclientdeploy');
+    console.log('put deploy complete');
+    try{
+        var cmd = 'bash /apps/temp/nginxclientdeploy';
+        await ssh.exec(cmd);
+    }catch(e){
+        console.log('err:',e);
+    }
+    await sleep(2000);
+    console.log('I think install complete');
+    var cmd = 'systemctl status nginxclient';
+    var sshRes=await ssh.exec(cmd);
+    console.log('nginx client status:',sshRes);
+    if(/Active\:\s+active/.test(sshRes)){
+        console.log('Deploy on '+mcode+' complete');
+    }else{
+        console.log('Deploy Fail');
+    }
+    await ssh.close();
+    await sleep(1000);
+}
+var rmdir = function (dir) {
+    var list = fs.readdirSync(dir);
+    for (var i = 0; i < list.length; i++) {
+        var filename = path.join(dir, list[i]);
+        var stat = fs.statSync(filename);
+        if (filename == "." || filename == "..") {
+            // pass these files
+        } else if (stat.isDirectory()) {
+            // rmdir recursively
+            rmdir(filename);
+        } else {
+            // rm fiilename
+            fs.unlinkSync(filename);
+        }
+    }
+    fs.rmdirSync(dir);
+};
+async function preDeploy() {
+    /*console.log('workspacepath:', ngclientPath);
+    var scan = fs.existsSync(ngclientPath);
+    console.log('scan:', scan);
+    if (scan) {
+        var cmd = 'chmod -R 775 ' + ngclientPath + '/';
+        var exeResult = await awaitExec(cmd);
+        console.log('set folder 775 complete:', exeResult);
+        var exeResult = await awaitExec('rm -rf ' + ngclientPath);
+        console.log('remove ngclient:', exeResult);
+    }
+    var svnClient = require('svn-spawn');
+    const svnclient = new svnClient({
+        cwd: ngclientPath,
+        username: svn_ac.username,
+        password: svn_ac.password,
+        noAuthCache: true,
+    });
+    var url = 'http://202.59.250.139:9800/svn/ngrepo/nginxclient';
+    var chResult = await promisify(svnclient.checkout).bind(svnclient)(url).catch((err) => {
+        console.log('err: ', err);
+    });
+    var cmd = 'chmod -R 775 ' + ngclientPath + '/';
+    var exeResult = await awaitExec(cmd);
+    console.log('set folder 775 complete:');
+    console.log('chResult:', chResult);
+    var regex = /revision\s+(\d+)/;
+    var rev = chResult.match(regex);
+    console.log('checkout complete');
+    console.log('rev:', rev[1]);*/
+    try {
+        await compressing.tar.compressDir(ngclientPath, workspacePath + '/' + ngclientTar);
+        console.log('compressing complete');
+    } catch (e) {
+        console.log('err:', e);
+    }
+}
+exports.preDeploy = preDeploy;
+exports.deployClient = deployClient;
+exports.netmaskCal = netmaskCal;
+exports.getFullIp = getFullIp;

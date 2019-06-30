@@ -1,0 +1,7 @@
+中國        https://analytics.cloudfront-ssl.com/cnzz/243242?ip=223.202.204.194
+
+星加坡      https://analytics.cloudfront-ssl.com/cnzz/243242?ip=155.69.203.4
+
+台灣        https://analytics.cloudfront-ssl.com/cnzz/243242?ip=134.208.0.0
+
+香港        https://analytics.cloudfront-ssl.com/cnzz/243242?ip=175.45.20.138

@@ -1,0 +1,2 @@
+# Add nginx cache MISS or HIT header to response
+add_header cache-status $upstream_cache_status;

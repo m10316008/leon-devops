@@ -1,0 +1,4 @@
+### This is server section headers and will not be added to response of path having add_header defined in location section ###
+
+# For 301 redirect
+add_header Strict-Transport-Security "max-age=31536000;" always;

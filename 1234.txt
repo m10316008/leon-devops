@@ -1,4 +1,1455 @@
-123
-12345
-12345
-7777
+eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi10b2tlbi1qN2ZsZiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhZG1pbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjBjMTU3YTdlLTdmYTQtMTFlOS05MzA0LTUyNTQwMDI2MTA2MCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphZG1pbiJ9.VvMTAi9COqGmjfdrXQz1Jdby0XWL-KevaJCRUHPsq6zgMvIT7J9_tW3oAMfLWt8ldjNCVFDKBdqWOzFkUr5jZZrg0J2OHIJJnJcMUM-P5unWlyJ58W99hw2w7GmFpWstg5vlCrw_8F31s60RwD2ZFsSQpOOFZUUL2dLv6nx5OfFt2per67FWnYNAU4phwzYdKR-73VUejK5CoqGhbCqllpdF8PMmeAYmvn-A0Tb350LiY-LrPIm3anSSE4-Sv_NNqDtlAYIG1DTllluO64C_gumqYhsNO2Pz7OCDXr3ZGaG1gOUBtuyj2EwuOvBI7kFwB1Lmc5khLvMD8bqzw6lgSA
+
+
+
+core88a.crm2myjava.com. 299     IN      A       103.30.79.67
+core88a.crm2myjava.com. 299     IN      A       103.30.79.66
+core88a.crm2myjava.com. 299     IN      A       103.30.79.65
+core88a.crm2myjava.com. 299     IN      A       103.30.79.68
+core88a.crm2myjava.com. 299     IN      A       103.30.79.69
+
+
+docker run -d --name=test_confluence -p 20045:8090 -v confluence_opt:/opt/atlassian -v confluence_var:/var/atlassian idoall/ubuntu16.04-jdk10-confluence:6.12.2
+docker run --name openresty -p 80:80 -idt  -v openresty_conf:/usr/local/openresty/nginx/   openresty/openresty:centos
+
+182.16.32.218 98
+216.118.245.10
+52.128.247.186 193
+182.16.10.138 59
+216.118.227.114 60
+52.128.226.154 61
+
+
+awk '{print $9}' error.log | sort | uniq -c | sort -rn
+切割日志
+查找7月16日访问log导出到17.log文件中：
+cat access.log | egrep "19/May/2019" | sed  -n '/00:00:00/,/23:59:59/p' > /tmp/19.log
+查看访问量前10的IP
+awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -n 10 
+查看访问前10的URL
+awk '{print $11}' access.log | sort | uniq -c | sort -nr | head -n 10
+查询访问最频繁的URL
+awk '{print $7}' access.log | sort | uniq -c | sort -n -k 1 -r | more
+查询访问最频繁的IP
+awk '{print $1}' access.log | sort | uniq -c | sort -n -k 1 -r | more
+根据访问IP统计UV
+awk '{print $1}' access.log | sort | uniq -c | wc -l
+统计访问URL统计PV
+awk '{print $7}' access.log | wc -l
+根据时间段统计查看日志
+cat access.log | sed -n '/17\/May\/2017:12/,/17\/May\/2017:13/p' | more
+
+
+cat  access.log ||awk -F ' ' '{print $1}'|sort|uniq -c|sort -nr  | head -n 10
+
+c4c5e3714481101889188727cffceadad9b35c8af0e1f2bf46a41d8d3ed9758d	/var/atlassian
+270616aec6b6b79f02a32b460d7a2e41fb421c603e9d4579979fb47250a49221	/opt/atlassian
+wiki
+BKZE-4498-H080-T91V
+crowd
+B0T7-XXDP-HBY4-SO1O
+
+
+kubeadm join 172.28.10.21:6443 --token 5ggu53.qi1wn9bv0h2spwal \
+    --discovery-token-ca-cert-hash sha256:79cf9035d98c2c93ec2c0aa4dd7a8dd2842dc00acae64566fb1948266ca2fe96
+
+
+
+
+
+
+
+
+
+
+
+
+ve5_mango_lingdu060
+ve5_mango_lingdu061
+ve5_mango_lingdu059
+
+docker run -d --name=mshk_crowd -p 20080:8085 idoall/ubuntu16.04-jira-crowd:3.3.2
+docker run -d --name=idoall_jira_software -p 20081:8080 idoall/ubuntu16.04-jira-software:7.12.3
+docker run -d --name=confluence -p 20082:8090 idoall/ubuntu16.04-jdk10-confluence:6.12.2
+docker run -d --name mysql --hostname mysql  -p 23306:3306 -v datadir:/var/lib/mysql -v /tmp/mysql/5.7/my.ini:/etc/mysql/my.cnf -e MYSQL_ROOT_PASSWORD=123456 idoall/mysql:5.7
+mysql -uroot -p123456
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';
+flush privileges;
+quit;
+
+
+my altassian
+BISC-K9JV-BB9M-2VGK
+Confluence
+AAABLg0ODAoPeNptkF9rwjAUxd/zKQJ72R4iTbWFCoGtfxidrcrqfNpLFq4aSFNJUje//aKdzA0fA
+pfcc8793Xu32vW45kdMYxwE08l4GkU4y1c4DGiCcrDCyL2TnWZZpzeqBy0A3zdgDmAe3qe4OHDV8
+5MAZQbORc4dsJOdBBGhMfJGx4Wb8xYY/7QKOq2kfty2XKqR6FokfPLIK+QBmDM9DB+N48aBYRuuL
+FxCitqbbqf8klyFVFKAtrA67uE8P1vUdfGalU8VUkNrDcaePCHy0dqB5n7D4msvzfFqkZjQCC3Ml
+mtphxmeAQ1nKHOWlk1GZsnLmqRpUpNw/TxDTTFn/pGKjmMaRZME/cB4fVXmf1tn2HnffoBZbN6sZ
+2KEXgy3aZa9ETtu4f+5vwGom5jIMCwCFEFs4Fv3XvwBf0/dt0+e0Kr3o6IoAhR6lNSczjwumBgSX
+PiL7LZ1S83pQA==X02f7
+
+Team Calendars
+AAABPg0ODAoPeNptkE9rwjAYxu/5FIFdtkNGW21BIbDZluG0OtbO02C8695qIE1Lkrr57RetslE85
+JLk+T1/bopdRzM4UD+injcdj6fBiMZJQQPPn5AETalFa0WjeIFQ0xgkqi/QhlaNpnGjKtmhKpHe5
+qj3qO/epzTdg+zgqCGrrv5Eva7eDGrDmU+sg3yUF8g9Kou61cIgt7pDEms8CROwyI8JmBcyPyLOy
+EJpV1Ajh28jsVFSqIdtDULel0095Lq/Yn9mDp5yC9qZ8gqkwQs4zRzoOvmvTY+TokRlcOMKHe8C4
+qSuhQK3QvrTCn34Fz5ifjgMsOwBxaHFU594nWXpazx/XJK13oISpndzaUg/6jzhs3kes8XkecNms
+0nGgs3TguTpirvDlv4o8sMw9MgZfT3GS6fLHRgcbvsLALeugjAsAhQ/91ZA6i8/RE8Cvew/8Fbqb
+9YnjgIUeR3XcNnPfYZ6j8PeH1qStJA9EUY=X02fr
+                            
+
+Confluence Questions
+AAABUA0ODAoPeNqtkk1PwkAQhu/7KzbxoodtWmybQNJEaRuDUFBBTl7GZgqbbLd1P1D+vVsKkRhPx
+MMkm5nd931mZq9WW0sL2NMgpr4/CsNRFNI0W9GBHwxJhrpUvDW8kcmzRd0dNK0aRdNGVsKiLJFeL
+1HtUN28jWi+A2Ghu0Xmtn5HtaheNSqdsICkCg+VDAwmnTrzIxbExCkZKM0cakzgUwtspODyblMDF
+17Z1MSFB0aA1hyky5yMvVbYDZf6LMU+TpCek+Q7TIyyeKHC0oAyqJIKhMYTZl44rL85f5rvXQUvU
+Wpcu/673IC4p9KgBGeTf7Vc7c9GEbMgupBz1vus9i0ehpguiiJ/SSf3M7JQG5Bc91AOmvSrmmTJe
+LJM2XT4uGbj8bBgg/XDlCzzeeKCzYLbOIiiKCRH6f+kRTcC1Squj7t5sqrcgsbf3+IbHavqqTAuA
+hUAkPey4SonMUFrHV60JzJNDbo93K4CFQCWz1l7l+US2kJjPxlpNMp+fL9n1w==X02go  
+
+
+
+jira
+BE6T-DT4C-N1QG-JF1W
+AAABdw0ODAoPeNp9kV9PwjAUxd/3KZb4og9dKMgUkiXqVg0EBrIpL77UcYGa0S23Hcq3t2wjgvx5vG3v+Z1zejWFmT3kG5u27WarS++6rXvbD2K72aAda4EAcpnlOaAzEAlIBWwmtMikx8KYTcaTXsSssFh9Ao7mbwpQeYRafiY1T3TIV+Dxb5VCJlMhHxYrLlInyVbWl0DuHK2NC0yWXEHANXhbPmm0CXWtmhxvcigl/dFwyCZ+73Gwu2I/ucDN3p5LaHtngw0N9rSPCHAN2Au8J+bGJIhvfRLS1xfSf6bTymSO2axItLMdiMrm+psjOEZVrMHTWED17Hw5Jyo8FcR4lBokl8mZMBfcHBVZc0yuQS+IWEgGtOXSdrPjWmbyDk8uCEeaowb05jxVYI1wwaVQvExo6rR8hHL4/19phX83brZPmwcdgImJOQpV1xeASlDkpWjf0O2optvX1e/cfHRttuZpUbIqu+f6P9XsPnx/70+zmn8B8BkK2DAsAhQZYxzX3JxwkuzgwSNf2cjFrVR3pwIUC7OkhYk7KgHkBSuO8uxL34Ng6fg=X02ia                        
+
+
+
+
+BHCY-A044-PQY0-BEQL
+Confluence (Server)
+AAABLw0ODAoPeNptkFtrAjEQhd/zKwJ9aR8iGy9LFQLV3YUKu16qLQh9mYZRA9msJFnb/feNbqW2+
+BAYMuec+Wbu1vuaFtBQHtOoN4r6o96QJumadiM+JCk6adXBq8qIpDJbXaORSO9XaI9oH95HNDuCr
+uEkIInFc5GCR3Gys2jAeEyC0YP0MyhRwKfTWBmtzNOuBKU7siqJDMmdoFBHFN7W2H6sPFiPVmxBO
+7yEZEUw3U75JbkKyZVE43DdHPA8P5kXRfaSTMc50W3rDa07ebokRBuPBsKG2ddB2eZqkZjxAZnbH
+Rjl2hmBgbRnmKZi8pxs2Djq99liuYnYJFvmZJXNRHgs572Yx4PHLvmBCfp8mv5tnWFndfmBdr59d
+YFJMH4x3KZZ1FbuweH/c38Dm42YqjAsAhRGtqlspFwlqNiaZrZTFDd7wILMRQIUSr8r+O/A8Pl7U
+wWJ0Kz3hxOuHSw=X02f7
+
+Team Calendars
+AAABPw0ODAoPeNptkFtLwzAYhu/zKwLe6EVGs61VBwG3tuCgO7kqDAT5rF+3QJuWJJ3u35utG0rZR
+W6SvM97uEl3DZ3BgfKAeoOR54+4T8MopX2PP5IITaZlbWWlRIpQ0hAKVF+gDc0rTcNK5UWDKkN6u
+0a9R333PqLxHooGjhoyb8pP1Iv81aA2gnFiHeQju0B6qCzqWkuDwuoGSajxJIzAojgmYJ7PeECck
+YXMzqFEAd+mwEoVUj1tS5BFL6vKLtf9lfszs/O0tqCdqcihMHgBxzMHuk7+a9PiCpmhMvjmCh3v+
+sRJXQsFboX4p5b68C98wLjfDZC0gPRQ46lPuJjN4pdwOk7IQm9BSdO6uTSkHXUaiclzuGFjbzhky
+9XGY5N4lZB1PBfusIQPAh74D/fkjL4eY9nobAcGu9v+AvsnrnIwLAIUOLA4P+BCVHW7cbLawyGnQ
+Rf0RGkCFHL1dBoAU1FRE8W9jKkJ/r9Bbqf7X02fr
+
+Download the Questions for Confluence (Server)
+AAABUA0ODAoPeNqtkk1rwkAQhu/7KxZ6aQ8bEjUBhUA1CVRI/Ki2IPQyDRNd2GzS/bD133c1SqX0J
+D0MLDO77/vMzN6td5YWcKBBRP3+yA9H4ZAm6Zr2/GBIUtSl4q3hjYyXFvXxoGnVKJo0shIWZYn0f
+oVqj+rhbUSzPQgLx1tkZut3VPPqRaPSMQtIovBUScFgfFRnfsiCiDglA6WZQY0xfGqBjRRcPm5r4
+MIrm5q48MAI0JqDdJmLsdcKu+VSX6XYxwXSc5J8j7FRFm9UWBlQBlVcgdB4wcwKh/U350/znavgJ
+UqNr67/Y65H3FNpUIKzyb5arg5Xo4hYEN7ImXc+60OLpyEm86LInpPpOCdztQXJdQfloEm3qmkaT
+56SDRv7gwFbLDc+m2TLnKyyWeyC5UE/CqJw6JOz9H/SohuBahXX590srCp3oPH3t/gGGVPqkzAsA
+hQQHxv2XGJBT7MIJgg+wKI2W+fHKwIUWlKaefMau0ca+qx+QRWEn22gjMw=X02gk
+
+
+cat>>/etc/mysql/my.cnf<<EOF
+character-set-server=utf8     
+collation-server=utf8_bin      # 将默认字符集指定为UTF-8
+default-storage-engine=INNODB  # 将默认存储引擎设置为InnoDB
+max_allowed_packet=256M        # max_allowed_packet至少为256M
+innodb_log_file_size=2GB       # innodb_log_file_size 至少为2GB
+transaction-isolation=READ-COMMITTED  # 确保数据库的全局事务隔离级别已设置为READ-COMMITTED
+binlog_format=row              # 检查二进制日志记录格式是否配置为使用“基于行”的二进制日志记录
+EOF
+
+
+
+BONI-XW0X-PE6I-ZUNP
+
+
+
+118.99.33.91 8868hk.biz
+
+勇士四台機改為type8: 118.99.33.91, 119.47.84.71, 182.16.115.66, 182.16.17.90 -> 看看 @amazonfacilitycloud 如有時間，起新type 叫 attack503 把這四台機歸類做 attack503
+ 1  cd ubuntu16.04-jira-core/7.12.3
+    2  docker build -t idoall/ubuntu16.04-jira-core:7.12.3 .
+    3  ip a
+    4  systemctl status firewalld
+    5  ip a
+    6  docker ps
+    7  docker-compose ps
+    8  docker run -it --name=idoall_jira_core --rm -p 80:8080 idoall/ubuntu16.04-jira-core:7.12.3 /bin/bash
+    9  docker run -d --name=idoall_jira_core -p 80:8080 idoall/ubuntu16.04-jira-core:7.12.3
+   10  sestatus
+   11  ss -tunpl
+   12  docker ps
+   13  systemctl status firewalld
+   14  docker ps
+   15  fdisk -l
+   16  ls /var/lib/docker
+   17  cd /tmp/docker/ubuntu16.04-jira-software/7.12.3/
+   18  ls
+   19  cp my.ini my.ini.bk
+   20  pwd
+   21  docker stack deploy -c docker-compose.yml mshk_jira_software
+   22  docker service ls
+   23  docker stack rm mshk_jira_software
+   24  docker stack deploy -c docker-compose.yml mshk_jira_software
+   25  docker service ls
+   26  docker exec -it fis-php fis3 release -r /home/work/_website/common
+   27  docker exec -it fis-php fis3 release -r /home/work/_website/subsiteA
+   28  docker exec -it fis-php fis3 release -r /home/work/_website/subsiteB
+   29  docker exec -it fis-php fis3 server start --type php --rewrite
+   30  docker exec -it fis-php fis3 release -r /home/work/_website/subsiteC
+   31  exit
+   32  docker exec -it fis-php fis3 release -r /home/work/_website/subsite
+   33  docker exec -it fis-php fis3 server start --type php --rewrite
+   34  docker
+   35  docker stop 90a 47f fe5
+   36  docker rm 90a 47f fe5
+   37  exit
+   38  ip a
+   39  docker ps
+   40  docker run -d --name mysqldb --hostname mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 idoall/mysq                                                          l:5.7
+   41  docker run --name myadmin -d --link mysql_db_server:db -p 9100:80 phpmyadmin/phpmyadmin
+   42  docker run --name myadmin -d --link mysqldb:db -p 9100:80 phpmyadmin/phpmyadmin
+   43  docker run -d --name wordpress --hostname wordpress --link some-mysql:mysql -p 80:80 docker run -d --n                                                          ame wordpress --hostname wordpress --link mysqldb:mysql -p 8080:80
+   44  docker run -d --name wordpress --hostname wordpress --link some-mysql:mysql -p 80:80 docker run -d --n                                                          ame wordpress --hostname wordpress --link mysqldb:mysql -p 8080:80 idoall/ubuntu16.04-nginx1.12.1-php7.1.9-wo                                                          rdpress
+   45  docker ps
+   46  docker run -d --name wordpress --hostname wordpress --link mysqldb:mysql -p 8080:80 idoall/ubuntu16.04                                                          -nginx1.12.1-php7.1.9-wordpress
+   47  cd /tmp/docker/ubuntu16.04-tengine2.2.0-php7.1.9-fis3/
+   48  docker build -t idoall/ubuntu16.04-tengine2.2.0-php7.1.9-fis3 .
+   49  docker run -it --rm --name fis-php --hostname fis-php -p 8090:8080 idoall/ubuntu16.04-tengine2.2.0-php                                                          7.1.9-fis3
+   50  docker run --name phpmyadmin -d --link jira_mysql:db -p 9100:80 phpmyadmin/phpmyadmin
+   51  exit
+   52  ip a
+   53  history
+   54  docker ps
+   55  systemctl status firewalld
+   56  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer
+   57  docker stop d23
+   58  docker rm d23
+   59  docker swarm init
+   60  cd /tmp
+   61  ls
+   62  cd docker/
+   63  ls
+   64  cd ubuntu16.04-nginx1.12.1-php7.1.9-wordpress/
+   65  ls
+   66  cd 4.8.1/
+   67  ks
+   68  ls
+   69  vim README.md
+   70  docker build -t idoall/ubuntu16.04-nginx1.12.1-php7.1.9-wordpress:4.8.1 .
+   71  history
+   72  docker run --name phpmyadmin -d --link jira_mysql:db -p 9100:80 phpmyadmin/phpmyadmin
+   73  docker ps
+   74  docker run
+   75  docker run --name phpmyadmin -d --link jira_mysql:db -p 9100:80 phpmyadmin/phpmyadmin
+   76  docker ps
+   77  docker stack rm mshk_jira_software
+   78  docker stack deploy -c docker-compose.yml mshk_jira_software
+   79  cd /tmp/docker/ubuntu16.04-jira-software/7.12.3/
+   80  ls
+   81  docker stack deploy -c docker-compose.yml jira_software
+   82  docker service ls
+   83  history
+   84  docker stack rm jira_software
+   85  docker stack deploy -c docker-compose.yml jira_software
+   86  docker service ls
+   87  docker stack rm jira_software
+   88  docker stack deploy -c docker-compose.yml jira_software
+   89  cd ..
+   90  ls
+   91  cd ..
+   92  ls
+   93  cd ubuntu16.04-nginx1.12.1-php7.1.9-wordpress/
+   94  ls
+   95  cd 4.8.1/
+   96  ls
+   97  docker stack rm jira_software
+   98  docker run -d --name mysqldb --hostname mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 idoall/mysq                                                          l:5.7
+   99  docker run --name phpmyadmin -d --link mysqldb:db -p 9100:80 phpmyadmin/phpmyadmin
+  100  docker run -d --name=jira_software -p 20030:8080 idoall/ubuntu16.04-jira-software:7.12.3
+  101  docker ps
+  102  docker stop b71
+  103  docker srm b71
+  104  docker rm b71
+  105  docker run -d --name=jira_software --link mysqldb:mysql -p 20030:8080 idoall/ubuntu16.04-jira-software                                                          :7.12.3
+  106  docker run -d --name wordpress --hostname wordpress --link mysqldb:mysql -p 20040:80 idoall/ubuntu16.0                                                          4-nginx1.12.1-php7.1.9-wordpress:4.8.1
+  107  docker run --name zabbix-java-gateway -t       -d zabbix/zabbix-java-gateway:latest
+  108  docker run --name zabbix-server-mysql -t       -e DB_SERVER_HOST="mysqldb"       -e MYSQL_DATABASE="za                                                          bbix"       -e MYSQL_USER="root"       -e MYSQL_PASSWORD="123456"       -e MYSQL_ROOT_PASSWORD="123456"                                                                 -e ZBX_JAVAGATEWAY="zabbix-java-gateway"       --link mysqldb:mysql       --link zabbix-java-gateway:zabbix-                                                          java-gateway       -p 10051:10051       -d zabbix/zabbix-server-mysql:latest
+  109  docker run --name zabbix-web-nginx-mysql -t       -e DB_SERVER_HOST="mysqldb"       -e MYSQL_DATABASE=                                                          "zabbix"       -e MYSQL_USER="root"       -e MYSQL_PASSWORD="123456"       -e MYSQL_ROOT_PASSWORD="123456"                                                                 --link mysqldb:mysql       --link zabbix-server-mysql:zabbix-server       -p 20050:80       -d zabbix/zab                                                          bix-web-nginx-mysql:latest
+  110  docker run --name phpmyadmin-192.168.2.153 -d --link mysqldb:db -p 900:80 phpmyadmin/phpmyadmin
+  111  docker run --name zabbix-appliance -t       -p 10055:10051       -p 10000:80       -d zabbix/zabbix-ap                                                          pliance:latest
+  112  cd /tmp
+  113  sudo git clone https://github.com/outmanzzq/docker-compose.git
+  114  ls
+  115  mv docker-compose/ zabbix-docker
+  116  ll
+  117  cd zabbix-docker/
+  118  ls
+  119  cp zabbix-docker/ /tmp
+  120  cp zabbix-docker/ /tmp/
+  121  cp zabbix-docker--/ /tmp/
+  122  ls
+  123  mv zabbix-docker--/ tmp
+  124  mv  tmp /tmp/docker-zabbix
+  125  cd /tmp
+  126  ls
+  127  cd docker-zabbix/
+  128  ls
+  129  docker-compose up -d
+  130  docker-compose destroy
+  131  docker-compose destroy all
+  132  docker-compose down
+  133  docker-compose up -d
+  134  docker network ks
+  135  docker network ls
+  136   docker run -d --name=grafana -p 3000:3000 -v /var/lib/grafana:/var/lib/grafana  grafana/grafana:maste                                                          r
+  137  docker exec -it grafana /bin/bash
+  138  docker ps
+  139   docker run -d --name=grafana -p 3000:3000 -v /var/lib/grafana:/var/lib/grafana  grafana/grafana
+  140  docker ps -al
+  141  docker stop ba53
+  142  docker rm ba53
+  143   docker run -d --name=grafana -p 3000:3000 -v /var/lib/grafana:/var/lib/grafana  grafana/grafana
+  144  docker-compose stop
+  145  docker-compose rm
+  146  cp /tmp/docker/ubuntu16.04-jira-software/ /tmp/docker-jira
+  147  ls
+  148  mkdir /tmp docker-jira
+  149  mkdir /tmp/docker-jira
+  150  cp /tmp/docker/ubuntu16.04-jira-software/ /tmp/docker-jira
+  151  ls /tmp/docker-jira/
+  152  ls
+  153  cd /tmp/docker-jira/
+  154  ls
+  155  cd 7.12.3/
+  156  ls
+  157  docker stack deploy -c docker-compose.yml jira7.12
+  158  docker stack deploy -c docker-compose.yml jira
+  159  docker stack
+  160  docker rm jira
+  161  docker stacks rm jira
+  162  docker stack rm jira
+  163  docker stack deploy -c docker-compose.yml jira
+  164  docker stack rm jira
+  165  docker stack deploy -c docker-compose.yml jira
+  166  docker stack stop jira
+  167  docker stack ps jira
+  168  docker stack ps
+  169  docker stack services
+  170  docker stack jira
+  171  docker stack deploy -c docker-compose.yml jira
+  172  docker run --name myadmin -d -e PMA_HOST=mysqldb -p 8088:80 phpmyadmin
+  173  docker run --name myadmin -d -e PMA_HOST=mysqldb -p 8088:80 phpmyadmin/phpmyadmin
+  174  docker swarm init
+  175  docker stack rm jira
+  176  docker stack deploy -c docker-compose.yml jira
+  177  docker stack rm jira
+  178  ls
+  179  cd ..
+  180  cd docker-jirasoftware/
+  181  cd 7.12.3/
+  182  ll
+  183  docker stack deploy -c docker-compose.yml jira
+  184  docker stack rm jira
+  185  docker stack deploy -c docker-compose.yml jira
+  186  cd /tmp/docker-zabbix/
+  187  ls
+  188  docker stack deploy -c docker-compose.yml zabbix
+  189  docker stack deploy -c docker-compose.yaml zabbix
+  190  ls
+  191  docker-compose up -d
+  192  docker-compose stop
+  193  docker-compose rm
+  194  docker stack deploy -c docker-compose.yaml zabbix
+  195  cd /tmp
+  196  git clone https://github.com/vfarcic/jenkins-docker-ansible.git
+  197  ls
+  198  cd jenkins-docker-ansible/
+  199  ls
+  200  chmod +x bootstrap.sh
+  201  ./bootstrap.sh
+  202  cd ..
+  203  git clone https://github.com/RobertoCamara/zabbix.git
+  204  ls
+  205  docker run --name zabbix-server-mysql -t --link mysql-server:mysqldb -e DB_SERVER_HOST="mysqldb" -e MY                                                          SQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="123456" -e MYSQL_ROOT_PASSWORD="123456" -p 1005                                                          1:10051 -d zabbix/zabbix-server-mysql:centos-4.0-latest
+  206  docker run --name zabbix-server-mysql -t --link mysqldb:db -e DB_SERVER_HOST="mysqldb" -e MYSQL_DATABA                                                          SE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="123456" -e MYSQL_ROOT_PASSWORD="123456" -p 10051:10051 -d                                                           zabbix/zabbix-server-mysql:centos-4.0-latest
+  207  docker run --name zabbix-web-nginx-mysql -t --link mysqldb:db --link zabbix-server-mysql:zabbix-server                                                           -e DB_SERVER_HOST="mysql-server" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="123456"                                                           -e MYSQL_ROOT_PASSWORD="123456" -e PHP_TZ="Asia/Taipei" -p 20040:80 -d zabbix/zabbix-web-nginx-mysql:centos-4                                                          .0-latest
+  208  docker ps
+  209  docker stop 021
+  210  docker rm 021
+  211  docker run --name zabbix-web-nginx-mysql -t --link mysqldb:db --link zabbix-server-mysql:zabbix-server                                                           -e DB_SERVER_HOST="mysqldb" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="123456" -e MY                                                          SQL_ROOT_PASSWORD="123456" -e PHP_TZ="Asia/Taipei" -p 20040:80 -d zabbix/zabbix-web-nginx-mysql:centos-4.0-la                                                          test
+  212  docker run --name some-zabbix-agent -p 10050:10050 -e ZBX_HOSTNAME="zabbix server" -e ZBX_SERVER_HOST=                                                          "zabbix-server-mysql" -e ZBX_SERVER_PORT=10051 -d zabbix/zabbix-agent:centos-4.0-latest
+  213  docker run --name some-zabbix-agent -p 10050:10050 -e ZBX_HOSTNAME="zabbix-agent" -e ZBX_SERVER_HOST="                                                          192.168.2.161" -e ZBX_SERVER_PORT=10051 -d zabbix/zabbix-agent:centos-4.0-latest
+  214  docker run --name zabbix-server-agent -p 10050:10050 -e ZBX_HOSTNAME="Zabbix server" -e ZBX_SERVER_HOS                                                          T="192.168.2.161" -e ZBX_SERVER_PORT=10051 -d zabbix/zabbix-agent:centos-4.0-latest
+  215  cd ..
+  216  ls
+  217  cd /tmp
+  218  ls
+  219  cd docker-zabbix/
+  220  ls
+  221  docker-compose up -d
+  222  docker-compose stop
+  223  docker-compose rm
+  224  docker-compose up -d
+  225  ls
+  226  docker-compose stop && docker-compose rm
+  227  ls
+  228  cd ..
+  229  ls
+  230  cd zabbix-stack/
+  231  ls
+  232  docker-compose up -d
+  233  docker-compose -f stack.yaml up -d
+  234  docker-compose -f stack.yaml down
+  235  docker-compose -f stack.yaml up -d
+  236  docker-compose -f stack.yaml down
+  237  exit
+  238  reboot
+  239  docker ps
+  240  docker ps -al
+  241  history
+  242  cd /tmp
+  243  curl -L https://downloads.portainer.io/portainer-agent-stack.yml -o portainer-agent-stack.yml
+  244  ll
+  245  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  246  docker ps
+  247  reboot
+  248  cd /tmp/docker-jirasoftware/4.6.1/
+  249  ll
+  250  java -jar crucible_keygen.jar
+  251  java -v
+  252  java --version
+  253  java -version
+  254  docker ps
+  255  CONTAINERNAME=jira_crucible
+  256  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crucible/bin/stop.sh;mv /home/work/_app/_jira_                                                          crucible/lib/atlassian-extras-2.5.jar /home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar.bak'
+  257  sudo yum install http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm
+  258  sudo yum install zabbix-agent zabbix-sender
+  259  ss -tunelp | grep 10050
+  260  vim //etc/zabbix/zabbix_agentd.conf
+  261  systemctl restart zabbix-agent
+  262  system status zabbix-agent
+  263  systemctl status zabbix-agent
+  264  ping 172.17.0.7
+  265  ll
+  266  ls
+  267  cd /tmp
+  268  ls
+  269  cd zabbix-stack/
+  270  ls
+  271  docker stack deploy -c stack.yaml zabbix20070
+  272  docker stack down zabbix20070
+  273  docker stack deploy -c stack.yaml zbx
+  274  docker stack down 20070
+  275  docker stack down zbx
+  276  docker stack deploy -c stack.yaml zbx
+  277  docker stack down zbx
+  278  lsb_release -d
+  279  cat /etc/proc
+  280  cat /var/proc
+  281  ll
+  282  cd /
+  283  ls
+  284  ls /proc/cpuinfo
+  285  ll /proc/
+  286  cat /proc/version
+  287  ll
+  288  docker
+  289  docker ps
+  290  cd /tmp
+  291  ls
+  292  git clone --recursive https://github.com/marcelbirkner/docker-ci-tool-stack.git
+  293  ls
+  294  docker-machine
+  295  cd docker-ci-tool-stack/
+  296  ls
+  297  docker-compose up -d
+  298  ls
+  299  chmod +x docker-compose.yml.native-docker-fix.sh
+  300  ./docker-compose.yml.native-docker-fix.sh
+  301  docker-compose up -d
+  302  docker pull mbirkner/docker-ci-tool-stack-nexus
+  303  docker-compose up -d
+  304  cd docker-nexus3-/
+  305  ls
+  306  docker build .
+  307  curl -L https://www.getchef.com/chef/install.sh | bash     && /opt/chef/embedded/bin/erb /var/chef/sol                                                          o.json.erb > /var/chef/solo.json     && chef-solo        --recipe-url ${NEXUS_REPOSITORY_MANAGER_COOKBOOK_URL                                                          }        --json-attributes /var/chef/solo.json     && rpm -qa *chef* | xargs rpm -e     && rpm --rebuilddb                                                               && rm -rf /etc/chef     && rm -rf /opt/chefdk     && rm -rf /var/cache/yum     && rm -rf /var/
+  308  ls /var/
+  309  cd ..
+  310  ;s
+  311  ls
+  312  docker-compose up -d
+  313  ls /tmp
+  314  docker run -d -p 8081:8081 --name nexus sonatype/nexus3
+  315  docker-compose up -d
+  316  docker run -d --name=jira_software -p 20030:8080 idoall/ubuntu16.04-jira-software:7.12.3
+  317  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep mshk_jira_software_jira_software.1`
+  318  docker exec $CONTAINERNAME sh -c 'service jira stop;mv /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/                                                          atlassian-extras-3.2.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar.bak;mv /usr/                                                          src/_jira/atlassian-extras-3.2.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar;mv                                                           /opt/atlassian/jira/atlassian-jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plug                                                          in-2.22.9.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin                                                          -manager-plugin-2.22.9.jar.bak;cp /usr/src/_jira/atlassian-universal-plugin-manager-plugin-2.22.9.jar /opt/at                                                          lassian/jira/atlassian-jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plugin-2.22.                                                          9.jar;service jira start'
+  319  docker ps
+  320  CONTAINERNAME=`docker ps --format "{{.Names}}" | jira_software`
+  321  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep mshk_jira_software_jira_software.1`
+  322  docker run -d --name=jira_crucible -p 20031:8060 idoall/ubuntu16.04-jira-crucible:4.6.1
+  323  docker ps
+  324  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep jira_crucible
+  325  '
+  326  ;
+  327  /
+  328  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep jira_crucible'
+  329  cd /tmp
+  330  ls
+  331  cd docker-jirasoftware/
+  332  ls
+  333  cd 4.6.1/
+  334  ls
+  335  cd files/
+  336  ls
+  337  cd ..
+  338  ls
+  339  docker cp jira_crucible:/home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar ./atlassian-extras                                                          -2.3.1-SNAPSHOT.jar
+  340  ll
+  341  docker cp jira_crucible:/usr/src/_crucible/crucible_keygen.jar .
+  342  ll
+  343  java -jar crucible_keygen.jar
+  344  sudo yum install curl -y
+  345  curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/9.0.4+11/c2514751926b4512b                                                          076cc82f959763f/jre-9.0.4_linux-x64_bin.rpm
+  346  sudo yum localinstall jre-9.0.4_linux-x64_bin.rpm -y
+  347  sudo yum localinstall jre-9.0.4_linux-x64_bin.rpm
+  348  ls
+  349  sudo yum localinstall jre-9.0.4_linux-x64_bin.rpm
+  350  sudo yum install java-1.8.0-openjdk-devel
+  351  java -jar crucible_keygen.jar
+  352  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/stop.sh;mv /home/work/_app/_jira_c                                                          rucible/lib/atlassian-extras-2.5.jar /home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar.bak'
+  353  docker cp atlassian-extras-2.3.1-SNAPSHOT.jar jira_crucible::/home/work/_app/_jira_crucible/lib/atlass                                                          ian-extras-2.5.jar
+  354  docker cp atlassian-extras-2.3.1-SNAPSHOT.jar jira_crucible:/home/work/_app/_jira_crucible/lib/atlassi                                                          an-extras-2.5.jar
+  355  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/start.sh'
+  356  docker cp atlassian-extras-2.3.1-SNAPSHOT.jar jira_crucible:/home/work/_app/_jira_crucible/lib/atlassi                                                          an-extras-2.5.jar
+  357  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/stop.sh'
+  358  docker cp atlassian-extras-2.3.1-SNAPSHOT.jar jira_crucible:/home/work/_app/_jira_crucible/lib/atlassi                                                          an-extras-2.5.jar
+  359  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/start.sh'
+  360  docker run -d --name=jira_crucible -p 20031:8060 idoall/ubuntu16.04-jira-crucible:4.6.1
+  361  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/stop.sh;mv /home/work/_app/_jira_c                                                          rucible/lib/atlassian-extras-2.5.jar /home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar.bak'
+  362  java -V
+  363  java -version
+  364  java -jar crucible_keygen.jar
+  365  sudo yum install java-1.7.0-openjdk
+  366  java --version
+  367  java -version
+  368  sudo update-alternatives --config java
+  369  java -version
+  370  java -jar crucible_keygen.jar
+  371  docker cp $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar.bk ./atlassian-ex                                                          tras-2.3.1-SNAPSHOT.jar
+  372  docker cp atlassian-extras-2.3.1-SNAPSHOT.jar.bak $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/at                                                          lassian-extras-2.5.jar
+  373  ll
+  374  docker cp atlassian-extras-2.3.1-SNAPSHOT.bak $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlass                                                          ian-extras-2.5.jar
+  375  echo CONTAINERNAME
+  376  CONTAINERNAME
+  377  $CONTAINERNAME
+  378  docker cp atlassian-extras-2.3.1-SNAPSHOT.bak jira_crucible::/home/work/_app/_jira_crucible/lib/atlass                                                          ian-extras-2.5.jar
+  379  docker cp atlassian-extras-2.3.1-SNAPSHOT.bak jira_crucible:/home/work/_app/_jira_crucible/lib/atlassi                                                          an-extras-2.5.jar
+  380  docker exec jira_crucible sh -c '/home/work/_app/_jira_crucible/bin/start.sh'
+  381  CONTAINERNAME=jira_crucible
+  382  CONTAINERNAME
+  383  $CONTAINERNAME
+  384  docker cp $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar ./atlassian-extra                                                          s-2.3.1-SNAPSHOT.jar
+  385  docker cp $CONTAINERNAME:/usr/src/_crucible/crucible_keygen.jar .
+  386  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep jira_crucible`
+  387  docker cp $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar ./atlassian-extra                                                          s-2.3.1-SNAPSHOT.jar
+  388  docker cp $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlassian-extras-2.5.jar.bak ./atlassian-e                                                          xtras-2.3.1-SNAPSHOT.jar
+  389  docker cp $CONTAINERNAME:/usr/src/_crucible/crucible_keygen.jar .
+  390  docker cp atlassian-extras-2.3.1-SNAPSHOT.bak $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlass                                                          ian-extras-2.5.jar
+  391  docker cp atlassian-extras-2.3.1-SNAPSHOT.bak $CONTAINERNAME:/home/work/_app/_jira_crucible/lib/atlass                                                          ian-extras-2.5.jar.....l
+  392  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crucible/bin/start.sh'
+  393  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crucible/bin/stop.sh'
+  394  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crucible/bin/start.sh'
+  395  docker run -d --name=jira_crowd -p 20032:8095 idoall/ubuntu16.04-jira-crowd:3.3.2
+  396  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep jira_crowd`
+  397  docker cp $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar                                                           ./atlassian-extras-2.6.jar
+  398  docker cp $CONTAINERNAME:/usr/src/_crowd/crowd_keygen.jar .
+  399  docker cp $CONTAINERNAME:/usr/src/_crowd/crowd_keygen.jar ../3.3.2/
+  400  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crowd/stop_crowd.sh;mv /home/work/_app/_jira_c                                                          rowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar /home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/a                                                          tlas
+  401  docker cp $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar                                                           ./atlassian-extras-2.6.jar
+  402  cd ../3.3.2/
+  403  ls
+  404  docker cp $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar                                                           ./atlassian-extras-2.6.jar
+  405  CONTAINERNAME=`docker ps --format "{{.Names}}" | grep jira_crowd`
+  406  docker cp $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar                                                           ./atlassian-extras-2.6.jar
+  407  docker cp $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar                                                          .bak ./atlassian-extras-2.6.jar
+  408  docker cp atlassian-extras-2.6.bak $CONTAINERNAME:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib                                                          /atlassian-extras-3.2.jar
+  409  docker exec $CONTAINERNAME sh -c '/home/work/_app/_jira_crowd/start_crowd.sh'
+  410  docker swarm init
+  411  docker swarm
+  412  docker swarm join
+  413  docker swarm update
+  414  docker swarm ca
+  415  docker run --name=contain1 --net=host -it joffotron/docker-net-tools
+  416  docker run --name=contain2 --net=bridge -it joffotron/docker-net-tools
+  417  docker swarm node ls
+  418  docker node ls
+  419  docker swarm join-token manager
+  420  docker swarm init --advertise-addr 192.168.2.161
+  421  docker swarm join-token manager
+  422  docker swarm join-token node
+  423  docker swarm join-token workder
+  424  docker swarm join-token worker
+  425  docker swarm leave --force
+  426  docker swarm init
+  427  docker ps
+  428  docker service create --name portainer_agent --network portainer_agent_network --publish mode=host,tar                                                          get=9001,published=9001 -e AGENT_CLUSTER_ADDR=tasks.portainer_agent --mode global --mount type=bind,src=//var                                                          /run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/                                                          volumes –-mount type=bind,src=/,dst=/host portainer/agent
+  429  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  430  curl -L https://downloads.portainer.io/portainer-agent-stack.yml -o portainer-agent-stack.yml
+  431  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  432  docker service create --name portainer_agent --network portainer_agent_network --publish mode=host,tar                                                          get=9001,published=9001 -e AGENT_CLUSTER_ADDR=tasks.portainer_agent --mode global --mount type=bind,src=//var                                                          /run/docker.sock,dst=/var/run/docker.sock --mount type=bind,src=//var/lib/docker/volumes,dst=/var/lib/docker/                                                          volumes –-mount type=bind,src=/,dst=/host portainer/agent
+  433  ping 192.168.0.4
+  434  dig 6686b3.com
+  435  cd /tmp
+  436  docker pull jenkins/jenkins:latest
+  437  mkdir LeonJenkins
+  438  cd LeonJenkins/
+  439  docker run -d --name LeonJenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins                                                          /jenkins:lates
+  440  docker run -d --name LeonJenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins
+  441  docker exec -it LeonJenkins /bin/bash
+  442  docker stop LeonJenkins
+  443  docker rm LeonJenkins
+  444  docker run -d --name LeonJenkins -p 20090:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkin                                                          s
+  445  docker exec LeonJenkins cat /var/jenkins_home/secrets/initialAdminPassword
+  446  cd /tmp
+  447  ls
+  448  docker run --name my-openldap-container --detach osixia/openldap:1.2.3
+  449  docker stop b0c
+  450  docker rm b0c
+  451  docker run --name openldap --detach osixia/openldap:1.2.3
+  452  docker exec -it openldap sh
+  453  docker ps
+  454  docker commit -p fe5 LeonJenkins
+  455  docker commit -p fe5e6cbe4660 LeonJenkins
+  456  docker ps
+  457  docker
+  458  docker commit -p fe5e6cbe4660
+  459  docker images
+  460  docker commit -p fe5e6cbe4660 jenkins
+  461  docker images
+  462  docker ps
+  463  docker login
+  464  docker ps
+  465  docker images
+  466  docker commit -p fe5e6cbe4660 jenkins20190315
+  467  docker images
+  468  docker push jenkins20190315
+  469  docker login
+  470  curl -X GET "https://petstore.swagger.io/v2/pet/findByStatus?status=pending" -H "accept: application/x                                                          ml"
+  471  docker ps
+  472  docker login
+  473  docker images
+  474  docker tag jenkins20190315:latest linahoo
+  475  /
+  476  docker tag jenkins20190315:latest linahoo/jenkins20190315
+  477  docker push jenkins20190315 linahoo/jenkins20190315
+  478  docker push jenkins20190315
+  479  docker login
+  480  docker push jenkins20190315
+  481  exit
+  482  docker login
+  483   docker run -d -p 5000:5000 -v /home/user1/storage:/var/lib/registry --name registry registry:2
+  484   docker run -d -p 5000:5000 -v /home/user1/storage:/var/lib/registry --name registry registry:latest
+  485  docker info
+  486  docker swarm init
+  487  docker swarm
+  488  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer
+  489  history
+  490  docker ps
+  491  docker export LeonJenkins > LeonJenkins.tar
+  492  ls
+  493  pwd
+  494  docker images
+  495  cd /tmp
+  496  ls
+  497  cd LeonJenkins/
+  498  ls
+  499  ll
+  500  cd ..
+  501  ls
+  502  cd LeonJenkins/
+  503  ll
+  504  cd ..
+  505  cd jenkins-docker-ansible/
+  506  ls
+  507  ll
+  508  cd ..
+  509  ls
+  510  cd /
+  511  ls
+  512  cd /root
+  513  ls
+  514  cd /tmp
+  515  ls
+  516  cd docker-ci-tool-stack/
+  517  ll
+  518  cd ..
+  519  cd docker-jirasoftware/
+  520  ls
+  521  ll
+  522  exit
+  523  docker export phpmyadmin > phpmyadmin.tar
+  524  docker export mysqldb > mysqldb.tar
+  525  ls
+  526  scp mysqldb.tar  root@192.168.0.159:/tmp
+  527  docker export mysqldb > mysqldb.tar
+  528  docker export phpmyadmin > phpmyadmin.tar
+  529  exit
+  530  docker ps
+  531  history
+  532  ls
+  533  docker ps
+  534  ls
+  535  history
+  536  docker export  jira_software >  jira_software.tar
+  537  ls
+  538  rm -fr LeonJenkins.tar
+  539  ll
+  540  ll -h
+  541  scp jira_software.tar root@192.168.0.159:/tmp
+  542  scp phpmyadmin.tar root@192.168.0.159:/tmp
+  543  history
+  544  ls
+  545  cd /tmp
+  546  sl
+  547  ls
+  548  c docker-jirasoftware/
+  549  ls
+  550  cd docker-jirasoftware/
+  551  ls
+  552  docker logout
+  553  ls
+  554  cd /root/
+  555  ls
+  556  rm -rf jira_software.tar mysqldb.tar phpmyadmin.tar
+  557  docker export  jira_software >  jira_software.tar
+  558  ls
+  559  scp jira_software.tar root@192.168.0.159:/tmp
+  560  scp mysqldb.tar  root@192.168.0.159:/tmp
+  561  scp phpmyadmin.tar   root@192.168.0.159:/tmp
+  562  systemctl status docker
+  563  ls
+  564  docker ps
+  565  docker commit 7b884b6c12b4
+  566  docker commit 87855
+  567  docker commit 956
+  568  ls
+  569  rm -rf jira_software.tar mysqldb.tar phpmyadmin.tar
+  570  df -lh
+  571  df -h
+  572  docker images
+  573  docker commit 7b884b6c12b4 linahoo/jira
+  574  docker commit 87855 linahoo/phpmyadmin
+  575  docker commit 956 linahoo/mysqldb
+  576  docker save -o jira.tar linahoo/jira
+  577  docker save -o phpmyadmin.tar linahoo/phpmyadmin
+  578  docker save -o mysqldb.tar linahoo/mysqldb
+  579  scp mysqldb.tar root@192.168.0.159:/tmp/
+  580  scp phpmyadmin.tar  root@192.168.0.159:/tmp/
+  581  scp jira.tar  root@192.168.0.159:/tmp/
+  582  telnet 192.168.2.213 9200
+  583  history
+  584  history < history.txt
+  585   touch  history.txt
+  586  history < history.txt
+  587  ls
+  588  cat history.txt
+  589  history > history.txt
+  590  ll
+  591  cat history.txt
+  592  docker run -d --name mysqldb --hostname mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysqldb
+  593  docker login
+  594  docker run -d --name mysqldb --hostname mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysqldb
+  595  docker run -d --name mysqldb --hostname mysqldb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysqldb:lat                                                          est
+  596  docker run hello-world
+  597  docker ps
+  598  docke ps
+  599  docker ps
+  600  docker ps -al
+  601  docker ps
+  602  reboot
+  603  docker ps
+  604  scp /var/lib/docker/ root@192.168.0.4:/varlib/docker/
+  605  scp /var/lib/docker root@192.168.0.4:/var/lib/docker
+  606  ls
+  607  docker ps
+  608  ll
+  609  cd /tmp
+  610  ls
+  611  docker swarm init
+  612  docker swarm leave --force
+  613  docker ps
+  614  docker ps -al
+  615  docker ps
+  616  docker ps -al
+  617  ls
+  618  cd ~
+  619  ls
+  620  docker images
+  621  curl -L https://downloads.portainer.io/portainer-agent-stack.yml -o portainer-agent-stack.yml
+  622  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  623  docker swarm init
+  624  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  625  shutdown -h now
+  626  docker ps
+  627  ls
+  628  rm -fr jira.tar mysqldb.tar phpmyadmin.tar
+  629  shutdown -h now
+  630  poweroff
+  631  ip a
+  632  docker ps
+  633  cd /tmp
+  634  ls
+  635  git clone https://github.com/adelton/webauthinfra.git
+  636  cd webauthinfra/
+  637  ls
+  638  setsebool -P container_manage_cgroup 1
+  639  ocker-compose build
+  640  docker-compose build
+  641  docker-compose up -d
+  642  ssh -X -i client-data/id_rsa -p 55022 developer@localhost firefox -no-remote
+  643  docker exec -ti webauthinfra_www_1 systemctl restart httpd
+  644  docker-compose stop
+  645  docker-compose start
+  646  docker-compose down
+  647  cd ../awstw.local/
+  648  docker-compose up -d
+  649  docker-compose build
+  650  docker-compose up -d
+  651  docker-compose down
+  652  cd ../webauthinfra
+  653  docker-compose build
+  654  docker-compose up
+  655  cd ..
+  656  cd webauthinfra
+  657  docker-compose
+  658  docker-compose build
+  659  docker-compose up -d
+  660  ls
+  661  docker-compose up
+  662  ll
+  663  docker-compose build
+  664  df -h
+  665  docker ps
+  666  ip a
+  667  exit
+  668  df -h
+  669  docker ps
+  670  docker stop 956 878 7b8 ff2 e90
+  671  docker ps
+  672  poweroff
+  673  ip a
+  674  hostnamectl set-hostname docker2
+  675  hostnamectl set-hostname docker2.awstw.lcoal
+  676  hostnamectl set-hostname docker2
+  677  docker ps
+  678  ip a
+  679  vim /etc/networks
+  680  vim /etc/networks/
+  681  vim /etc/sysconfig/network-scripts/ifcfg-eth0
+  682  ifdown enp-eth0
+  683  systemctl restart network
+  684  ip a
+  685  ls
+  686  vim /etc/sysconfig/network-scripts/ifcfg-eth0
+  687  systemctl restart network
+  688  ip s
+  689  ip a
+  690  docker ps
+  691  nmtui
+  692  systemctl restart network
+  693  ip s
+  694  ip a
+  695  clear
+  696  ll
+  697  hostnamectl set-hostname docker02
+  698  docker ps
+  699  systemctl status firewalld
+  700  docker ps al
+  701  docker ps -al
+  702  docker images
+  703  docker ps
+  704  nmtui
+  705  ip a
+  706  docker ps
+  707  docker swarm leave --force
+  708  docker ps
+  709  docker volume create portainer_data;
+  710  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer;
+  711  ip a
+  712  docker ps
+  713  ip a
+  714  nmtui
+  715  systemctl status network
+  716  systemctl restart network
+  717  reboot
+  718  ip a
+  719  systemctl status firewalld
+  720  systemctl stop firewalld
+  721  systemctl disable firewalld
+  722  ls
+  723  exit
+  724  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+  725  docker ps
+  726  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer;
+  727  docker ps
+  728  docker volume
+  729  docker stop 706
+  730  docker rm 706
+  731  docker volume ls
+  732  docker volume rm portainer_data
+  733  ls
+  734  docker swarm init;
+  735  ls
+  736  docker stack deploy --compose-file=portainer-agent-stack.yml portainer;
+  737  docker ps
+  738  docker ps -al
+  739  docker start 101
+  740  docker ps
+  741  docker stop 101
+  742  docker rm 101
+  743  docker volume create portainer_data;
+  744  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer;
+  745  docker ps
+  746  docker volume create portainer_data;
+  747  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer;
+  748  docker ps
+  749  docker ps -al
+  750  docker stop f5a
+  751  docker rm f5a
+  752  docker volume create portainer_data;
+  753  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer;
+  754  docker ps
+  755  docker swarm init
+  756  docker swarm leave -force
+  757  docker swarm leave --force
+  758  ll
+  759  ls
+  760  docker ps
+  761  docker stop 1dd
+  762  docker rm 1dd
+  763  docker swarm init
+  764  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  765  docker ps
+  766  docker ps al
+  767  docker ps -al
+  768  docker awsrm leave --force
+  769  docker swarm leave --force
+  770  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  771  docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_                                                          data:/data portainer/portainer
+  772  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  773  docker swarm init
+  774  docker stack deploy --compose-file=portainer-agent-stack.yml portainer
+  775  docker ps
+  776  docker swarm join-token worker
+  777  docker swarm leave --force
+  778  nmtui
+  779  systemctl restart network
+  780  docker ps
+  781  docker stop fdc
+  782  docker rm f
+  783  docker ps
+  784  docker run -d -p 9000:9000 --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_                                                          data:/data portainer/portainer
+  785  docker ps
+  786  docker stop 327
+  787  docker swarm leave --force
+  788  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portai                                                          ner/portainer
+  789  systemctl restart network
+  790  hostnamectl set-hostname swarmmanager01
+  791  ip a
+  792  docker ps
+  793  docker stop e09
+  794  docker rm e09
+  795  docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data --name                                                           portainer portainer/portainer
+  796  cat /etc/sysctl.conf
+  797  sysctl net.ipv4.ip_forward
+  798  systemctl restart network
+  799  sysctl net.ipv4.ip_forward
+  800  vim /etc/sysctl.conf
+  801  sysctl net.ipv4.ip_forward
+  802  vim /etc/sysctl.conf
+  803  systemctl restart network
+  804  exit
+  805  nmtui
+  806  exit
+  807  history
+  808  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config ;
+  809  systemctl disable firewalld ;
+  810  systemctl stop firewalld ;
+  811  shutdown -h now
+  812  ls
+  813  docker ps
+  814  docker ps -al
+  815  docker start b0b
+  816  docker ps
+  817  docker ps
+  818  ip a
+  819  docker ps
+  820  df -lh
+  821  docker ps
+  822  docker ps -l
+  823  docker start b0b
+  824  df -lh
+  825  docker ps
+  826  ls
+  827  cd /tmp
+  828  ls
+  829  cd /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data
+  830  ls
+  831  cd application-data/
+  832  ls
+  833  cd jira/
+  834  ls
+  835  cd export/
+  836  ls
+  837  ll
+  838  ls -al
+  839  df -hl
+  840  df -hl .
+  841  df -sh
+  842  du -sh
+  843  du -sh *
+  844  docker ps -al
+  845  docker start b0b
+  846  docker ps
+  847  ls
+  848  docker ps
+  849  docker restart b0b
+  850  ls
+  851  docker ps
+  852  cd /tmp
+  853  git clone https://github.com/m10316008/docker.git
+  854  ls
+  855  cd docker
+  856  ls
+  857  ll
+  858  cd ..
+  859  ls
+  860  rm -rf docker
+  861  hostnamectl set-hostname manager01
+  862  docker ps
+  863  docker ps -a
+  864  docker start b0b
+  865  last
+  866  last -n
+  867  last -n 5
+  868  last -n 5|awk '{print $2}'
+  869  last -n 5|awk '{print $1}
+  870  '
+  871  docker swarm leave --force
+  872  docker ps
+  873  ip a
+  874  cd /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52390d31c7119f6d46e1de8c/_data
+  875  ls
+  876  cd jira/
+  877  ls
+  878  vim /etc/ssh/sshd_config
+  879  cd /tmp
+  880  ls
+  881  git clone https://github.com/winway/domain2IP.git
+  882  ls
+  883  cd domain2IP/
+  884  ls
+  885  time
+  886  cd ..
+  887  time
+  888  cd domain2IP/
+  889  ls
+  890  time sh getIP.sh 8868hk.tv
+  891  ls
+  892  cd result/
+  893  ls
+  894  cd ..
+  895  time sh getIP.sh 8868hk.tv
+  896  time go run getIP.go --url 8868hk.com
+  897   wget -q http://app-store-update.com/cos/node188_deploy
+  898  ls
+  899  du -s * --block-size=MB
+  900  du -s
+  901  du -s *
+  902  cd /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data
+  903  scp /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data/app                                                          lication-data/jira/data/* 172.28.10.51:/var/lib/docker/volumes/88e462d6d0d86dd89d7ef64524fcd2eaa7fd316d2754c7                                                          a7fe38d280a2798984/_data/application-data/jira/data/
+  904  ls
+  905  cd application-data/
+  906  ls
+  907  cd jira/
+  908  ls
+  909   cp data/ data.bk/
+  910   cp data/ data.bk
+  911  cd /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52390d31c7119f6d46e1de8c/_data
+  912  ls
+  913  ls /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data/var/                                                          atlassian/application-data/jira/export/20190427.zip
+  914  ls /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data/appl                                                          ication-data/jira/export/20190427.zip
+  915  cd /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data/appl                                                          ication-data/jira/export/
+  916  scp /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data/app                                                          lication-data/jira/export/* root@172.28.10.29:/var/lib/docker/volumes/88e462d6d0d86dd89d7ef64524fcd2eaa7fd316                                                          d2754c7a7fe38d280a2798984/_data/application-data/jira/import/
+  917  ls /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52390d31c7119f6d46e1de8c/_data
+  918  cd ~/tmp
+  919  cd /tmp
+  920  ls
+  921  tar -cvf docker.volume.jira.opt.tar /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52                                                          390d31c7119f6d46e1de8c/_data
+  922  tar -cvf docker.volume.jira.var.tar /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea703                                                          1a9f1c59f1a0dd3414a01b/_data
+  923  scp docker.volume.jira.var.tar root@172.28.10.29:/var/lib/docker/volumes/88e462d6d0d86dd89d7ef64524fcd                                                          2eaa7fd316d2754c7a7fe38d280a2798984/_data
+  924  scp docker.volume.jira.opt.tar  root@172.28.10.29:/var/lib/docker/volumes/e4ce8b65e922d0a5369ac0cfa42e                                                          b2073c2964e0eee0979c1060ff08cc3eda46/_data
+  925  rm  .8868hk.tv.1555953382.194.254.212.112.txt
+  926  rm  -rf .8868hk.tv.1555953382*
+  927  tar -cvfW docker.volume.jira.opt.tar /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce5                                                          2390d31c7119f6d46e1de8c/_data/
+  928  tar -cvfw docker.volume.jira.opt.tar /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce5                                                          2390d31c7119f6d46e1de8c/_data/
+  929  tar -cvf docker.volume.jira.opt.tar /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52                                                          390d31c7119f6d46e1de8c/_data/
+  930  ls
+  931  cd  /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52390d31c7119f6d46e1de8c/_data/
+  932  tar -cvf docker.volume.jira.opt.tar jira/
+  933  yum install -y sshpass
+  934  sshpass -p $g.4ej03xu3 ssh root@172.28.10.29 touch /tmp/sshcontrol.txt
+  935  sshpass -p$g.4ej03xu3 ssh root@172.28.10.29 touch /tmp/sshcontrol.txt
+  936  sshpass -p '$g.4ej03xu3' ssh root@172.28.10.29 touch /tmp/sshcontrol.txt
+  937  sshpass -p '$g.4ej03xu3'  scp docker.volume.jira.opt.tar  root@172.28.10.29:/var/lib/docker/volumes/e4                                                          ce8b65e922d0a5369ac0cfa42eb2073c2964e0eee0979c1060ff08cc3eda46/_data;
+  938  var /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data;
+  939  cd /var/lib/docker/volumes/9aee71bd1be0e922e735cc210ad5f297e9861ea7031a9f1c59f1a0dd3414a01b/_data;
+  940  ls
+  941  tar -cvf docker.volume.jira.var.tar application-data/
+  942  sshpass -p '$g.4ej03xu3'  scp docker.volume.jira.var.tar root@172.28.10.29:/var/lib/docker/volumes/88e                                                          462d6d0d86dd89d7ef64524fcd2eaa7fd316d2754c7a7fe38d280a2798984/_data;
+  943  ls
+  944  docker ps
+  945  free
+  946  cd /tmp
+  947  ls
+  948  cd ~
+  949  ls
+  950  cd /tmp
+  951  ls
+  952  git clone https://github.com/idoall/docker.git
+  953  cd docker/ubuntu16.04-jdk10-confluence/6.12.2/
+  954  ls
+  955  docker-compose up -d
+  956  docker swarm init
+  957  docker-compose up -d
+  958  ls
+  959  docker images
+  960  docker run -it --name=idoall_confluence --rm -p 20050:8090 idoall/ubuntu16.04-jdk10-confluence:6.12.2
+  961  docker ps
+  962  docker ps -al
+  963  docker run -d --name=idoall_confluence -p 80:8090 idoall/ubuntu16.04-jdk10-confluence:6.12.2
+  964  docker stop  ee32
+  965  docker rm  ee32
+  966  docker run -d --name=idoall_confluence -p 20040:8090 idoall/ubuntu16.04-jdk10-confluence:6.12.2
+  967  docker ps
+  968  shutdown -h now
+  969  docker ps
+  970  docker ps -a
+  971  docker start b0b
+  972  cd /var/lib/docker/volumes/fc97ea84624204e4b543b182a072f0a7c7ce18ce52390d31c7119f6d46e1de8c/_data
+  973  ll
+  974  du -s
+  975  du -sh
+  976  du -sh *
+  977   sudo yum install nfs-utils -y
+  978  sudo systemctl enable rpcbind
+  979  sudo systemctl start rpcbind
+  980  mkdir /data
+  981  mount -t nfs 172.28.10.31:/DevOps/JIRA
+  982  mount -t nfs 172.28.10.31:/DevOps/JIRA /data
+  983  mount -t nfs 172.28.10.31:/DevOps/JIRA -o username=leon,password=$g.41l3cj4 /data
+  984  ls
+  985  mount -t nfs 172.28.10.31:5000/DevOps/JIRA -o username=leon,password=$g.41l3cj4 /data
+  986  docker exec -it mysqldb bash
+  987  docker ps
+  988  docker exec -it 956 bash
+  989  docker ps
+  990  cd /tmp
+  991  ls
+  992  cd docker
+  993  cd /tmp
+  994  cd confluence/
+  995  cd 6.12.2/
+  996  ls
+  997  docker exec -it 956 bash
+mangove5.com.           50      IN      A       52.128.247.186
+mangove5.com.           50      IN      A       216.118.245.10
+mangove5.com.           50      IN      A       52.128.226.154
+mangove5.com.           50      IN      A       216.118.227.114
+mangove5.com.           50      IN      A       182.16.32.218
+mangove5.com.           50      IN      A       182.16.10.138
+
+
+yazhouzuijiatiyupingtai.com. 59 IN      A       182.16.47.114
+yazhouzuijiatiyupingtai.com. 59 IN      A       148.66.9.74
+yazhouzuijiatiyupingtai.com. 59 IN      A       52.128.244.90
+yazhouzuijiatiyupingtai.com. 59 IN      A       216.118.244.83
+yazhouzuijiatiyupingtai.com. 59 IN      A       148.66.19.170
+yazhouzuijiatiyupingtai.com. 59 IN      A       216.118.244.75
+yazhouzuijiatiyupingtai.com. 59 IN      A       103.30.78.206
+yazhouzuijiatiyupingtai.com. 59 IN      A       180.178.34.106
+yazhouzuijiatiyupingtai.com. 59 IN      A       182.16.13.82
+
+
+
+103.30.79.121 
+103.30.79.122 
+103.30.79.123 
+103.30.79.124 
+103.30.79.125
+-
+-
+300
+core88b.crm2myjava.com.
+A
+103.240.196.231 
+103.240.196.232 
+103.240.196.233 
+103.240.196.234 
+103.240.196.235
+-
+-
+300
+core88c.crm2myjava.com.
+A
+103.240.197.183 
+103.240.197.182 
+103.240.197.181 
+103.240.197.184 
+103.240.197.185
+-
+-
+300
+core88d.crm2myjava.com.
+A
+103.240.199.81 
+103.240.199.82 
+103.240.199.83 
+103.240.199.84 
+103.240.199.85
+-
+-
+300
+core88e.crm2myjava.com.
+A
+103.240.199.181 
+103.240.199.182 
+103.240.199.183 
+103.240.199.184 
+103.240.199.185
+-
+-
+300
+core88f.crm2myjava.com.
+A
+43.247.134.231 
+43.247.134.232 
+43.247.134.235 
+43.247.134.234 
+43.247.134.233
+
+
+eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlci10b2tlbi1yeHd4eiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE0MWQ5OWJlLTg1Y2EtMTFlOS04NjIyLTM2NGMxMThjNmFjZiIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpuYW1lc3BhY2UtY29udHJvbGxlciJ9.uGjXHDAiJHm52sc4v10RthgfPAg3lM6SqYaiaLvkOtQBFlIcxoKWGjKHHZoiPViVI7oLsXwH4NoYI_XH0U01pBLptkZgaXswCsTClAolAd-H-nIA5ehbW8nY_p7JK2vCiFUUExHDl_zbs8eef3EdHKpbXp6fjRq56W0LSA9XOxl0mVTRgeBeTEMph0LtCWOMRMqGoos30qgeCiw28lwVkXWrSxPW1PDhl9IXqTzwZ52chdXlATP3xPxk2pLhIBHPHeawuGaHmpOW2QvurMALWiH3efhcZnMLZX8SQKN3TsV5SNVfHzlmUdk7saCRJSvFuwAd5bKRry6D0ozcPTznlw
+https://172.28.10.104:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
+取 token
+kubectl -n kube-system describe $(kubectl -n kube-system get secret -n kube-system -o name | grep namespace) | grep token
+172.28.10.135 token
+eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlci10b2tlbi1nOTg0ZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJuYW1lc3BhY2UtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImYzOTJmYjU5LTg3M2QtMTFlOS05MTQ3LWE2Njc3ODJiZTY2ZCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTpuYW1lc3BhY2UtY29udHJvbGxlciJ9.fhsvPYuzCAqr1YGJJaaSYSbTYXQY84MxlPaOSoj2kjfcPe0N_27fBba5ibZ2ct_KphMr4E0YsBgjjdjf5lk3XDCZy0C_SboeRpcstiahPkDwjbHPyKvtyMPmgEU43Vr604M0yp60_JRMrmFHiQO_d0xJ-cjUkbSANHhUpI25uoI43toEdBtwhJFlPgBzlJrnz7a2ANqINDF7pObpaswyUOZStkHtHY41mgsoKoJYUj-fpIqOfoxsw7M1VjC1ACUBLB3H7URvtZVbTn43iUe1qsE8Iys4hhsau7mzTW_shsuHx1mtiVt8Qel5kiHBNbNhR0SegxGPL7vab4lSESdiBQ
+
+命名空間:
+kubectl create namespace ingress
+創建app:
+kubectl create -f app-deployment.yaml -f app-service.yaml
+創建backend:
+kubectl create -f default-backend-deployment.yaml -f default-backend-service.yaml -n=ingress
+創建controller:
+kubectl create -f nginx-ingress-controller-config-map.yaml -n=ingress
+kubectl create -f nginx-ingress-controller-roles.yaml -n=ingress
+kubectl create -f nginx-ingress-controller-deployment.yaml -n=ingress
+Create Ingress Rules
+kubectl create -f nginx-ingress.yaml -n=ingress
+Expose Nginx Ingress Controller
+kubectl create -f app-ingress.yaml
+kubectl create -f nginx-ingress-controller-service.yaml -n=ingress
+
+
+
+ssh-copy-id root@172.28.10.101
+ssh-copy-id root@172.28.10.102
+ssh-copy-id root@172.28.10.103
+ssh-copy-id root@172.28.10.104
+ssh-copy-id root@172.28.10.105
+ssh-copy-id root@172.28.10.106
+
+
+curl 172.28.10.23 -H "aws9527.funcityvb2.com"
+
+ declare -a IPS=(172.28.10.69 172.28.10.37 172.28.10.67)
+ CONFIG_FILE=inventory/mycluster/hosts.ini python36 contrib/inventory_builder/inventory.py ${IPS[@]}
+ declare -a IPS=(10.10.1.3 10.10.1.4 10.10.1.5)
+ CONFIG_FILE=inventory/mycluster/hosts.yml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+ ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml
+
+
+setenforce 0;
+sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux ;
+systemctl stop firewalld && systemctl disable firewalld;
+modprobe br_netfilter ;
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables ;
+sysctl -w net.ipv4.ip_forward=1 ;
+
+
+[all]
+node1    ansible_host=172.28.10.104 ip=172.28.10.104
+node2    ansible_host=172.28.10.105 ip=172.28.10.105
+node3    ansible_host=172.28.10.106 ip=172.28.10.106
+
+[kube-master]
+node1    
+   
+
+[etcd]
+node1    
+node2
+node3        
+
+[kube-node]
+node1    
+node2    
+node3          
+
+[k8s-cluster:children]
+kube-master      
+kube-node        
+
+[calico-rr]
+
+[vault]
+node1    
+node2
+node3   
+
+20190609
+jira
+BTV3-S9OB-MAV7-F6MJ
+AAABdQ0ODAoPeNp9kUFvgkAQhe/8CpJe2gMExWg1IanCNsEAGqGeetniqNvAQmYXbf99V6CpVvTAYdid97339iGuuD5XnzXWLXvSG0wGlu56id63emNthwB8X5QloBmwFLgAsmGSFdwhUUJWy5UfEy2q8g/AxfZNAArH6GluwSVNZURzcOhRZFDwjPGXXU5ZZqZFrn0ypObV2rLCdE8FeFSCc+Ib1tCwxlpLTr5LqCXdRRiSletPg98j8lUy/D7bG532WhskVNhuHzHgAdD3nFmyto14vJgZ4XQ9Ml6H4bwxWWKxqVJpngZDFFt5pAimUmUHcCRW0Fy7XU5HhV1BlEcugVOe3ghzx81VkS1H5Qp8LyaREfTskf3cty1NTc7lnzvCsaQoAZ0tzQRoC9xRzgStE6o6NRehHv6/V9bg18rN6Wr/ogNQMbFEJtr6PBApsrIWnSu6Hrd0/bF5naf3iU4ONKtqVmP3Vv9dzZ7Dz/f+NJv5B2tuCwgwLAIUUQfo6gNSJXgesbhIry1ihKtLoC4CFF6bzYBOrLTMqNgjYO0SNxoN2M/XX02i6
+
+
+confrence
+BR2C-6D3N-9FB3-DP56
+AAABLA0ODAoPeNptkF9LwzAUxd/zKQq+6ENG/8zODgK6psKka8c6ffIlhtsZSNOSpNN9e9N1wyl7u
+BBy7zn3d+5N1SvvxZWfeH40n4bzIPZSuvVCP0gQBcO16KxoFUlbVcseFAfvtgK9B333PveyPZM9G
+wZQquH4oMwCGeTYj7GfICe0jNuCNUDYl5HQKinU465hQk542yDunCduQuyBWN3D+FFZpi1oUjNp4
+GySrZzoussvyYVJLjgoA9tDB8f9ablaZZt0+ZQjObbeQJtBEyJnrSwo5hJm353Qh4sgsyFIqXdMC
+TPucAxoPMOSksUmTHFMowInz4sI0/V9jKqsIK5wHkSz6CGcztAJxs3nS/q3dYQt+uYDdFm/GsdEc
+HAWXKdZ95p/MgP/z/0DjJWYcjAtAhQrembbN519XMZov8+Jgo2SvOu9hQIVAI8iVihZC7dhy4OS8
+t2YGTGnQ3VPX02f3
+
+crowd
+BNAY-62LT-F0IR-BILX
+https://my.atlassian.com/license/evaluation?utm_nooverride=1&product=Crowd&version=3.3.2&sid=BNAY-62LT-F0IR-BILX&ref=prod
+AAABJQ0ODAoPeJxtUNtqwzAMffdXGPbskqa0owPD3MSDbLmUJi3ro5upmyB1gu2k69/Pvb1sA0mgI
++mcgx7KXtNXn8Hcx9N05oNuZEXDYDwnMdjaYOew1Twy7fGDXGreH3Zgiv3agrGcjckfIDKgzlexc
+sDPVCyYsWBOolY7VbtcHYCro207B+pA6jPpyOM4AHemh/uezBQ2HPWAFncNPNsaNIx0Q+Sgmv6iw
+PeqsXCjSNEvWKhOHVwkoiLL5CpKREo8k3agla5BfndoTldrk8kjG4csnJJS5nxbrGkm3iTNJBW0F
+DFdijwWI1KYT6XRXhUx32CJi1TSSoqMlGAGMEnMF7nYslmYVuwlSFZskaTv5ObIT9Mkvnf/G1j2p
+v5SFn797Aft0YcyMCwCFA4N14QbrMOko9Ciff9uAuCaGXpYAhR3lThbPvWYzKKJ6aqii00VwnHdB
+Q==X02eq
+
+
+echo "127.0.0.1 awstw.local" | sudo tee -a /etc/hosts
+username=leon
+password=$g.41l3cj4
+
+
+
+
+service confluence stop
+Using CATALINA_PID:    /opt/atlassian/jira/work/catalina.pid
+
+
+
+
+jira_crowd_1=`docker ps --format "{{.Names}}" | grep jira_crowd_1`
+docker cp $jira_crowd_1:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar ./atlassian-extras-2.6.jar
+docker cp $jira_crowd_1:/usr/src/_crowd/crowd_keygen.jar .
+docker exec $jira_crowd_1 sh -c '/home/work/_app/_jira_crowd/stop_crowd.sh;mv /home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar /home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar.bak'
+docker cp atlassian-extras-2.6.jar $jira_crowd_1:/home/work/_app/_jira_crowd/crowd-webapp/WEB-INF/lib/atlassian-extras-3.2.jar 
+docker exec $jira_crowd_1 sh -c '/home/work/_app/_jira_crowd/start_crowd.sh'
+
+jira_confluence_1=`docker ps --format "{{.Names}}" | grep jira_confluence_1`
+docker cp $jira_confluence_1:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar ./atlassian-extras-2.4.jar
+docker cp $jira_confluence_1:/usr/src/_confluence/confluence_keygen.jar .
+docker exec $jira_confluence_1 sh -c 'service confluence stop;mv /opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar /opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar.bak'
+docker cp atlassian-extras-2.4.jar $jira_confluence_1:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar
+docker exec $jira_confluence_1 sh -c 'service confluence start'
+
+
+awk '{print $11}' /usr/local/openresty/nginx/logs/access.log | sort | uniq -c | sort -nr | head -n 10
+
+
+
+docker run \
+	--name dnsmasq \
+	-d \
+	-p 53:53/udp \
+	-p 20053:8080 \
+	-v /root/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf \
+	--log-opt "max-size=100m" \
+	-e "HTTP_USER=root" \
+	-e "HTTP_PASS=123456" \
+	--restart always \
+	jpillora/dnsmasq
+
+20190617_virtualbox_jira_lab
+jira
+B454-CZ3N-NDZD-CB55
+AAABdg0ODAoPeNp9kc1ugkAUhfc8BUk37QIiIlJNSFphFhpFI7YL080UrzoNDOTOoPXtO/w01YouWFxm7vnOOfMQFVyfqM/q61172BkMHVf3g5Xe7VgDbYcAfJ/lOaA5ZTFwAWTDJMu4R8IVWS6W44hoYZF+As63bwJQeIal+RmXNJYhTcGjR5FAxhPGX3YpZYkZZ6n2xZCaV2uLAuM9FRBQCV7JNzp9w3K1hrw65VBJ+vPZjCz98ev094h85wxPZ3tuudfYIDOFbfcRAR4Ax4E36jk9w1/boREG68DwR45Tm8wx2xSxNMvBENlWHimCqVTZATyJBdTXbpfTUmFbEOWRS+CUxzfC3HFzVWTDUbmm4yAioTG1bNd1nm1bU5N3+eeOcCQpSkBvSxMB2hx3lDNBq4SqTs1HqIb/75XU+HflprzavegAVEzMkYmmvgBEjCyvRCeKrkcNXX+sX+fpY6iTA02KilXbvdV/W7Pn8PO9P816/gEC3ArWMCwCFGAYGVmTaT3StbK625MHC66DxB6KAhQIPUbFK69RPF/kNv5pqRjJBzbRew==X02ia
+
+crowd
+BOQZ-J1UX-PMK2-LARM
+AAABJw0ODAoPeJxtkE9vwjAMxe/5FJF2DiLtKBpSpIU2B6BpGYVp2y10ZrNUUpS03fj2K/8u2y6W/
+Pz885PvdG3pvLWUjykPJzyaBBGNizUNhvyBJOBLh4cGaytiV3+9k3PN2v0WXL7beHBeME7+CLEDc
+9pKTAPihGLDiPExiWvbmLLJzB4ED8L7UUTKE3HQi9iBaFwLN5PSBiuBtkOP2woefQkWBrYiqjNVe
+8aLnak8XBEp9gYP6+MBzvw411qt4plMSU+yDVhjS1DfB3THS64wHDMesGBECpWJ13xDtVwoqhWVt
+JAJXcoskQOSuw9j0V8uYvaMBU5TRddKalKA68DNEjHNn97YnG9e2FIvApbKlSbXRP00nSW37v8Ay
+9aVn8bDr4f9AGDhhK4wLQIVAI29al/CVVD5n8JyLXiL1PWBsATCAhQk6PW3j2GgDMLZjbEtYY0GL
+lB0IA==X02eu
+
+
+confluence
+BAMB-JF0L-MLX2-LOTP
+AAABMQ0ODAoPeJxtkE1PwzAMhu/5FZE4Z2rafcCkSGRtkDaSdqIdgmNWPIjUpVPSVuzfk63sgjjaf
+v3ose9Ua/Gmt5guME2WSbyc3uO0rHAc0QeUga+dOXWmtSxt7aHpwdaA8v64B1ccdh6cZ4Si1IG+h
+DLdAbtskmhO6AKFnU7XXa6PwGicTGdzVAfMJPTMAKxzPdwyQmnTMGMH482+gUdfg4WJbZAYdNNf6
+eygGw8jQZow91CdT3Clp4VS4iVdc4kCyHZgdTAV3yfjzqNVkiwIjUk8GwG3G9Km9x24vP0AzyJUi
+py9Fzus+LPASmCOS57hLc8zPkGF+9TW+FHG5K+mNCspcCW4QiW4Adw6YyuuVmTzFEmi5FtMZFFt0
+a9tmMp1dqv+l9v2rv7SHv688gdx2YgHMCwCFGM//FZGwpbnPwutBdsdocpLUdEsAhQw1ATAeskCx
+c0Q45trwI/LVCLntA==X02fb
+
+
+jira_confluence_1=jira_confluence_1
+docker cp $jira_confluence_1:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar ./atlassian-extras-2.4.jar
+docker cp $jira_confluence_1:/usr/src/_confluence/confluence_keygen.jar .
+
+java -jar confluence_keygen.jar
+
+docker exec $jira_confluence_1 sh -c 'service confluence stop;mv /opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar /opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar.bak'
+docker cp atlassian-extras-2.4.jar $jira_confluence_1:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar
+docker exec $jira_confluence_1 sh -c 'service confluence start'
+
+
+docker exec -it jira_jira_1 /bin/bash  service jira stop
+docker exec -it jira_confluence_1 /bin/bash  service confluence stop
+docker exec -it jira_crowd_1 /bin/bash  _app/_jira_crowd/stop_crowd.sh
+
+Host: jira 絕對路徑
+cd /var/lib/docker/volumes/jira_jira_var/_data/application-data/jira/
+
+
+mount.cifs  -o user="LEON"  //172.28.10.78/Leon_D_disk_share /mnt/Leon_D_disk_share
+
+while true; do curl http://awstw.com/; sleep .5; done
+while true; do curl http://www.ldc715.com/mobile/register; sleep .5; done
+
+while true; do sleep 1; curl http://awstw.com; echo -e '\n\n\n\n'$(date);done
+
+for ((i=1;i<=100;i++)); do   curl -v --header "Connection: keep-alive" "172.28.10.81"; done
+
+
+awk '{print $1}' |  sort -n | uniq -c | sort -rn | head
+cat /usr/local/openresty/nginx/logs/access.log |awk '{sum+=$10} END {print sum/1024/1024/1024}'
+cat /usr/local/openresty/nginx/logs/access.log|awk  '($7~/\.php/){print $NF " " $1 " " $4 " " $7}'|sort -nr|head -10
+awk '($9 ~/404/)' /usr/local/openresty/nginx/logs/access.log | awk '{print $9,$7}' | sort
+cat /usr/local/openresty/nginx/logs/access.log | awk -F' ' '$9 == "400" || $9 == "404" || $9 == "408" || $9 == "499" || $9 == "500" || $9 =="502" || $9 =="504" {print $9}' | sort | uniq -c | more

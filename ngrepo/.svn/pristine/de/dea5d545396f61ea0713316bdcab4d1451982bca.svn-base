@@ -1,0 +1,108 @@
+
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    real_ip_header X-Forwarded-For;
+    proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    include crm2_result188_loadbalance_setting.conf;
+
+    server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+
+
+		server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0000.conf;                                         
+
+        return 302 https://$host$request_uri;    
+    }
+	
+	
+    server {    ###### frontend ######
+        listen       80;
+        server_name
+                    1717h.net  www.1717h.net
+                    hh1717.co	www.hh1717.co;
+
+        include crm2_frontend.conf;
+    }
+
+		
+	server {    ###### frontend ######
+        listen       443 ssl;
+        server_name  1717h.net  www.1717h.net;
+
+        ssl_certificate     /etc/nginx/cert/1717h.net.crt; 
+        ssl_certificate_key /etc/nginx/cert/1717h.net.key;
+
+        include crm2_frontend.conf;
+    }   
+
+	
+	
+	server {    ###### frontend ######
+        listen       443 ssl;
+        server_name  1717hh.com  www.1717hh.com;
+
+        ssl_certificate     /etc/nginx/cert/1717hh.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/1717hh.com.key;
+
+		include crm2_frontend.conf;
+    }   
+	
+	
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name  hh1717.co  www.hh1717.co;
+
+        ssl_certificate     /etc/nginx/cert/hh1717.co.crt; 
+        ssl_certificate_key /etc/nginx/cert/hh1717.co.key;
+
+        include crm2_frontend.conf;
+    }   
+    include crm2_internal_deploy.conf;
+    include crm2_backend_setting.conf;
+	
+	
+
+
+	
+}

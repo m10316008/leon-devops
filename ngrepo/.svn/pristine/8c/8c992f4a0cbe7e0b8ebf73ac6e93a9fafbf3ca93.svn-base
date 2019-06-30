@@ -1,0 +1,132 @@
+#user  nobody;
+worker_processes  1;
+include crm2_country_geoip_ngx_a01.conf;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       crm2_country_geoip_ngx_a02.conf;
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+
+    keepalive_timeout  600;
+      # allow long time report handling
+
+	server_names_hash_max_size 131072;
+      # many domain names calculated by CPU cache size
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    include crm2_backend_setting.conf;
+    include crm2_result188_loadbalance_setting.conf;
+
+    server {    ###### redirect ######
+        listen    80;
+        server_name     
+                    8868hg.tv
+                    www.8868hg.tv;
+                    
+        return 302 https://$host$request_uri;
+    }
+
+    
+    server {    ###### frontend ######
+        listen    80;
+        server_name
+                    dk8868.com
+                    www.dk8868.com
+                    8868hh.me
+                    www.8868hh.me ;
+                    
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;     
+        server_name
+                    dk8868.com
+                    www.dk8868.com;
+                       
+        ssl_certificate     /etc/nginx/cert/dk8868.com.crt;
+        ssl_certificate_key /etc/nginx/cert/dk8868.com.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;     
+        server_name
+                    8868hg.tv
+                    www.8868hg.tv;
+                       
+        ssl_certificate     /etc/nginx/cert/8868hg.tv.crt;
+        ssl_certificate_key /etc/nginx/cert/8868hg.tv.key;
+
+        
+        include crm2_frontend.conf;
+    }
+
+    server { # new mobile
+        listen 80;
+        server_name
+                    hh55889.com www.hh55889.com
+                    hh55779.com www.hh55779.com
+                    hh55887.com www.hh55887.com;
+                    
+        include crm2_frontend_mobile.conf;
+    }
+
+	
+	
+
+	
+
+    server {    ###### admin and op ######
+        listen       80;
+        server_name
+                    hg8868netcom.com
+                    www.hg8868netcom.com;
+
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_admin_op.conf;
+    }
+    
+    
+    
+    server {    ###### pay ######
+         listen        80;
+         server_name
+                pay2.hfda245.cn
+                pay3.hfda245.cn
+                pay3.sda231.cn
+                pya121.zhifu8868.com
+                pya122.zhifu8868.com
+                pya123.zhifu8868.com
+                pya124.zhifu8868.com
+                pya125.zhifu8868.com
+                pya126.zhifu8868.com
+                pya127.zhifu8868.com
+                pya128.zhifu8868.com
+                pya129.zhifu8868.com
+                pya130.zhifu8868.com
+                pya131.zhifu8868.com;
+
+         include /etc/nginx/nginx_pay.conf;
+    }	
+	
+
+
+    include crm2_internal_deploy.conf;
+}

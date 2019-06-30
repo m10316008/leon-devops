@@ -1,0 +1,591 @@
+# this major version since 2018 01 03 
+#user  nobody;
+worker_processes  1;
+include crm2_country_geoip_ngx_a01.conf;
+
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       crm2_country_geoip_ngx_a02.conf;
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+
+    keepalive_timeout  600;
+      # allow long time report handling
+    
+	server_names_hash_max_size 131072;  
+      # many domain names calculated by CPU cache size
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+
+    include crm2_backend_setting.conf;
+    include crm2_result188_loadbalance_setting.conf;
+    
+    server {    ###### frontend ######
+        listen       80 default_server;
+        include crm2_frontend.conf;
+    }
+    
+    server { ## redirect ##
+        listen       80;
+        include nginx_redir_0001.conf;  
+    }
+  
+ 
+        
+    server {    ###### frontend ######
+        listen       443 ssl default_server;
+        ssl_certificate /etc/nginx/cert/self-signed/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/nginx/cert/self-signed/key/nginx-selfsigned.key;
+        
+        include crm2_frontend.conf;
+    }
+
+#    server {    ###### frontend ######
+#        listen       80;
+#        server_name 
+#                     h9393.net    www.h9393.net;
+#
+#        include crm2_frontend.conf;
+#    }    
+    
+    server {    ###### frontend ######
+        listen       80;
+        include nginx_fn_server_names_0001.conf;
+
+        include crm2_frontend.conf;
+    } 
+	
+    server {    ###### frontend ######
+        listen       80;
+        server_name daiqiaojc.com m.h9393.ag;
+
+        include crm2_frontend.conf;
+    } 
+	
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name  daiqiaojc.com;                    
+
+        ssl_certificate     /etc/nginx/cert/daiqiaojc.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/daiqiaojc.com.key;
+        #include crm2_ssl_setting.conf;
+
+        include crm2_frontend_world_testing.conf;
+    }
+
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name  m.h9393.ag;                    
+
+        ssl_certificate     /etc/nginx/cert/m.h9393.ag.free.crt; 
+        ssl_certificate_key /etc/nginx/cert/m.h9393.ag.free.key;
+        #include crm2_ssl_setting.conf;
+
+        include crm2_frontend_world_testing.conf;
+    }
+
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name                   
+                    ac9393.com    www.ac9393.com;
+                    
+
+        ssl_certificate     /etc/nginx/cert/ac9393.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/ac9393.com.key;
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend_world.conf;
+    }
+
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name
+                    ab9393.com    www.ab9393.com
+                    ac9393.com    www.ac9393.com
+                    ad9393.com    www.ad9393.com
+                    ae9393.com    www.ae9393.com
+                    af9393.com    www.af9393.com
+                    ah9393.com    www.ah9393.com
+                    ak9393.com    www.ak9393.com;
+
+        ssl_certificate     /etc/nginx/cert/ab9393.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/ab9393.com.key;
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend.conf;
+    }
+    
+	server {    ###### frontend ######
+        listen       443 ssl;
+        server_name               
+                    h939310.net	www.h939310.net
+                    h07072.net	www.h07072.net;
+
+        ssl_certificate     /etc/nginx/cert/h939310.net.crt; 
+        ssl_certificate_key /etc/nginx/cert/h939310.net.key;
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend.conf;
+    }
+	
+#    server {    ###### frontend ######
+#        listen       443 ssl;
+#        server_name h9393.net
+#                    www.h9393.net
+#                    *.h9393.net;
+#        ssl_certificate     /etc/nginx/cert/h9393.net.crt; 
+#        ssl_certificate_key /etc/nginx/cert/h9393.net.key;
+#        include crm2_ssl_setting.conf;
+#
+#        include crm2_frontend.conf;
+#    }
+
+    server {    ###### frontend ######
+        listen       443 ssl;
+        server_name h9393.la
+                    www.h9393.la;
+        ssl_certificate     /etc/nginx/cert/h9393.co.crt;  #notSameName
+        ssl_certificate_key /etc/nginx/cert/h9393.co.key;  #notSameName
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend.conf;
+    }
+    
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+	    server_name h9393.com.co 
+                    www.h9393.com.co;
+        ssl_certificate     /etc/nginx/cert/h9393.com.co.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.com.co.key; 
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+
+    }
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+	    server_name h9393.io
+		            www.h9393.io;
+        ssl_certificate     /etc/nginx/cert/9393hg.ag.crt; 
+        ssl_certificate_key /etc/nginx/cert/9393hg.ag.key; 
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.9393.world;
+        ssl_certificate     /etc/nginx/cert/9393.world.crt;
+        ssl_certificate_key /etc/nginx/cert/9393.world.key;
+        include crm2_ssl_setting.conf;
+       
+        include crm2_frontend.conf;    
+        
+    }
+    
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+
+        server_name    9393.world ;
+        ssl_certificate     /etc/nginx/cert/9393.world.crt;
+        ssl_certificate_key /etc/nginx/cert/9393.world.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+    
+    server {    ###### frontend ######
+        listen    443 ssl;     
+        server_name    h9393.in 
+                       www.h9393.in;
+        ssl_certificate     /etc/nginx/cert/h9393.in.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.in.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+ 
+    server {    ###### frontend ######
+        listen    443 ssl;     
+        server_name    hg07072.com 
+                       www.hg07072.com;
+        ssl_certificate     /etc/nginx/cert/hg07072.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg07072.com.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;     
+        server_name    hg939310.com 
+                       www.hg939310.com;
+        ssl_certificate     /etc/nginx/cert/hg939310.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg939310.com.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name   9393h.com.co www.9393h.com.co;  #problem
+        ssl_certificate     /etc/nginx/cert/9393h.com.co.crt;
+        ssl_certificate_key /etc/nginx/cert/9393h.com.co.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+    
+
+    
+
+    server {    ###### frontend ######
+        listen    80;
+	    server_name		               	
+               	a.zzz9393.com
+               	b.aaa9393.com
+               	a.aaa9393.com
+               	b.hhh9393.com
+               	182.16.118.46                	
+               	81150.com
+               	www.xnjrc.com                	
+               	769668.com 
+               	a.hhh9393.com                 	
+               	info.qqq9393.com
+               	b.zzz9393.com
+               	a.sss9393.com
+               	b.sss9393.com
+               	a.qqq9393.com
+               	b.qqq9393.com
+               	a.ddd9393.com
+               	b.ddd9393.com ;
+               	
+        include crm2_frontend.conf;
+    }	
+    
+	
+ 
+    server {    ###### admin and op ######
+        listen       80;
+		server_name p.h9393.biz
+					loto.c9393.top;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### admin and op ######
+        listen       443 ssl;
+		server_name 
+		            hg08877.com
+                    www.hg08877.com;
+
+        ssl_certificate     /etc/nginx/cert/hg08877.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/hg08877.com.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### admin and op ######
+        listen    443 ssl;
+
+        server_name     p.h9393.biz;
+        ssl_certificate     /etc/nginx/cert/h9393.biz.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.biz.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### agent ######
+        listen       80;
+        server_name  
+                    a.h9393.biz 
+		            agent.h9393.biz
+					hg6185.com;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_agent.conf;
+    }
+    
+
+
+	
+	
+	server {   ###### agent ######
+        listen       443 ssl;
+        server_name tt9393.com www.tt9393.com;
+		
+        ssl_certificate     /etc/nginx/cert/tt9393.com.crt;
+        ssl_certificate_key /etc/nginx/cert/tt9393.com.key;
+        include crm2_ssl_setting.conf;
+		
+		
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_agent.conf;
+    }
+
+	server {   ###### only moblie ######
+        listen       80;
+        server_name    
+						aa9393.com
+					www.aa9393.com
+						bb9393.com
+					www.bb9393.com
+						qq9393.com
+					www.qq9393.com
+						9393aa.com
+					www.9393aa.com;                 
+					
+        include crm2_frontend_apps.conf;
+    }
+	
+	server {   ###### moblie_apps ######
+        listen       80;
+        server_name    
+                        9393n.com
+                        www.9393n.com
+                        ios.9393n.com                        
+                        ios.9393m.com
+                        is.9393n.com
+                        m.9393m.com;       # ios                  
+		
+        include crm2_frontend_apps_ios_china.conf;
+    }
+
+    
+	server {   ###### moblie_apps ######
+        listen       80;
+        server_name 
+                apk.9393m.com        # android 
+                az.9393m.com;        # android    
+		
+        include crm2_frontend_apps_apk_china.conf;
+    }
+
+
+
+
+
+	server {   ###### moblie_apps ######
+        listen       443 ssl;
+        server_name 
+                1331437749bjl.9393m.com
+                1333071646bjl.9393m.com
+                *.9393m.com;
+		
+        ssl_certificate     /etc/nginx/cert/9393m.com.crt;
+        ssl_certificate_key /etc/nginx/cert/9393m.com.key;
+        include crm2_ssl_setting.conf;
+		
+        include crm2_frontend_apps_ios_china.conf;
+    }
+
+	server {   ###### app download page ######
+        listen       80;
+        server_name    hg9393app.com    www.hg9393app.com;
+		
+        location / {
+             root /usr/share/nginx/web/brand/web-space;
+             index index.html;
+        }
+    }
+    
+	server {  ## payment gateway ##
+		listen		80;
+        server_name  p.c9393.top; 
+                        # placeholder 只有補位作用，沒有實際作用
+		return 404;
+	}
+    
+    
+	    # pay port 80
+	    server {
+            listen        80;
+            server_name
+						pay.goodddms.com
+						pay.daiqiaojc.com
+						pay.tljdcs.cn
+						pay.pailidesm.com
+						pay.hejism.com
+						pay.syxkeji.com
+						pay.huangjianzp.com
+						pay.dqgood.com
+                        pay.dukarong.com
+                        pay.goodyws.com
+                        pay.haishengyin1.com
+                        pay.jhty53yt.cn
+                        pay.ppaqo.cn
+                        pay.pykj1.com
+                        pay.pzwjwLkj.com
+                        pay.shang27.com
+                        pay.shengtonggan.com
+                        pay.txjc1.com
+                        pay.yangwen1.com
+                        pay3.pykj1.com
+                        pay4.pykj1.com
+                        yy9393.com
+                        pay.fengshousm.com;
+
+            include /etc/nginx/nginx_pay.conf;
+        }
+
+        ##9393 app promotion page
+        server{
+            listen 80;
+            server_name app9393.com www.app9393.com;
+            include crm2_app_promotion.conf;
+        }
+		
+		# pay
+        server {
+                listen          443;
+                server_name      pay.ppaqo.cn;
+                ssl_certificate     /etc/nginx/cert/pay.ppaqo.cn.crt;
+                ssl_certificate_key /etc/nginx/cert/pay.ppaqo.cn.key;
+                include crm2_ssl_setting.conf;
+
+			
+                include /etc/nginx/nginx_pay.conf;
+       }
+		
+		
+
+
+
+	   
+	    # pay
+        server {
+                listen          443;
+                server_name     yy9393.com;
+                ssl_certificate     /etc/nginx/cert/yy9393.com.crt;
+                ssl_certificate_key /etc/nginx/cert/yy9393.com.key;
+                include crm2_ssl_setting.conf;
+
+
+                include /etc/nginx/nginx_pay.conf;
+       }
+	   
+        server {
+                listen        80;
+                server_name   pay10.yy9393.com  
+                              pay11.yy9393.com
+                              pay12.yy9393.com
+                              pay13.yy9393.com
+                              pay14.yy9393.com
+                              pay15.yy9393.com
+                              pay16.yy9393.com
+                              pay17.yy9393.com
+                              pay18.yy9393.com
+                              pay19.yy9393.com
+                              pay20.yy9393.com
+                              pay21.yy9393.com
+                              pay22.yy9393.com
+                              pay23.yy9393.com
+                              pay24.yy9393.com
+                              pay25.yy9393.com
+                              pay26.yy9393.com
+                              pay27.yy9393.com
+                              pay28.yy9393.com
+                              pay29.yy9393.com
+                              pay30.yy9393.com	;
+
+                include /etc/nginx/nginx_pay.conf;
+        }
+	   
+	    # pay
+        server {
+                listen          443;
+                server_name   pay10.yy9393.com  
+                              pay11.yy9393.com
+                              pay12.yy9393.com
+                              pay13.yy9393.com
+                              pay14.yy9393.com
+                              pay15.yy9393.com
+                              pay16.yy9393.com
+                              pay17.yy9393.com
+                              pay18.yy9393.com
+                              pay19.yy9393.com
+                              pay20.yy9393.com
+                              pay21.yy9393.com
+                              pay22.yy9393.com
+                              pay23.yy9393.com
+                              pay24.yy9393.com
+                              pay25.yy9393.com
+                              pay26.yy9393.com
+                              pay27.yy9393.com
+                              pay28.yy9393.com
+                              pay29.yy9393.com
+                              pay30.yy9393.com	;
+                ssl_certificate     /etc/nginx/cert/yy9393.com.crt;
+                ssl_certificate_key /etc/nginx/cert/yy9393.com.key;
+                include crm2_ssl_setting.conf;
+
+				
+                include /etc/nginx/nginx_pay.conf;
+       }
+	   
+
+
+        # pay
+        server {
+                listen          443;
+                server_name      pay.shang27.com ;
+                ssl_certificate     /etc/nginx/cert/pay.shang27.com.crt;
+                ssl_certificate_key /etc/nginx/cert/pay.shang27.com.key;
+                include crm2_ssl_setting.conf;
+
+                include /etc/nginx/nginx_pay.conf;
+
+        }
+
+    
+        include nginx_show_version.conf;
+        include crm2_internal_deploy.conf;
+
+
+    
+# end of long conf        
+    
+}
+
+
+

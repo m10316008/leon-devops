@@ -1,0 +1,6 @@
+﻿vi /etc/hosts
+
+
+127.0.0.1        redis.local
+127.0.0.1        node188.local
+127.0.0.1        result188.local

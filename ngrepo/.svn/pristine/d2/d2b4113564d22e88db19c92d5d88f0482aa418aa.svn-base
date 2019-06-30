@@ -1,0 +1,9 @@
+
+location /login {
+        return 404;
+}
+
+
+location /return/ {
+        include crm2_path_proxy_pass.conf;
+}

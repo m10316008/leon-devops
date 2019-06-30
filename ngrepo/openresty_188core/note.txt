@@ -1,0 +1,5 @@
+open port for crm:
+
+firewall-cmd --add-port=18091/tcp --permanent
+firewall-cmd --add-port=18092/tcp --permanent
+systemctl restart firewalld

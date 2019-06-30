@@ -1,0 +1,40 @@
+
+mkdir -p /apps
+mkdir -p /apps/deploy
+mkdir -p /apps/shell
+mkdir -p /apps/node188
+mkdir -p /apps/downloads
+mkdir -p /apps/softwares
+mkdir -p /apps/backup
+mkdir -p /apps/jobs
+mkdir -p /apps/logs
+mkdir -p /apps/temp
+mkdir -p /apps/temp/append
+mkdir -p /apps/temp/nginx
+mkdir -p /tmp/append
+mkdir -p /usr/share/nginx/web/
+mkdir -p /apps/deploy
+mkdir -p /apps/deploy/history
+mkdir -p /usr/share/nginx/web/desktop188
+mkdir -p /usr/share/nginx/web/mobile188
+mkdir -p /usr/share/nginx/web/mobile188_apps
+mkdir -p /usr/share/nginx/web/brand
+
+
+sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
+sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
+
+###### disable selinux:
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+
+timedatectl set-timezone America/New_York
+timedatectl set-timezone Etc/GMT+4
+
+yum -y install gcc wget
+yum -y update
+
+
+# reboot
+

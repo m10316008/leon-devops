@@ -1,0 +1,6 @@
+<form action="check" method="post">
+    <input type="text" name="ip" value="{{ip}}"><br />
+    <input type="password" name="hostname"><br />
+    <input type="submit" value="查詢">
+</form>
+<button onclick="window.location = '/hkbnpccw982/?tt=' + (new Date()).getTime()">刷新</button>

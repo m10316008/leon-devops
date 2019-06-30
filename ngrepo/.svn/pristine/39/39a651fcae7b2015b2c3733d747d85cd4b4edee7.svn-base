@@ -1,0 +1,5 @@
+# For 301 redirect
+add_header Strict-Transport-Security "max-age=31536000;" always;
+
+# Add nginx cache MISS or HIT header to response
+add_header cache-status $upstream_cache_status;

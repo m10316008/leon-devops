@@ -1,0 +1,47 @@
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server_names_hash_max_size 131072;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;    
+    access_by_lua_file /usr/local/openresty/nginx/conf/protect_check_ip.lua;
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    
+    #set_real_ip_from    0.0.0.0/0;
+    #real_ip_header      X-Forwarded-For;
+    #real_ip_recursive   off;
+    #proxy_set_header X-Forwarded-For $remote_addr;
+
+    include crm2_result188_loadbalance_setting.conf;
+
+	upstream frontendcdn{
+		server 216.118.228.242:80;
+        server 216.118.240.26:80;
+	} 
+    upstream frontendcdntolottery{	
+        server 216.118.228.242:8016;
+        server 216.118.240.26:8016;
+	}   
+    server {    ###### frontend ######
+    	listen       80;
+        include crm2_frontend.conf;    
+    }
+
+    server {
+        listen  80;
+        server_name www-567bet.cc   www.www-567bet.cc;
+        include crm2_frontend.conf;
+    }  
+   
+    
+    include crm2_backend_setting.conf;
+}

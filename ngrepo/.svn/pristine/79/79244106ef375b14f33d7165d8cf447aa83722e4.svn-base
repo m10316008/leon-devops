@@ -1,0 +1,16 @@
+[Unit]
+Description=Redirect Server
+After=redis.service
+
+[Service]
+ExecStart=/usr/bin/node /apps/redirect/redirect.js 127.0.0.1
+Restart=always
+User=nobody
+Group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/apps/redirect/
+
+[Install]
+WantedBy=multi-user.target
+

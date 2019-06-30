@@ -1,0 +1,2 @@
+proxy_pass ______UPSTREAM______;
+#proxy_pass ______UPSTREAM_BACKUP______;

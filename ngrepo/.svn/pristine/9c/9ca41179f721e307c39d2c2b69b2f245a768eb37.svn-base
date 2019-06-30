@@ -1,0 +1,17 @@
+            server_name    
+                    #	33909h.com
+                    	60939h.com
+                    	939310h.com
+                    	h33909.com
+                    	h60939.com
+                    	h939310.com
+                    	hg002112.com
+                    	hg09229.com
+                    	hg33909.com
+                    	hg60939.com
+                    	hg62009.com
+                    	hg69335.com;
+                    #   hg939310.com ;
+
+
+            return 302 https://hg939310.com$request_uri;

@@ -1,0 +1,56 @@
+		location = /mobile {
+		    add_header Content-Type text/html;
+		    content_by_lua_block {
+			
+			    -- redirect based on user agent :  start
+   			    local h, err = ngx.req.get_headers()
+
+                --  if err == "truncated" then
+                    -- one can choose to ignore or reject the current request here
+                --  end
+			 
+			    function to_mobile_page()
+				    ngx.header.location = "/mobile/main"
+					ngx.exit(302)
+				end
+				
+			    function to_desktop_page()
+				    ngx.header.location = "/main.html"
+					ngx.exit(302)
+				end
+
+			   
+                function filter_agent_str_s(s, agent_arr)
+	                 s = string.lower(s)
+
+                    local res = 0;
+                    for k, v in pairs(agent_arr) do
+            		    v = string.lower(v)
+                        if string.match(s, v) then res = 1; break; end;
+                    end
+					
+					if res == 1 then to_mobile_page(); end;
+					if res == 0 then to_desktop_page(); end;
+
+                    return res;
+
+                end
+				
+                local agent_arr =  { 
+	                             'Android',
+	            				 'webOS',
+				            	 'iPhone',
+	            				 'iPad',
+	            				 'BlackBerry',
+	            				 'Windows Phone',
+	            				 'Opera Mini',
+	            				 'IEMobile',
+	            				 'Mobile'
+	            			    };
+		   
+
+				filter_agent_str_s(h['user-agent'], agent_arr)
+                -- redirect based on user agent :  end
+
+            }
+		}

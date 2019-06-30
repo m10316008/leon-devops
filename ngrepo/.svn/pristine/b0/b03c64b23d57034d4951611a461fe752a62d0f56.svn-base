@@ -1,0 +1,6 @@
+include crm2_path_danger.conf;
+include crm2_cache.conf;
+
+location / {
+    include crm2_path_proxy_pass.conf;
+}

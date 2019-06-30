@@ -1,0 +1,104 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/rental.css"/>
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"/>
+	<!--<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>-->
+{{/extend}}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<h5>內部報表</h5>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">自由tag JSON</span>
+				</div>
+				<input type="text" class="form-control" id="search_tag">
+			</div>
+			<!--<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">付款人</span>
+				</div>
+				<input type="text" class="form-control" id="tag_0">
+			</div>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text">香港帶寬</span>
+				</div>
+				<input type="text" class="form-control" id="tag_1">
+			</div>-->
+			<div class="input-group mb-3">
+				<button class="btn btn-primary" id="search_by_tag">Search by Tag</button>
+			</div>
+		</div>
+		<!--<div class="col">
+			<div class="form-group row">
+				<label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-sm">Tags</label>
+				<div class="col-sm-10">
+					<select multiple class="chosen-select form-control form-control-lg" id="search_paytag">
+						{{#each tags}}
+						<option value="{{value}}">{{value}}</optionvalue>
+						{{/each}}
+					</select>
+				</div>
+			</div>
+			<div class="input-group mb-3">
+				<button class="btn btn-primary">Search by tag</button>
+			</div>
+		</div>
+		<div class="col">
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon3">Example: va1 , vc3</span>
+				</div>
+				<input type="text" class="form-control" id="search">
+			</div>
+		</div>-->
+	</div>
+	<div class="row">
+
+	</div>
+	<div class="row">
+		<div class="col">
+			<table id="example" class="table table-striped table-bordered" style="width:100%">
+				<thead>
+				<tr>
+					<th>mcode</th>
+					<th>vcode</th>
+					<th>期數開始日</th>
+					<th>期數完結日</th>
+					<th>實際交錢日期</th>
+					<th>價錢</th>
+					<th>Tag</th>
+					<th>Remark</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+				<tr>
+					<th>mcode</th>
+					<th>vcode</th>
+					<th>期數開始日</th>
+					<th>期數完結日</th>
+					<th>實際交錢日期</th>
+					<th>價錢</th>
+					<th>Tag</th>
+					<th>Remark</th>
+					<th>操作</th>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/rental/report.js"></script>
+	<script src="//cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+{{/extend}}

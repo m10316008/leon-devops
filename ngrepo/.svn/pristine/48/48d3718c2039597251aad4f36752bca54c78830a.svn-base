@@ -1,0 +1,776 @@
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+    server_names_hash_max_size 131072;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    include crm2_header.conf;
+    
+    proxy_cache_path x_cache_fnagent levels=1:2 keys_zone=cache_fnagent:10m inactive=24h  max_size=10g;
+	proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    proxy_cache_path x_cache_odds2 levels=1:2 keys_zone=cache_odds2:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_odds6 levels=1:2 keys_zone=cache_odds6:10m inactive=24h  max_size=10g;
+    include crm2_result188_loadbalance_setting.conf;
+		
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+
+#	upstream frontendcdn{
+#		server 182.16.122.66:80;
+#		server 182.16.34.43:80;
+#       server 118.142.69.153:80;
+#	}
+#    upstream appscdn{
+#        server 182.16.122.66:8011;
+#		server 182.16.34.43:8011;
+#        server 118.142.69.153:8011;
+#    }
+#    upstream appsios{
+#        server 182.16.122.66:8012;
+#		server 182.16.34.43:8012;
+#        server 118.142.69.153:8012;
+#    }
+#    upstream appsapk{
+#        server 182.16.122.66:8013;
+#		server 182.16.34.43:8013;
+#        server 118.142.69.153:8013;
+#    }
+#    upstream frontendmobile{
+#        server 182.16.122.66:8015;
+#		server 182.16.34.43:8015;
+#        server 118.142.69.153:8015;
+#    } 
+#    upstream officeappsapk{
+#        server 182.16.122.66:8027;
+#		server 182.16.34.43:8027;
+#        server 118.142.69.153:8027;
+#    }
+#    upstream officeappsios{
+#        server 182.16.122.66:8028;
+#		server 182.16.34.43:8028;
+#        server 118.142.69.153:8028;
+#    }  
+#    upstream coreagent{
+#        server 182.16.122.66:8102;
+#		server 182.16.34.43:8102;
+#        server 118.142.69.153:8102;
+#    }
+#    upstream apppromotion{
+#        server 182.16.122.66:8101;
+#		server 182.16.34.43:8101;
+#        server 118.142.69.153:8101;
+#    }
+#    upstream frontendcdnwebspace{
+#        server 182.16.122.66:8017;
+#		server 182.16.34.43:8017;
+#        server 118.142.69.153:8017;
+#        
+#    }
+
+	include nginx_status.conf;
+
+    server {  ## default to 400 ##
+        include /apps/nginx/ip_type8_80.conf;
+        server_name  _ ;
+ 
+        return 400; 
+    }
+
+    server {  # default to 404 #
+        include /apps/nginx/ip_type8_80.conf;
+        server_name googlevc3.com *.googlevc3.com;
+        return 404;
+    }
+
+    server { ## redirect ##
+        include /apps/nginx/ip_type8_80.conf;
+        include nginx_redir_0001.conf;  
+    }
+	
+	
+    server { ## redirect: test 測試之中 ##
+        include /apps/nginx/ip_type8_80.conf;
+		server_name     hg020.com www.hg020.com;
+        return 302  https://h9393.vet;
+    }
+	
+	
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/self-signed/nginx-selfsigned.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/self-signed/key/nginx-selfsigned.key;
+        
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+        include nginx_fn_server_names_0001.conf;
+
+        include crm2_frontend.conf;
+    } 
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name daiqiaojc.com m.h9393.ag;
+
+        include crm2_frontend.conf;
+    } 
+
+    server {
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                   mm9393.com  www.mm9393.com
+                   uu9393.com  www.uu9393.com;  
+        include crm2_frontend_mobile.conf;
+    }
+	
+	
+	server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name               
+                    h9393.vet	www.h9393.vet;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.vet.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.vet.key;
+        
+        include crm2_frontend.conf;
+    }
+
+	server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name               
+                    h9393.mobi	www.h9393.mobi;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.mobi.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.mobi.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name  hg939305.com	www.hg939305.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg939305.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg939305.com.key;
+        
+        include crm2_frontend.conf;
+    }	
+
+	
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name  hg313108.com	www.hg313108.com;                    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg313108.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg313108.com.key;
+        
+        include crm2_frontend.conf;
+    }
+
+	server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                    hg9393.com	www.hg9393.com;                    
+        return 302 https://h9393.org$request_uri;
+	}
+
+
+
+	server {    ###### redirect to h9393.org ######   
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+	    server_name     hg9393.com	www.hg9393.com;
+		
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg9393.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg9393.com.key;
+ 
+        return 302 https://h9393.org$request_uri;
+    }
+
+	
+	
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name  daiqiaojc.com;                    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/daiqiaojc.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/daiqiaojc.com.key;
+        
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name  m.h9393.ag;                    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/m.h9393.ag.free.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/m.h9393.ag.free.key;
+        
+
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name                   
+                    ac9393.com    www.ac9393.com;
+                    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ac9393.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ac9393.com.key;
+        
+        include crm2_frontend.conf;
+    }
+	server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name                   
+                    h9393.vip    www.h9393.vip;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.vip.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.vip.key;
+        
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name
+                    ab9393.com    www.ab9393.com
+                  #  ac9393.com    www.ac9393.com
+                    ad9393.com    www.ad9393.com
+                    #ae9393.com    www.ae9393.com
+                    af9393.com    www.af9393.com
+                    #ah9393.com    www.ah9393.com
+                    ak9393.com    www.ak9393.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ab9393.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ab9393.com.key;
+        
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name               
+                    h939310.net	www.h939310.net;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h939310.net.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h939310.net.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name                                 
+                    h07072.net	www.h07072.net;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h07072.net.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h07072.net.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name                                 
+                    h9393.bz www.h9393.bz;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.bz.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.bz.key;
+        
+        include crm2_frontend.conf;
+    }
+
+	server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    h9393.tv
+                       www.h9393.tv;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.tv.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.tv.key;
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ###### 2019-04-11 add
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    9393h.me
+                       www.9393h.me;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/9393h.me.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/9393h.me.key;
+        include crm2_frontend.conf;
+    }
+	
+	
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name h9393.org
+                    www.h9393.org
+                    *.h9393.org;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.org.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.org.key;
+        
+        include crm2_frontend.conf;
+    }
+#    server {    ###### frontend ######
+#        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+#        server_name h9393.net
+#                    www.h9393.net
+#                    *.h9393.net;
+#        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.net.crt; 
+#        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.net.key;
+#        
+#        include crm2_frontend.conf;
+#    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name h9393.la
+                    www.h9393.la;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.co.crt;  #notSameName
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.co.key;  #notSameName
+        
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+	    server_name h9393.com.co 
+                    www.h9393.com.co;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.com.co.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.com.co.key; 
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+	    server_name h9393.io
+		            www.h9393.io;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/9393hg.ag.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/9393hg.ag.key; 
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    www.9393.world;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/9393.world.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/9393.world.key;
+               
+        include crm2_frontend.conf;    
+        
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+
+        server_name    9393.world ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/9393.world.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/9393.world.key;
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;     
+        server_name    h9393.in 
+                       www.h9393.in;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/h9393.in.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/h9393.in.key;
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;     
+        server_name    hg07072.com 
+                       www.hg07072.com;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg07072.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg07072.com.key;
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;     
+        server_name    hg939310.com 
+                       www.hg939310.com;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg939310.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg939310.com.key;
+                
+        include crm2_frontend.conf;
+    }    
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name   9393h.com.co www.9393h.com.co;  #problem
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/9393h.com.co.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/9393h.com.co.key;
+                
+        include crm2_frontend.conf;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+	    server_name		               	
+               	a.zzz9393.com
+               	b.aaa9393.com
+               	a.aaa9393.com
+               	b.hhh9393.com
+               	182.16.118.46                	
+               	81150.com
+               	www.xnjrc.com                	
+               	769668.com 
+               	a.hhh9393.com                 	
+               	info.qqq9393.com
+               	b.zzz9393.com
+               	a.sss9393.com
+               	b.sss9393.com
+               	a.qqq9393.com
+               	b.qqq9393.com
+               	a.ddd9393.com
+               	b.ddd9393.com 
+                hg939355.com  www.hg939355.com;
+               	
+        include crm2_frontend.conf;
+    }
+
+    server {   ###### front end ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name 9393m.com www.9393m.com; 
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend.conf;
+    }
+
+    server {   ###### front end ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name hg9393.bz www.hg9393.bz; 
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg9393.bz.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg9393.bz.key;
+		
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name   9393s.com  www.9393s.com;  
+                
+        include crm2_frontend_web_space.conf;
+    }
+
+    server {    ###### agent ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name  
+                    a.h9393.biz 
+		            agent.h9393.biz
+					hg6185.com;
+        
+        include crm2_setting.conf;        
+        include crm2_agentv2.conf;
+    }
+    server {   ###### agent ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name tt9393.com www.tt9393.com;
+		
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/newtt9393.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/newtt9393.com.key;
+        	
+        include crm2_setting.conf;
+        include crm2_agentv2.conf;
+    }
+    server {   ###### only moblie ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name    
+						aa9393.com
+					www.aa9393.com
+						bb9393.com
+					www.bb9393.com			
+						9393aa.com
+					www.9393aa.com;                 
+					
+        include crm2_frontend_apps.conf;
+    }    
+    
+    server {   ###### moblie_apps : front end : android v2 ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name v2apk.9393m.com; # front end : android v2    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+
+    #    location = /mobile/static/js/apps_inject.js {
+    #        return 302 /mobile/static/js/apps_inject_v2android.js;
+    #    }
+		
+        include crm2_frontend.conf;
+    }
+
+    server {   ###### moblie_apps : front end : ios v2 ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name v2ios.9393m.com; # front end : ios v2    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        location = /mobile/static/js/apps_inject.js {
+            return 302 /mobile/static/js/apps_inject_iosv2.js;
+        }
+
+        location = /mobile/static/js/app-service.js {
+            rewrite ^(.*)$  /vc3/prod/mobile188/mobile/static/js/app-service.js break;
+            include crm2_frontend_s3bucket.conf;
+	        sub_filter_types *;         
+	        sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+        }
+
+        include crm2_frontend.conf;
+    }
+
+    server {   ###### moblie_apps : ios : office app ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name ios.9393m.com; # ios     
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend_apps_ios_office_app.conf;
+    } 
+
+    server {   ###### moblie_apps : ios  ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name m.9393m.com; # ios     
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend_apps_ios.conf;
+    } 
+    
+    server {   ###### moblie_apps ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name    
+                        9393n.com
+                        www.9393n.com
+                        ios.9393n.com  
+                        is.9393n.com;                          
+		
+        include crm2_frontend_apps_ios.conf;
+    }
+    server {   ###### moblie_apps : android : office app ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name    apk.9393m.com ;       # android 
+		
+        include crm2_frontend_apps_apk_office_app.conf;
+    }    
+    server {   ###### moblie_apps : android : office app ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    apk.9393m.com ;       # android 
+        
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend_apps_apk_office_app.conf;
+    }
+    
+    server {   ###### moblie_apps : android ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    az.9393m.com;
+		
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend_apps_apk.conf;
+    }
+
+    server {   ###### moblie_apps ######
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    *.9393m.com;
+		
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/asterisk.9393m.com.key;
+		
+        include crm2_frontend_apps_ios.conf;
+    }
+	server {   ###### app download page ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name    hg9393app.com    www.hg9393app.com;
+        include crm2_frontend_webspace_002.conf;        
+    }
+    server {  ## payment gateway ##
+		include /apps/nginx/ip_type8_80.conf;
+        server_name  p.c9393.top; 
+                        # placeholder 只有補位作用，沒有實際作用
+		return 404;
+	}
+    # pay port 80
+    server {
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                    	pay.daiqiaojc.com
+                    	pay.dqgood.com
+                    	pay.dukarong.com
+                    	pay.fengshousm.com
+                    	pay.goodddms.com
+                    	pay.goodyws.com
+                    	pay.haishengyin1.com
+                    	pay.hejism.com
+                    	pay.huangjianzp.com
+                    	pay.jhty53yt.cn
+                    	pay.pailidesm.com
+                    	pay.ppaqo.cn
+                    	pay.pykj1.com
+                    	pay.pzwjwLkj.com
+                    	pay.shang27.com
+                    	pay.shengtonggan.com
+                        pay.spffjh.cn
+                    	pay.syxkeji.com
+                    	pay.tljdcs.cn
+                    	pay.txjc1.com
+                    	pay.utnew.cn
+                    	pay.yangwen1.com
+                    	pay3.pykj1.com
+                    	pay4.pykj1.com                    	
+                    	yy9393.com
+                        sxzw11.guizhoumiyukeji.com    ##20190308add
+                        sxzw31.guizhoumiyukeji.com;   ##20190308add
+
+        include nginx_pay.conf;
+    }
+    ##9393 app promotion page
+    server {
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name    server_name app9393.com www.app9393.com;
+  
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/app9393.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/app9393.com.key;
+  
+        include crm2_frontend_webspace_002.conf;
+    }
+	
+	
+    # pay
+    server {
+            include /apps/nginx/ip_type8_443_ssl_http2.conf;
+            server_name      pay.ppaqo.cn;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/pay.ppaqo.cn.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pay.ppaqo.cn.key;         
+            include nginx_pay.conf;
+    }
+    # pay
+    server {
+            include /apps/nginx/ip_type8_443_ssl_http2.conf;
+            server_name     yy9393.com;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/yy9393.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yy9393.com.key;
+            
+
+
+            include nginx_pay.conf;
+    }
+    server {
+            include /apps/nginx/ip_type8_80.conf;
+            server_name   pay10.yy9393.com  
+                            pay11.yy9393.com
+                            pay12.yy9393.com
+                            pay13.yy9393.com
+                            pay14.yy9393.com
+                            pay15.yy9393.com                            
+                            pay17.yy9393.com
+                            pay18.yy9393.com
+                            pay19.yy9393.com
+                            pay20.yy9393.com
+                            pay21.yy9393.com
+                            pay22.yy9393.com
+                            pay23.yy9393.com
+                            pay24.yy9393.com
+                            pay25.yy9393.com
+                            pay26.yy9393.com
+                            pay27.yy9393.com
+                            pay28.yy9393.com
+                            pay29.yy9393.com
+                            pay30.yy9393.com	;
+
+            include nginx_pay.conf;
+    }
+    server {
+            include /apps/nginx/ip_type8_80.conf;
+            server_name  pay16.yy9393.com;
+            include nginx_pay_002.conf;
+    }
+    # pay
+        server {
+            include /apps/nginx/ip_type8_443_ssl_http2.conf;
+            server_name   
+                            pay1.agsqod.cn
+                            pay10.yy9393.com  
+                            pay11.yy9393.com
+                            pay12.yy9393.com
+                            pay13.yy9393.com
+                            pay14.yy9393.com
+                            pay15.yy9393.com                            
+                            pay17.yy9393.com
+                            pay18.yy9393.com
+                            pay19.yy9393.com
+                            pay20.yy9393.com
+                            pay21.yy9393.com
+                            pay22.yy9393.com
+                            pay23.yy9393.com
+                            pay24.yy9393.com
+                            pay25.yy9393.com
+                            pay26.yy9393.com
+                            pay27.yy9393.com
+                            pay28.yy9393.com
+                            pay29.yy9393.com
+                            pay30.yy9393.com	;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/yy9393.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yy9393.com.key;
+            
+
+            
+            include nginx_pay.conf;
+    }
+    server {
+            include /apps/nginx/ip_type8_443_ssl_http2.conf;
+            server_name   pay16.yy9393.com;
+
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/yy9393.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yy9393.com.key;           
+
+            
+            include nginx_pay_002.conf;
+
+    }
+
+    #odds 6 CDN
+    server {
+        include /apps/nginx/ip_type8_443_ssl_http2.conf;
+        server_name uyv3.core.dist.cloudland2.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/uyv3.core.dist.cloudland2.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/uyv3.core.dist.cloudland2.com.key;
+
+        location /odds6i/ {
+            add_header expire-tag "o2 10s";
+            proxy_buffering        on;           
+            proxy_cache_valid      200  10s;
+            proxy_cache            cache_odds6;
+            proxy_cache_key $uri$is_args$args;
+            proxy_pass http://node188core;
+        }
+    }
+
+    # pay
+    server {
+            include /apps/nginx/ip_type8_443_ssl_http2.conf;
+            server_name      pay.shang27.com ;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/pay.shang27.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pay.shang27.com.key;
+            
+
+            include nginx_pay.conf;
+
+    }
+    include crm2_upstream.conf;
+    include crm2_backend_setting_pay.conf;
+    include crm2_backend_setting_pay_002.conf;
+}

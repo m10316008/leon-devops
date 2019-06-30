@@ -1,0 +1,4 @@
+        location / {
+            root     /usr/share/nginx/web/brand/web-space/ldciosapp.com;
+            index index.html;
+        }

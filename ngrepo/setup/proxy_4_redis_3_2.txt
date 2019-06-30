@@ -1,0 +1,30 @@
+###### download redis 3.x source code to
+cd /apps/softwares
+wget http://download.redis.io/releases/redis-3.2.11.tar.gz
+
+
+yum -y install gcc
+
+
+cd /apps
+tar zxvf softwares/redis-	
+cd /apps/redis-	deps
+make geohash-int hiredis jemalloc linenoise lua
+cd /apps/redis-	src
+make install
+cd /apps/redis-	utils
+./install_server.sh
+
+
+#############################
+# all question answer "yes" #
+#############################
+
+
+
+###### test the redis
+systemctl restart redis_6379
+
+redis-cli
+set a a ex 10
+exit

@@ -1,0 +1,38 @@
+upstream crm2server{
+    ip_hash;
+    server 52.78.29.123:8080;
+    #server 13.124.238.74:8080;
+    server 13.209.25.167:8080;
+}
+
+
+upstream result188v2{
+    ip_hash;
+	
+	server result1.crm2myjava.com:8092;
+    server result2.crm2myjava.com:8092;
+
+}
+
+
+upstream node188v2{
+    ip_hash;
+	
+	server node1.crm2myjava.com:8091;
+	server node2.crm2myjava.com:8091;	
+	server node3.crm2myjava.com:8091;
+	server node4.crm2myjava.com:8091;	
+	server node5.crm2myjava.com:8091;
+	server node6.crm2myjava.com:8091;
+}
+
+upstream node188core{
+    ip_hash;
+    server core88a.crm2myjava.com:8096;
+    server core88b.crm2myjava.com:8096;
+    server core88c.crm2myjava.com:8096;
+    server core88d.crm2myjava.com:8096;
+    server core88e.crm2myjava.com:8096;
+    server core88f.crm2myjava.com:8096;
+}
+

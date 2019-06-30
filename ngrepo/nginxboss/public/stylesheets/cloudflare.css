@@ -1,0 +1,39 @@
+  table {
+    font-size: 18px;
+  }
+  
+  table th {
+    color: teal;
+    font-weight:normal;
+  }
+  
+  table td {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  table td.date {
+    font-size: 12px;
+  }
+  table img.active{
+    width: 20px;
+    height: 20px;
+  }
+  .proxy{
+    background: rgba(0, 0, 0, 0);
+    display: inline-block;
+    vertical-align: middle;
+    height: 34px;
+    width: 54px;
+  }
+  .cf_proxied_0{
+    position: relative;
+    height:100%;
+    width:100%;
+    background: rgba(0, 0, 0, 0) url('../images/cf-icon.png') 0 -150px no-repeat;
+  }
+  .cf_proxied_1{
+    position: relative;
+    height:100%;
+    width:100%;
+    background: rgba(0, 0, 0, 0) url('../images/cf-icon.png') 0 -83px no-repeat;
+  }

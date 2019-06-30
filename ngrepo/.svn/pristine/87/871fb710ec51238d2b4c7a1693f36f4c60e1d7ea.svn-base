@@ -1,0 +1,157 @@
+
+#####################################
+#    
+#
+#       include /apps/nginx/ip_one.conf;   # this is front end
+#       include /apps/nginx/ip_two.conf;   # this is admin and op
+#       Confirmed ip two can be delete
+
+#       8011    apps
+#       8012    ios
+#       8013    apk
+#       8014    apps yy
+#       8101    payment # can delete
+#       8102    agent
+#
+#
+######################################
+
+
+#user  nginx;
+worker_processes  1;
+
+#error_log  /var/log/nginx/error.log warn;
+#pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+http {    
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;  
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;      
+    proxy_cache_key $scheme$proxy_host$uri$is_args$args;
+    include crm2_result188_loadbalance_setting.conf;
+
+    # default if not matched
+    server {
+        listen       80;
+        server_name  localhost;
+        
+        location / {
+            root   /usr/local/openresty/nginx/html;
+            index  index.html index.htm;
+        }
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+            root   /usr/local/openresty/nginx/html;
+        }
+    }
+
+    # front end : listen 1 ip
+    server {
+        
+        include /apps/nginx/ip_one.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend.conf;
+    }
+    
+    # admin : listen 1 ip
+
+    server {    ###### admin and op ######        
+        include /apps/nginx/ip_two.conf;   
+		server_name    citi58.com    www.citi58.com;    
+                  
+      #  location /.well-known/ {
+      #      root /usr/local/openresty/nginx/sslforfree;            
+      #  } 
+        
+        return 302 https://$host$request_uri;
+    }
+
+
+    server {    ###### admin and op ######        
+        #include /apps/nginx/ip_two.conf;
+        listen 443 ssl;
+		server_name    citi58.com    www.citi58.com;    
+        include crm2_header.conf;          
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/citi58.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/citi58.com.key;      
+        
+        include crm2_setting.conf;
+
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        
+        include crm2_admin_op.conf;
+    }
+
+
+    # front end : listen 1 ip for app
+    server {        
+        include /apps/nginx/ip_one_8011.conf;   
+        port_in_redirect off;
+        absolute_redirect off;     
+        include crm2_frontend_apps_8011.conf;
+    }
+    server {    
+        include /apps/nginx/ip_one_8012.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios_8012.conf;
+    }
+    server {       
+        include /apps/nginx/ip_one_8013.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_8013.conf;
+    }
+    server {       
+        include /apps/nginx/ip_one_8016.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_to_lottery.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8029.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_office_app_main_page.conf;
+    }
+    server{
+        include /apps/nginx/ip_one_8101.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include nginx_pay.conf;
+    }
+    server{
+        include /apps/nginx/ip_one_8102.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_agent.conf;
+    }
+
+    
+    
+    include crm2_internal_deploy.conf;
+    include crm2_backend_setting.conf;
+}

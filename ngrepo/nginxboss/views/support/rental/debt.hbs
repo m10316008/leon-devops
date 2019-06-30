@@ -1,0 +1,261 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/rental.css"/>
+	<link rel="stylesheet"
+		  href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css"/>
+{{/extend}}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<button class="btn btn-primary btn-lg" id="search_by_ip">用 IP 搜尋</button>
+			<!--<button class="btn btn-warning btn-lg" id="search_by_keyword">一般搜尋</button>-->
+			<button class="btn btn-warning btn-lg" id="search_all">全部欠款</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="container" id="card-container">
+		</div>
+	</div>
+</div>
+<div class="modal fade bd-example-modal-lg" id="formSearchByIpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col">
+							<form id="formSearchByIp" method="POST" action="debt/api">
+								<input type="hidden" name="action" value="search_by_ip"/>
+								<div class="form-row">
+									<h5>貼上IP並分析</h5>
+									<div class="col-md-12 mb-10">
+										<label for="username" class="col-form-label"></label>
+										<textarea id="formSearchByIp_ips" name="formSearchByIp_ips" cols="40"
+												  rows="40"></textarea>
+									</div>
+								</div>
+								<div class="form-row">
+									<button type="button" id="formSearchByIp_analyze" class="btn btn-success">分析</button>
+								</div>
+							</form>
+						</div>
+						<div class="col" id="formSearchByIpModalResult">
+							<div class="row">
+								<label>結果:</label>
+								<textarea id="formSearchByIpMcodes" hidden></textarea>
+							</div>
+							<div class="row table-wrapper-scroll-y">
+								<table class="table table-hover table-striped">
+									<thead>
+									<tr>
+										<td>
+											IP
+										</td>
+										<td>
+											機器名稱
+										</td>
+										<td>
+											操作
+										</td>
+									</tr>
+									</thead>
+									<tbody id="tbody_results">
+									</tbody>
+								</table>
+							</div>
+							<div class="row">
+								<div class="alert alert-danger hide" role="alert" id="unknownSuggestion">
+									有些IP不存在nginxboss裡, 可以先到機器列表新增機器
+								</div>
+								<button class="btn btn-warning hide" id="openMachineList">到機器列表新增機器</button>
+								<button class="btn btn-primary" id="searchCardByMcode">用機器名稱搜尋</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="container-fluid" id="formSearchByIpModalResult">
+					<div class="row">
+						<label>結果:</label>
+						<textarea id="formSearchByIpMcodes" hidden></textarea>
+					</div>
+					<div class="row">
+						<table class="table table-hover table-striped">
+							<thead>
+							<tr>
+								<td>
+									IP
+								</td>
+								<td>
+									機器名稱
+								</td>
+								<td>
+									操作
+								</td>
+							</tr>
+							</thead>
+							<tbody id="tbody_results">
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="alert alert-danger hide" role="alert" id="unknownSuggestion">
+							有些IP不存在nginxboss裡, 可以先到機器列表新增機器
+						</div>
+						<button class="btn btn-warning hide" id="openMachineList">到機器列表新增機器</button>
+						<button class="btn btn-primary" id="searchCardByMcode">繼續</button>
+					</div>
+				</div>-->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form id="formMachine" method="POST" action="debt/api">
+					<input type="hidden" name="action" value="submit"/>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="username" class="col-form-label">mcode(Jenkins機器名字)</label>
+							<input type="text" class="form-control" id="mcode" name="mcode" value="" readonly required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="firstPayment" class="col-form-label">購買日期</label>
+							<input type="text" class="form-control" id="firstPayment" name="firstPayment" value=""
+								   readonly>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="firstPayment" class="col-form-label">開始日期</label>
+							<input type="text" class="form-control" id="rentalStart" name="rentalStart" value=""
+								   readonly>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label">完結日期</label>
+							<input type="text" class="form-control" id="rentalEnd" name="rentalEnd" value="" readonly>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label">價錢</label>
+							<input type="text" class="form-control" id="price" name="price" value="">
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label">實際交費日期</label>
+							<input type="text" class="form-control datepicker" id="payDate" name="payDate" value="">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label">品牌</label>
+							<input type="text" class="form-control" id="vcode" name="vcode" value="" readonly>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label"></label>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-12 mb-10">
+							<label for="remark" class="col-form-label">備注</label>
+							<textarea class="form-control" id="remark" name="remark"></textarea>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-12 mb-10">
+							<label for="remark" class="col-form-label">TAG備注</label>
+							<textarea class="form-control" id="remarktag" name="remarktag"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				<button type="button" id="complete_payment" class="btn btn-success">提交</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script id="debt-card" type="text/x-handlebars-template">
+	<div class="card debtcard" id="card_" data-mcode="">
+		<h5 class="card-header">\{{mcode}}
+			\{{#switch mtype}}
+			\{{#case "type7"}}
+			<span class="badge badge-pill badge-primary">\{{mtype}}</span>
+			\{{/case}}
+			\{{#case "type8"}}
+			<span class="badge badge-pill badge-success">\{{mtype}}</span>
+			\{{/case}}
+			\{{#case "protect"}}
+			<span class="badge badge-pill badge-danger">\{{mtype}}</span>
+			\{{/case}}
+			\{{#case "ip64v2"}}
+			<span class="badge badge-pill badge-warning">\{{mtype}}</span>
+			\{{/case}}
+			\{{#default}}
+			\{{mtype}}
+			\{{/default}}
+			\{{/switch}}
+		</h5>
+		<div class="card-body">
+			<dl class="row">
+				<dt class="col-sm-3">Brand</dt>
+				<dd class="col-sm-9">\{{vcode}}</dd>
+				<dt class="col-sm-3">Start Day</dt>
+				<dd class="col-sm-9">\{{rentalStart}}</dd>
+				<dt class="col-sm-3">End Day</dt>
+				<dd class="col-sm-9">\{{rentalEnd}}</dd>
+				<dt class="col-sm-3">Price</dt>
+				<dd class="col-sm-9">RMB \{{price}}</dd>
+				<dt class="col-sm-3">Remarks</dt>
+				<dd class="col-sm-9">&nbsp;\{{remark}}</dd>
+				<dt class="col-sm-3"></dt>
+				<dd class="col-sm-9">
+					<button class="btn btn-primary btn_payment"
+							data-options='{
+								"mcode":"\{{mcode}}",
+								"rentalStart":"\{{rentalStart}}",
+								"rentalEnd":"\{{rentalEnd}}",
+								"price":"\{{price}}",
+								"firstPayment":"\{{firstPayment}}",
+								"vcode":"\{{vcode}}",
+								"remarktag":\{{remarktag}}
+							}'>
+						完成欠款
+					</button>
+				</dd>
+			</dl>
+		</div>
+	</div>
+</script>
+<script id="ip-tmpl" type="text/x-handlebars-template">
+	<tr id="tr_\{{ip}}">
+		<td>
+			\{{ip}}
+		</td>
+		<td>
+			\{{#switch mcode}}
+			\{{#case "UNKNOWN"}}
+			<span class="badge badge-danger">\{{mcode}}</span>
+			\{{/case}}
+			\{{#default}}
+			\{{mcode}}
+			\{{/default}}
+			\{{/switch}}
+		</td>
+		<td>
+			<!--<button>Delete</button>-->
+		</td>
+	</tr>
+</script>
+{{#extend "scripts"}}
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+	<script src="/javascripts/jquery.validate.min.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/chosen/chosen.jquery.min.js"></script>
+	<link rel="stylesheet" href="/javascripts/chosen/chosen.min.css"/>
+	<script src="/javascripts/rental/debt.js"></script>
+{{/extend}}

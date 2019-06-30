@@ -1,0 +1,114 @@
+
+#####################################
+#    
+#
+#    include /apps/nginx/ip_one.conf;   # this is front end
+#
+#    include /apps/nginx/ip_two.conf;   # this is admin and op
+#
+#
+######################################
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';   
+
+    sendfile        on;
+	
+	client_max_body_size  200m;
+	
+    keepalive_timeout  180s;
+	
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    
+    include crm2_header.conf;
+    include crm2_result188_loadbalance_setting.conf;  
+
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;	
+
+    server {  ## default to 400 ##
+        listen       80 ;
+        server_name  _ ;
+ 
+        return 400; 
+    }
+
+    # front end : listen 1 ip
+    server {        
+        include /apps/nginx/ip_one.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend.conf;
+    }
+    
+    # admin : listen 1 ip
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;
+		server_name    boss-bet338.com;
+
+        return 302 https://$host$request_uri;
+    }
+    
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;
+		server_name    diamond-oppan.app-store-update.com;
+
+        include crm2_header.conf;             
+        
+        include crm2_setting.conf;
+
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vj10/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vj10/prod/brand/ /;
+        }
+        
+        include crm2_admin_op.conf;
+    }
+    
+    server {    ###### admin and op ######        
+        include /apps/nginx/ip_two_443_ssl_http2.conf;
+        #listen 443 ssl;
+		server_name    boss-bet338.com    www.boss-bet338.com;    
+        include crm2_header.conf;          
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/boss-bet338.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/boss-bet338.com.key;      
+        
+        include crm2_setting.conf;
+
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vj10/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vj10/prod/brand/ /;
+         }
+
+        
+        include crm2_admin_op.conf;
+    }
+
+    
+    
+    
+    
+    include crm2_backend_setting.conf;
+}

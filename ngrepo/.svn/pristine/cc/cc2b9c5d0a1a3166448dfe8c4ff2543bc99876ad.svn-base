@@ -1,0 +1,229 @@
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server_names_hash_max_size 131072;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;    
+    access_by_lua_file /usr/local/openresty/nginx/conf/protect_check_ip.lua;
+	proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    proxy_cache_path x_cache_odds2 levels=1:2 keys_zone=cache_odds2:10m inactive=24h  max_size=10g;
+    
+    #set_real_ip_from    0.0.0.0/0;
+    #real_ip_header      X-Forwarded-For;
+    #real_ip_recursive   off;
+    #proxy_set_header X-Forwarded-For $remote_addr;
+
+    include crm2_result188_loadbalance_setting.conf;
+	
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+
+#	upstream frontendcdn{
+#		server 118.99.27.41:80; #002	
+#		server 116.212.123.5:80; #010
+#        server 216.118.245.18:80;
+#	}
+#    upstream appscdn{
+#        server 118.99.27.41:8011;
+#		server 116.212.123.5:8011;
+#        server 216.118.245.18:8011;
+#    }
+#    upstream appsios{
+#        server 118.99.27.41:8012;
+#		server 116.212.123.5:8012;
+#        server 216.118.245.18:8012;
+#    }
+#    upstream appsapk{
+#        server 118.99.27.41:8013;
+#		server 116.212.123.5:8013;
+#        server 216.118.245.18:8013;
+#    }
+#    upstream coreagent{
+#        server 118.99.27.41:8102;
+#		server 116.212.123.5:8102;
+#        server 216.118.245.18:8102;
+#    }   
+
+	include nginx_status.conf;
+
+    server {  ## default to 400 ##
+        listen       80 ;
+        server_name  _ ;
+ 
+        return 400; 
+    }
+    
+    
+    server {    ###### frontend ######
+    	listen       80;
+        server_name     
+                   pw1717.com  www.pw1717.com
+                   1717tj.com  www.1717tj.com 
+                   1717pc.com  www.1717pc.com 
+                   1717hh.co   www.1717hh.co 
+                   #fg1717.com  www.fg1717.com
+                   1717fg.com  www.1717fg.com;
+				   
+        include crm2_frontend.conf;    
+    }
+
+    server {
+        listen       80;
+        server_name
+                    1717hh.net
+                    www.1717hh.net;
+        
+        #return 302 https://$host$request_uri;
+        return 302 https://1717h.org/;
+    }
+
+   server {
+       listen       80;
+       server_name
+                   1717h.org	www.1717h.org
+				   1717hh.vip   www.1717hh.vip
+                   ff1717.com	www.ff1717.com;
+
+       return 302 https://$host$request_uri;
+   }
+   
+	# 2019-05-20
+    server {    
+        listen    443 ssl http2;
+        server_name    ff1717.com
+		               www.ff1717.com;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ff1717.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ff1717.com.key;
+
+        include crm2_frontend.conf;
+    }
+
+	# 2019-01-29
+    server {    
+        listen    443 ssl http2;
+        server_name    1717hh.vip
+		               www.1717hh.vip;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717hh.vip.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717hh.vip.key;
+
+        include crm2_frontend.conf;
+    }
+	# 2018-12-25
+    server {    
+        listen    443 ssl http2;
+        server_name    1717h.org
+		               www.1717h.org ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717h.org.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717h.org.key;
+
+        include crm2_frontend.conf;
+    }
+    # 2018-12-25
+    server {    
+        listen    443 ssl http2;
+        server_name    1717hh.ag
+		               www.1717hh.ag ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717hh.ag.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717hh.ag.key;
+
+        include crm2_frontend.conf;
+    }
+    # 2018-12-23
+    server {
+        listen  443 ssl http2;
+        server_name
+                    fg1717.com  www.fg1717.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/fg1717.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/fg1717.com.key;
+    
+        include crm2_frontend.conf;    
+    }
+
+	# 2018-12-23
+    server {
+        listen  443 ssl http2;
+        server_name
+                    1717pc.com  www.1717pc.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717pc.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717pc.com.key;
+    
+        include crm2_frontend.conf;    
+    }
+
+	# 2018-12-20
+    server {
+        listen  443 ssl http2;
+        server_name
+                    1717fg.com  www.1717fg.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717fg.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717fg.com.key;
+    
+        include crm2_frontend.conf;    
+    }
+  
+    server {
+        listen  443 ssl http2;
+        server_name
+                    pw1717.com  www.pw1717.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/pw1717.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pw1717.com.key;
+    
+        include crm2_frontend.conf;    
+    }
+	  
+	  
+    server {
+        listen  443 ssl http2;
+        server_name
+                    1717hh.co  www.1717hh.co;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717hh.co.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717hh.co.key;
+    
+        include crm2_frontend.conf;    
+    }
+    
+    
+
+  
+  
+    server {
+        listen  443 ssl http2;
+        server_name
+                    1717hh.net  www.1717hh.net;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717hh.net.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717hh.net.key;
+    
+        include crm2_frontend.conf;    
+    }
+	
+	
+	
+	server {
+        listen  443 ssl http2;
+        server_name
+                    1717tj.com  www.1717tj.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/1717tj.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/1717tj.com.key;
+    
+        include crm2_frontend.conf;    
+    }
+	
+    include crm2_upstream.conf;
+}	
+	

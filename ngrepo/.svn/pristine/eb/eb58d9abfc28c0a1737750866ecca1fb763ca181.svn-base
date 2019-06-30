@@ -1,0 +1,43 @@
+# from http to https
+
+            server_name    
+                     1331437749bjl.9393m.com 
+                     1333071646bjl.9393m.com 
+                     33909h.com www.33909h.com
+                     9393m.com www.9393m.com
+                     ab9393.com www.ab9393.com
+                     ac9393.com www.ac9393.com
+                     ad9393.com www.ad9393.com
+                    # ae9393.com www.ae9393.com
+                     af9393.com www.af9393.com
+                    # ah9393.com www.ah9393.com
+                     ak9393.com www.ak9393.com
+                     app9393.com www.app9393.com
+                     az.9393m.com
+                     h07072.net www.h07072.net
+                     h68897.com www.h68897.com
+                     h9393.com.co www.h9393.com.co
+                     h9393.in www.h9393.in
+                     h9393.io www.h9393.io
+                     h9393.la www.h9393.la
+                     h9393.org www.h9393.org 
+                     h9393.vet www.h9393.vet
+                     h9393.vip www.h9393.vip 
+                     h939310.net www.h939310.net
+                     hg07072.com www.hg07072.com 
+                     hg08877.com www.hg08877.com 
+                     hg313108.com www.hg313108.com
+                     hg9393.bz www.hg9393.bz
+                     hg939305.com www.hg939305.com
+                     hg939310.com www.hg939310.com
+                     ios.9393m.com
+                     m.9393m.com
+                     tt9393.com www.tt9393.com
+                     v2apk.9393m.com
+                     v2ios.9393m.com
+                     h9393.tv www.h9393.tv
+                     9393h.me www.9393h.me
+					 h9393.bz www.h9393.bz
+                     h9393.mobi www.h9393.mobi;
+						                                         
+            return 302 https://$host$request_uri;					   

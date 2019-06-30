@@ -1,0 +1,17 @@
+include crm2_headers_cache.conf;
+
+include crm2_path_danger.conf;
+include crm2_cache.conf;
+
+location = /login {
+    if ($request_method = POST) {
+        set $business "login";
+        access_by_lua_file conf/access.lua;
+    }
+
+    include crm2_path_proxy_pass.conf;
+}
+
+location / {
+    include crm2_path_proxy_pass.conf;
+}

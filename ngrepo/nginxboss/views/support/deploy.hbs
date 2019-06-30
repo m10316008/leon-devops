@@ -1,0 +1,139 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/deploy.css"/>
+	<link rel="stylesheet" href="/javascripts/xterm/dist/xterm.css"/>
+{{/extend}}
+
+
+<div class="container-fluid">
+	<div>
+		<button type="button" class="btn btn-info" id="run_clear_cache">Clear all cache</button>
+		<button type="button" class="btn btn-info" id="clear_console">Clear Console</button>
+	</div>
+	<div id="console" style="border:1px solid #000;">
+		<div id="terminal-container" class="term"></div>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script src="//ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<!--<script src="/javascripts/jquery.validate.min.js"></script>-->
+	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/xterm/dist/xterm.js"></script>
+	<script src="/javascripts/xterm/dist/addons/fit/fit.js"></script>
+	<script>
+		var domains;
+		var colors = {
+			'pink': '01;31m',
+			'white': '00m',
+			'dark_grey': '01:30m',
+			'green': '01;32m',
+			'purple': '01;35m',
+			'blue': '01;34m',
+			'yellow': '01;33m',
+			'grey': '1;1;33m'
+		}
+		function color(message, color) {
+			var temp_color = colors[color];
+			console.log('temp_color:', temp_color);
+			return '\033[' + temp_color + message + '\033[0m';
+		}
+
+		var term;
+		var domainCount = 0;
+		$(document).ready(function () {
+			var terminalContainer = $('#terminal-container')[0];
+			Terminal.applyAddon(fit);
+			term = new Terminal({
+				cursorBlink: true,
+				cols: 20,
+				rows:50,
+				useStyle: true
+			});
+			term.open(terminalContainer);
+			term.fit();
+			/*for(var i=0;i<=100;i++){
+				var txt = 'color test:'+i;
+				var test = '\033[01;'+i+'m'+ txt + '\033[0m';
+				term.writeln(test);
+			}*/
+			var txt = '按 "Clear all cache" 開始剷除所有網宿緩存';
+			term.writeln(color(txt, 'yellow'));
+
+			$('#run_clear_cache').on('click', function () {
+				$('#run_clear_cache').addClass('disabled');
+				term.writeln('開始清除, 請勿關閉本頁...');
+				process_clearcache();
+			});
+			$('#clear_console').on('click', function () {
+				term.clear();
+				$('#run_clear_cache').removeClass('disabled');
+			});
+		});
+
+		function process_clearcache() {
+			term.writeln(color('正在掃描網宿帳號...', 'green'));
+			var url = 'deploy/api';
+			var data = {
+				action_case: 'update_domain'
+			}
+			$.post(url, data, function (response) {
+				console.log('response:', response);
+				term.writeln(color('掃描完成...', 'green'));
+				domains = response.domains;
+				domainCount = response.domainCount;
+				for (idx in domains) {
+					term.writeln(color(domains[idx].domain, 'green'));
+				}
+				term.writeln(color('全部domain:' + color(domainCount, 'white'), 'green'));
+				term.writeln(color('現在開始清除緩存...', 'yellow'));
+				var clear_count = 1;
+				console.log(domains[0]);
+				clear_cache(0);
+				/*for (var idx in domains) {
+					var url = 'deploy/api';
+					var data = {
+						action_case: 'clear_cache',
+						target: domains[idx]
+					}
+					var postResult = $.ajax({
+						async: false,
+						type: "POST",
+						url: url,
+						data: data,
+						success: function (json) {
+							console.log('json:', json);
+						}
+					});
+					term.writeln(color(clear_count + '/' + domainCount, 'yellow'));
+					clear_count++;
+				}*/
+			});
+		}
+		function clear_cache(idx){
+			var url = 'deploy/api';
+			var target_domain = domains[idx];
+			var data = {
+				action_case: 'clear_cache',
+				target: target_domain
+			};
+			$.ajax({
+				async: true,
+				type: "POST",
+				url: url,
+				data: data,
+				success: function (json) {
+				    var chunk = idx+1;
+					term.writeln(color(chunk + '/' + domainCount+' : '+color(target_domain.domain,'blue')+' 完成 ref:'+json.itemId, 'yellow'));
+					console.log('json:', json);
+					idx++;
+					if(idx < domainCount){
+						clear_cache(idx);
+					}else{
+						term.writeln(color('全部域名清除完成', 'green'));
+					}
+				}
+			});
+		}
+	</script>
+{{/extend}}

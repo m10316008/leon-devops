@@ -1,0 +1,15 @@
+include crm2_path_danger.conf;
+include crm2_cache.conf;
+
+location = / {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    rewrite ^(.*)$  /vm13/prod/desktop188/landing.html break;
+    include crm2_path_proxy_pass.conf;
+}
+
+location / {
+    include crm2_path_proxy_pass.conf;
+}

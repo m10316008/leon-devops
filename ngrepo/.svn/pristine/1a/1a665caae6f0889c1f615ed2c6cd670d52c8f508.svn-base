@@ -1,0 +1,693 @@
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       /usr/local/openresty/nginx/conf/mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+	server_names_hash_max_size 131072;
+    server_names_hash_bucket_size 1024;
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    #real_ip_header X-Forwarded-For;
+    
+    proxy_cache_path x_cache_fnagent levels=1:2 keys_zone=cache_fnagent:10m inactive=24h  max_size=10g;    
+	proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    proxy_cache_path x_cache_odds2 levels=1:2 keys_zone=cache_odds2:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_odds6 levels=1:2 keys_zone=cache_odds6:10m inactive=24h  max_size=10g;
+	proxy_cache_key $scheme$proxy_host$uri;
+	include crm2_result188_loadbalance_setting.conf;   
+
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+	
+	include nginx_status.conf;
+
+    server {  ## default to 400 ##    third party domain names    ##
+        listen       80 default_server;
+        server_name  _ www.*;
+ 
+        return 400; 
+    }
+
+    ## e.g. safe.webscan3600.com:36000
+    ## for users in china : 2019 05 03
+    include crm2_frontend_redir_html_js.conf;
+
+
+    server {  ## default to 400 ##    third party domain names    ##
+        listen       80 ;
+        server_name   
+                       55022.com *.55022.com;
+ 
+        return 400; 
+    }
+
+    server {  ## default to 400 ##    third party domain names    ##
+        listen       443 default_server;
+        server_name  _  www.*;
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/self-signed/nginx-selfsigned.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/self-signed/nginx-selfsigned.key;
+
+        return 400; 
+    }  
+   
+    server {    ###### redirect ######
+        listen    80;
+        server_name     
+                    	8868ag.com    www.8868ag.com	
+                    	8868az.com     www.8868az.com	
+                    	8868hg.tv    www.8868hg.tv          	
+                        8868hk.tv    www.8868hk.tv
+                        8868hk.biz    www.8868hk.biz
+                        8868hk.co    www.8868hk.co
+                    	8868hk.com    www.8868hk.com	
+                        8868hk.vip    www.8868hk.vip
+                    	8868hk.org	www.8868hk.org
+                    	8868ios.com     www.8868ios.com			
+                        8902kk.com www.8902kk.com
+                        8905kk.com www.8905kk.com
+                        8909kk.com		www.8909kk.com
+                        8916kk.com www.8916kk.com
+                        8922kk.com		www.8922kk.com
+                        8926kk.com www.8926kk.com
+                        8927kk.com www.8927kk.com
+                        8931kk.com www.8931kk.com
+                        8936kk.com www.8936kk.com
+                        8938kk.com www.8938kk.com
+                        8939kk.com www.8939kk.com
+                    	hg66113.com     www.hg66113.com	
+                    	hg6350.com     www.hg6350.com	
+                    	hg8858.com      www.hg8858.com	
+                    	hg8868.ag    www.hg8868.ag	
+                    	hg8868.ch    www.hg8868.ch	
+                    	hgg8868.com    www.hgg8868.com	
+                    	hh8868.me    www.hh8868.me	
+                    	hh8868.net    www.hh8868.net	
+                    	sky8868.com    www.sky8868.com 	
+                        hg8868a1.com    www.hg8868a1.com
+                        hg8868a2.com    www.hg8868a2.com
+                        hg8868a3.com    www.hg8868a3.com
+                        hg8868a4.com    www.hg8868a4.com
+                        hg8868a5.com    www.hg8868a5.com
+                        hg8868vip1.com www.hg8868vip1.com
+                        hg8868vip2.com www.hg8868vip2.com
+                        hg8868vip3.com www.hg8868vip3.com
+                        hg8868vip4.com www.hg8868vip4.com
+                        hg8868vip5.com www.hg8868vip5.com
+                        hg8868vip6.com www.hg8868vip6.com
+                        hg8868vip7.com www.hg8868vip7.com
+                        hg8868vip8.com www.hg8868vip8.com
+                        hg8868vip9.com www.hg8868vip9.com;
+
+        include crm2_ssl_header.conf;
+		
+		return 301 https://$host$request_uri;
+    }
+	
+    server {    ###### frontend ######
+        listen    80;
+        include nginx_fn_server_names_0001.conf;
+        
+        include crm2_frontend.conf;
+    }
+
+    server { ##for special testing, do not edit ##
+        listen 80;
+        server_name 18core.warriorvg7.com;
+        location = /odds5/oddsHost6 {
+            #proxy_buffering        on;
+            #proxy_cache_valid      200  1m;
+            #proxy_cache            STATIC;
+            #proxy_pass http://43.247.132.25:8091;
+            default_type  application/json;
+            #return 200 '{"oddsHost":{"type":6,"url":"https://d1hrtg88ho9tuj.cloudfront.net"}}';
+            return 200 '{"oddsHost":{"type":6,"url":"https://erzhang1.com"}}';
+        }
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hg8868vip1.com www.hg8868vip1.com
+                    hg8868vip2.com www.hg8868vip2.com
+                    hg8868vip3.com www.hg8868vip3.com
+                    hg8868vip4.com www.hg8868vip4.com
+                    hg8868vip5.com www.hg8868vip5.com
+                    hg8868vip6.com www.hg8868vip6.com
+                    hg8868vip7.com www.hg8868vip7.com
+                    hg8868vip8.com www.hg8868vip8.com
+                    hg8868vip9.com www.hg8868vip9.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg8868vip.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg8868vip.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hg6350.com    www.hg6350.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg6350.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg6350.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hg8868a1.com    www.hg8868a1.com
+                    hg8868a2.com    www.hg8868a2.com
+                    hg8868a3.com    www.hg8868a3.com
+                    hg8868a4.com    www.hg8868a4.com
+                    hg8868a5.com    www.hg8868a5.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/11hg8868.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/11hg8868.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868hk.tv    www.8868hk.tv;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hk.tv.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hk.tv.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868hk.biz    www.8868hk.biz
+                    8868hk.co    www.8868hk.co
+                    8868hk.vip    www.8868hk.vip;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hk.biz.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hk.biz.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    dk8868.com    www.dk8868.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/dk8868.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/dk8868.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    sky8868.com    www.sky8868.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/sky8868.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/sky8868.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+      server {    ###### frontend ######
+    	listen       443 ssl http2;
+        server_name  hg66113.com  www.hg66113.com ;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg66113.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg66113.com.key;
+
+        include crm2_frontend_ssl.conf;    
+    }
+
+    server {    ###### frontend ######
+    	listen       80;
+        server_name  8918kk.com  www.8918kk.com 
+                     8919kk.com  www.8919kk.com 
+                     8923kk.com  www.8923kk.com 
+                     8925kk.com  www.8925kk.com 
+                     8937kk.com  www.8937kk.com;
+
+#		location = /mobile/static/js/apps_inject.js {
+#		    return 302 /mobile/static/js/apps_inject_v2android.js;
+#		}
+	include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868hk.org    www.8868hk.org;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hk.org.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hk.org.key;
+        
+        include crm2_frontend_ssl.conf;
+        
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hh8868.me    www.hh8868.me;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hh8868.me.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hh8868.me.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hh8868.net    www.hh8868.net;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hh8868.net.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hh8868.net.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hgg8868.com    www.hgg8868.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hgg8868.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hgg8868.com.key;
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868hg.tv www.8868hg.tv;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hg.tv.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hg.tv.key;
+
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8909kk.com www.8909kk.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8909kk.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8909kk.com.key;
+
+        
+        include crm2_frontend_ssl.conf;
+    }
+	
+	    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8922kk.com www.8922kk.com
+                    8902kk.com www.8902kk.com
+                    8905kk.com www.8905kk.com
+                    8916kk.com www.8916kk.com
+                    8926kk.com www.8926kk.com
+                    8927kk.com www.8927kk.com
+                    8931kk.com www.8931kk.com
+                    8936kk.com www.8936kk.com
+                    8938kk.com www.8938kk.com
+                    8939kk.com www.8939kk.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8922kk.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8922kk.com.key;
+
+        
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {
+        listen    443 ssl http2;     
+        server_name
+                    8868hk.com    www.8868hk.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hk.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hk.com.key;
+
+        
+        include crm2_frontend_ssl.conf;
+    }
+    server {
+        listen 80;
+        server_name
+                    8868hk.cc    www.8868hk.cc
+                    8868hk.net    www.8868hk.net;
+
+        return 302 https://8868hk.biz;
+    }
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868hk.cc    www.8868hk.cc
+                    8868hk.net    www.8868hk.net;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868hk.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868hk.com.key;
+
+        return 302 https://8868hk.biz;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    hg8858.com    www.hg8858.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg8858.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg8858.com.key;
+        
+
+        location /odds2/m/ {
+            proxy_buffering        on;           
+            proxy_cache_valid      200  60s;
+            proxy_cache            cache_odds2;
+            proxy_cache_key $uri$is_args$args;
+            add_header expire-tag "o2 60s";
+
+            error_page 410 = @odds210second;
+
+            if ($arg_pt = "4") {		
+                return 410;
+            }
+            if ($arg_iip = "true") {		
+                return 410;
+            }
+            if ($arg_reqUrl ~ "/sport/") {
+                return 410;
+            }
+            if ($arg_reqUrl ~ "/in-play/") {
+                return 410;
+            }
+            proxy_pass http://node188core;
+        }
+        location /odds2/d/ {
+            proxy_buffering        on;           
+            proxy_cache_valid      200  60s;
+            proxy_cache            cache_odds2;
+            proxy_cache_key $uri$is_args$args;
+            add_header expire-tag "o2 60s";            
+
+            error_page 410 = @odds210second;
+
+            if ($arg_pt = "4") {		
+                return 410;
+            }
+            if ($arg_iip = "true") {		
+                return 410;
+            }
+            if ($arg_reqUrl ~ "/sport/") {
+                return 410;
+            }
+            if ($arg_reqUrl ~ "/in-play/") {
+                return 410;
+            }
+            proxy_pass http://node188core;
+        }
+        location @odds210second {
+            add_header expire-tag "o2 10s";
+            proxy_buffering        on;           
+            proxy_cache_valid      200  10s;
+            proxy_cache            cache_odds2;
+            proxy_cache_key $uri$is_args$args;
+            proxy_pass http://node188core;
+        }
+                
+        include crm2_frontend_ssl.conf;
+    }
+
+    server {
+        listen 80;
+        server_name  ios8868a.com  www.ios8868a.com ;
+        
+        include crm2_frontend_apps_ios_office_app.conf;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name   
+                       8868ios.com www.8868ios.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868ios.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868ios.com.key;
+
+        
+        include crm2_frontend_apps_ios_office_app.conf;
+    }
+
+
+
+    server {    
+        listen       80;
+
+        server_name
+                    99881hh.com  www.99881hh.com    ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    99882hh.com  www.99882hh.com    ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    99883hh.com  www.99883hh.com    ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    99886hh.com  www.99886hh.com    ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    99887hh.com  www.99887hh.com    ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    99889hh.com  www.99889hh.com;   ######  frontend : ios v2 : crm2 front end : 20190311 ######       
+
+        location = /mobile/static/js/apps_inject.js {
+            return 302 /mobile/static/js/apps_inject_iosv2.js;
+        }
+
+        location = /mobile/static/js/app-service.js {
+            rewrite ^(.*)$  /vg7/prod/mobile188/mobile/static/js/app-service.js break;
+            include crm2_frontend_s3bucket.conf;
+	        sub_filter_types *;         
+	        sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+        }
+
+        include crm2_frontend.conf;
+    }
+
+    server {
+        listen 80;
+        server_name   
+						8928kk.com	www.8928kk.com
+						8932kk.com	www.8932kk.com
+						8908kk.com	www.8908kk.com
+						8913kk.com	www.8913kk.com
+						8935kk.com	www.8935kk.com;
+						
+          include crm2_frontend_mobile.conf;
+    }
+    
+    server {
+        listen 80;
+        server_name  az8868b.com www.az8868b.com;
+        
+        include crm2_frontend_apps_apk_office_app.conf;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name   
+                       8868az.com www.8868az.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868ios.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868ios.com.key;
+
+        
+        include crm2_frontend_apps_apk_office_app.conf;
+    }
+
+    #odds 6 CDN
+    server {
+        listen 443 ssl http2;
+        server_name wue7.core.dist.cloudland2.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/wue7.core.dist.cloudland2.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/wue7.core.dist.cloudland2.com.key;
+
+        location /odds6i/ {
+            add_header expire-tag "o2 10s";
+            proxy_buffering        on;           
+            proxy_cache_valid      200  10s;
+            proxy_cache            cache_odds6;
+            proxy_cache_key $uri$is_args$args;
+            proxy_pass http://node188core;
+        }
+    }
+
+    server { # new mobile
+        listen 80;
+        server_name
+                    
+                    hh55889.com www.hh55889.com
+                    hh55779.com www.hh55779.com
+                    hh55887.com www.hh55887.com;
+                    
+        include crm2_frontend_mobile.conf;
+    }
+	
+	
+    server { 
+        listen 80;
+        server_name hg8868app.com www.hg8868app.com;		
+	    include crm2_frontend_webspace.conf;
+	}
+
+    server { 
+        listen 80;
+        server_name hg8868-3.com www.hg8868-3.com;		
+	    include crm2_frontend_webspace_002.conf;
+	}
+
+    server { 
+        listen 80;
+        server_name hg8868-9.com www.hg8868-9.com;		
+	    include crm2_frontend_webspace_003.conf;
+	}
+
+    server {
+        listen 80;
+        server_name hg8868-1.com  www.hg8868-1.com;
+
+        include crm2_odds_news.conf;
+        include crm2_path.conf;
+        include crm2_redirect_to_mobile.conf;
+        proxy_set_header    X-Scheme $scheme;
+
+        location / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+            add_header cdeb root;
+            rewrite ^(.*)$ /vg7/prod/brand/brand/web-space/hg8868-1.com$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vg7/prod/desktop188/ /;
+        }
+    }
+	
+	
+	
+
+    server {    ###### agent ######
+        listen    443 ssl http2;     
+        server_name
+                    hg8868.ag    www.hg8868.ag;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg8868.ag.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg8868.ag.key;
+        
+                
+        include crm2_agentv2.conf;
+    }
+
+
+    server {    ###### agent ######
+        listen    443 ssl http2;     
+        server_name
+                    hg8868.ch    www.hg8868.ch;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868ag.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868ag.com.key;
+        
+       
+               
+        include crm2_agentv2.conf;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl http2;     
+        server_name
+                    8868ag.com    www.8868ag.com;
+                       
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/8868ag.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/8868ag.com.key;
+        
+                
+        include crm2_agentv2.conf;
+    }
+
+
+
+    server {    ###### pay ######
+         listen        80;
+         server_name
+					xbb.guhaowy22.cn
+					xbb.juanshii22.cn
+                	cc1.meiyankj1.cn
+                	pay.xb8868dsf.com
+                    pay1.gxnnyjk.cn
+                	pay1.xb8868dsf.com
+                	pay2.hfda245.cn
+                	pay2.xb8868dsf.com
+                	pay2.yafuruis1.cn
+                	pay3.hfda245.cn
+                	pay3.sda231.cn
+                	pay3.xb8868dsf.com
+                	pay4.xb8868dsf.com
+                	pay5.xb8868dsf.com
+                	pay6.xb8868dsf.com
+                	pay7.xb8868dsf.com
+                	pay8.xb8868dsf.com
+                	pay8.zhifu8868.com
+                	pya121.zhifu8868.com
+                	pya122.zhifu8868.com
+                	pya123.zhifu8868.com
+                	pya124.zhifu8868.com
+                	pya125.zhifu8868.com
+                	pya126.zhifu8868.com
+                	pya127.zhifu8868.com
+                	pya128.zhifu8868.com
+                	pya129.zhifu8868.com
+                	pya130.zhifu8868.com
+                	pya131.zhifu8868.com
+                	xbb.chuanyu1.cn
+                	xbb.dangxiuyi1.cn
+                	xbb.hanfud1.cn
+                	xbb.jiajian1.cn
+                	xbb.kojjqy1.cn
+                	xbb.xiangmanjyj1.cn
+                	xbb.xinhuoyua1.cn
+                	xbb.yafuruis1.cn
+                	xbb.zanziwlkj1.cn
+					xx1.fengzhili2.cn
+					xx1.jianchany2.cn
+					xxb.yingldouw1.cn
+                    xxb.kaihongw3.cn
+                    xxb.jiemiedz1.cn
+                    xxb.tiashengda5.cn
+                    xxb.guanzhim1.cn
+                    xxb.xindexid1.cn
+                    zfed11.junxingming.com
+                    zfed21.junxingming.com
+                    xbb1.feiyiqi1.com
+                    xbb1.gzdjkxx.cn
+                    xbb1.gzcjdz.cn
+                    pay1.kaijinj.cn  
+                    pay1.youwangn.cn
+                    pay.wlmkez.cn
+                    pay.gxnnwg.cn;
+
+         include nginx_pay.conf;
+    }	
+
+    include crm2_upstream.conf;
+}

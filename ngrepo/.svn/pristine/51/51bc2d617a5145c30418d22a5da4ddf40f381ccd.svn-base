@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo '[hwclock before adjust] '`/sbin/hwclock` >> /apps/logs/sync_time.log 
+echo '[system time before adjust] '$(date) >> /apps/logs/sync_time.log
+echo `/usr/bin/rdate -s -p stdtime.gov.hk` >> /apps/logs/sync_time.log
+echo `/usr/bin/rdate -s -p 118.143.17.82` >> /apps/logs/sync_time.log
+/sbin/hwclock -w --localtime
+/sbin/hwclock --systohc --localtime
+echo '[hwclock after adjust] '`/sbin/hwclock` >> /apps/logs/sync_time.log 
+echo '[system time after adjust] '$(date) >> /apps/logs/sync_time.log

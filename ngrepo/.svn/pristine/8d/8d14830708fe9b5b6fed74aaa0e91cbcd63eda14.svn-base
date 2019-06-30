@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start":"node app",
+    "build": "npm install"
+  },
+  "dependencies": {
+    "node-cron": "^1.2.1",
+    "request-promise": "^4.2.2"
+  }
+}

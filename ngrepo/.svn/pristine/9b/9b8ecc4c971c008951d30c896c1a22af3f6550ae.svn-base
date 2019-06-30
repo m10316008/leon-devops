@@ -1,0 +1,6 @@
+location = /mobile/static/js/app-service.js {
+    rewrite ^(.*)$  /______BRAND______/______STAGE______/______PROJECT______/mobile/static/js/app-service.js break;
+    proxy_pass ______UPSTREAM______;
+	sub_filter_types *;         
+	sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+}

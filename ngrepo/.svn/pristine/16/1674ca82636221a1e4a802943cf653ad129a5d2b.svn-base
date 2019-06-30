@@ -1,0 +1,26 @@
+include crm2_cache_speed_up.conf;
+include crm2_odds256.conf;
+include crm2_danger.conf;
+
+location = / {
+    #proxy_buffering        on;
+    #proxy_cache_valid      200  14d;
+    #proxy_cache            STATIC;
+
+    rewrite ^(.*)$  /brand/web-space/9393s.com/index.html break;
+    include crm2_path_proxy_pass.conf;
+}
+
+location / {
+    #proxy_buffering        on;
+    #proxy_cache_valid      200  14d;
+    #proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /brand/web-space/9393s.com$1 break;
+    include crm2_path_proxy_pass.conf;
+    proxy_redirect /desktop188/ /;
+}
+
+
+
+

@@ -1,0 +1,9 @@
+# custom redirect
+
+            server_name		
+							hg3535.co	www.hg3535.co
+							hg3535.com	www.hg3535.com
+							hg3535.cc	www.hg3535.cc
+							www-hg3535.cc	www.www-hg3535.cc;
+		    
+			return 302 https://hg3535.co$request_uri; # canUseHTTPSIfPossible

@@ -1,0 +1,42 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+location /brand/ {
+    #alias    $project_path/web/brand/;
+	proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+}
+
+location /jetsostatic/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  1m;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /va1/prod/jetsostatic$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /va1/prod/jetsostatic/ /;
+}
+
+location /mobile {
+    #alias    $project_path/web/mobile188/mobile;
+    #index  index.html;
+    #try_files $uri$args $uri$args/ /mobile/index.html;
+	
+	proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+}
+
+location / {
+    #root   $project_path/web/desktop188;
+    
+	#index  landing.html;
+		proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+}

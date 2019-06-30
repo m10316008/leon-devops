@@ -1,0 +1,12 @@
+upstream crm2server{
+    ip_hash;
+
+    #seoul_mango_a
+    #server 13.209.140.9:8080;
+
+    #seoul_mango_b
+    server 13.209.239.230:8080;  
+
+    #seoul_mango_c
+    server 52.78.81.86:8080;
+}

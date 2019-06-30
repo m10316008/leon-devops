@@ -1,0 +1,1 @@
+openssl x509 -noout -text -in "$1"|grep DNS:|tr " " "\n"|perl -nl -e'/DNS:(.+),/ && print $1'

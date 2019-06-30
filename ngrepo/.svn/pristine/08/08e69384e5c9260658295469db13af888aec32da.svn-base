@@ -1,0 +1,40 @@
+{
+    "brand": {
+        "va1": {
+            "label": "apple",
+            "odds6": "https://qmr1.core.dist.cloudland2.com"
+        },
+        "vb2": {
+            "label": "funcity",
+            "odds6": "https://feb2.core.dist.cloudland2.com"
+        },
+        "vc3": {
+            "label": "google",
+            "odds6": "https://uyv3.core.dist.cloudland2.com"
+        },
+        "ve5": {
+            "label": "ve5",
+            "odds6": "https://kjn5.core.dist.cloudland2.com"
+        },
+        "vf6": {
+            "label": "vf6",
+            "odds6": "https://dft6.core.dist.cloudland2.com"
+        },
+        "vg7": {
+            "label": "vg7",
+            "odds6": "https://wue7.core.dist.cloudland2.com"
+        },
+        "vj10": {
+            "label": "vj10",
+            "odds6": "https://ghu10.core.dist.cloudland2.com"
+        },
+        "vm13": {
+            "label": "vm13",
+            "odds6": "https://ytw13.core.dist.cloudland2.com"
+        }
+    },
+    "odds6": {
+        "odds6_wecloud": "https://odata.jiushan6688.com",
+        "odds6_cloudflare": "https://core8.app-store-update.com"
+    }
+}

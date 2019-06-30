@@ -1,0 +1,6 @@
+        location = /mobile/static/js/apps_inject.js {
+            return 302 /mobile/static/js/apps_inject_iosv2.js;
+        }
+
+        include crm2_frontend_mobile.conf;
+

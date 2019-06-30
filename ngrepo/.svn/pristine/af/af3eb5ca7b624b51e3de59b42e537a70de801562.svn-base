@@ -1,0 +1,271 @@
+
+    
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0002.conf;
+    }
+  
+	    
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0003.conf;
+    } 
+
+	   
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0004.conf;
+    }
+	   
+ 
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0005.conf;
+    }
+	    
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0006.conf;
+    }
+	   
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0007.conf;
+    }
+
+    server { ## redirect ##
+            listen        80;
+            include nginx_redir_0008.conf;
+    }
+
+
+
+   
+    server {    ###### redirect ######
+        listen    443 ssl;     
+        server_name    h9393.info ;
+                       
+        ssl_certificate     /etc/nginx/cert/h9393.info.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.info.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+
+    server {    ###### redirect ######
+        listen    443 ssl;     
+        server_name    www.h9393.info;
+        ssl_certificate     /etc/nginx/cert/h9393.info.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.info.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://www.h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+
+
+
+
+    server { ## redirect ##
+        listen    443 ssl;
+
+        server_name     9393h.co;
+        ssl_certificate     /etc/nginx/cert/9393h.co.crt;
+        ssl_certificate_key /etc/nginx/cert/9393h.co.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+
+    server {    ###### redirect ######
+        listen    443 ssl;
+
+        server_name     h9393.biz;
+                        
+        ssl_certificate     /etc/nginx/cert/h9393.biz.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.biz.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+
+    server {    ###### redirect ######
+        listen    443 ssl;
+
+        server_name     www.h9393.biz;
+        ssl_certificate     /etc/nginx/cert/h9393.biz.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.biz.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://www.h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+    
+    server {    ###### redirect ######    
+        listen        80;
+	    server_name   pc.h9393.ag;
+
+        return 302 http://h9393.ag$request_uri;
+    }
+	
+    server {    ###### redirect ######    
+        listen        80;
+	    server_name   pc.h9393.info;
+
+        return 302 https://www.h9393.net$request_uri; # canUseHTTPSIfPossible
+    }	
+	
+    server {    ###### redirect ######    
+        listen    443 ssl;     
+        server_name   pc.h9393.info;
+        ssl_certificate     /etc/nginx/cert/h9393.info.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.info.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://www.h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+	
+    server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name  pc.h9393.ag;
+        ssl_certificate     /etc/nginx/cert/h9393.ag.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.ag.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 http://h9393.ag$request_uri;
+    }
+	
+    	
+    server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name  www.hg9393.com;
+        ssl_certificate     /etc/nginx/cert/hg9393.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/hg9393.com.key; 
+        include crm2_ssl_setting.conf;      
+        
+        return 302 https://www.h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+    
+    server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name h9393.co 
+                    www.h9393.co;
+        ssl_certificate     /etc/nginx/cert/h9393.co.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.co.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+      
+
+  
+    server {    ###### redirect ######   
+        listen        443 ssl;
+	    server_name     www.33909h.com;
+		
+        ssl_certificate     /etc/nginx/cert/33909h.com.crt;
+        ssl_certificate_key /etc/nginx/cert/33909h.com.key;
+        include crm2_ssl_setting.conf;
+
+       
+        return 302 http://hg939310.com$request_uri;
+    }
+
+    
+        server {    ###### frontend : welcome page ######
+        listen    443 ssl;
+	    server_name hg9393.com;
+        ssl_certificate     /etc/nginx/cert/hg9393.com.crt; 
+        ssl_certificate_key /etc/nginx/cert/hg9393.com.key; 
+        include crm2_ssl_setting.conf;
+        
+        #location / {
+        #    root /apps/brand/landing/custom/hg9393com/;
+        #    index index.htm index.html;
+        #}
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+    
+
+    
+        server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name h9393.ag 
+                    www.h9393.ag;
+        ssl_certificate     /etc/nginx/cert/h9393.ag.crt; 
+        ssl_certificate_key /etc/nginx/cert/h9393.ag.key;
+        include crm2_ssl_setting.conf;
+        
+        return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible
+    }
+    
+    
+    server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name h68897.com;
+                    
+    
+        ssl_certificate     /etc/nginx/cert/9393hg.ag.crt; 
+        ssl_certificate_key /etc/nginx/cert/9393hg.ag.key; 
+        include crm2_ssl_setting.conf;
+        
+        return 302 http://hg07072.com$request_uri;
+    }
+    
+
+    server {    ###### redirect ######
+        listen    443 ssl;
+	    server_name www.h68897.com;
+    
+        ssl_certificate     /etc/nginx/cert/9393hg.ag.crt; 
+        ssl_certificate_key /etc/nginx/cert/9393hg.ag.key; 
+        include crm2_ssl_setting.conf;
+        
+        return 302 http://www.hg07072.com$request_uri;
+    }
+
+        server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    33909h.com;
+        ssl_certificate     /etc/nginx/cert/33909h.com.crt;
+        ssl_certificate_key /etc/nginx/cert/33909h.com.key;
+        include crm2_ssl_setting.conf;
+        
+        
+        return 302 https://hg939310.com$request_uri;
+    }
+    
+    
+        server {  ###### agent : redirect ###### 
+        listen        80;
+	    server_name     tt9393.com
+                        www.tt9393.com;
+
+        return 302 https://tt9393.com$request_uri;
+    }
+    
+    
+    	server {   ###### moblie_apps ######
+        # redirect from tcp port 443 to 80
+        listen       443 ssl;
+        server_name     
+                ios.9393m.com        # ios
+                apk.9393m.com        # android 
+                az.9393m.com;        # android 
+               
+
+        ssl_certificate     /etc/nginx/cert/9393m.com.crt;
+        ssl_certificate_key /etc/nginx/cert/9393m.com.key;
+        include crm2_ssl_setting.conf;
+		
+        return 302 http://$host$request_uri;    
+    }
+    
+    
+    
+    	server {   ###### moblie_apps ######
+        listen       80;
+        server_name 
+                *.9393m.com;
+		
+         return 302 https://$host$request_uri;
+    }

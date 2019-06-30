@@ -1,0 +1,33 @@
+# mobile
+server {
+    listen        18091;
+    proxy_bind    $server_addr;
+    #include random_proxy_bind.conf;
+
+    location / {
+        proxy_pass https://landing-mbs.prdasbb18a1.com;
+    }
+}
+
+# desktop
+server {
+    listen        18092;
+    proxy_bind    $server_addr;
+    #include random_proxy_bind.conf;
+
+    location / {
+        proxy_pass https://landing-sb-asia.prdasbb18a1.com;
+    }
+}
+
+# forward proxy
+server {
+    listen        3128;
+    proxy_bind    $server_addr;
+    #include random_proxy_bind.conf;
+
+    location / {
+        resolver 8.8.8.8 8.8.4.4;
+        proxy_pass http://$http_host$uri$is_args$args;
+    }
+}

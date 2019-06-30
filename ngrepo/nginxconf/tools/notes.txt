@@ -1,0 +1,5 @@
+node ..\..\tools\ -brand=vg7 -stage=uat4
+
+
+### stage default = prod ###
+node ..\..\tools\ -brand=vg7

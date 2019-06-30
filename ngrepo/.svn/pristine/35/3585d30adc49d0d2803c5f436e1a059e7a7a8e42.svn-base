@@ -1,0 +1,56 @@
+location /csrf {
+    proxy_pass    http://crm2server;
+}
+
+location /genCsrf {
+    proxy_pass    http://crm2server/genCsrf;
+}
+
+location /login {
+    proxy_pass    http://crm2server; 
+}
+
+location /logout {
+    proxy_pass    http://crm2server;
+}
+
+location /code_image {
+    proxy_pass    http://crm2server;
+}
+
+location /info/ {
+    proxy_pass    http://crm2server;
+}
+
+location /player/ {
+    proxy_pass    http://crm2server;
+}
+
+location /crmSetting/ {
+    proxy_pass    http://crm2server;
+}
+
+location /trial/ {
+    proxy_pass    http://crm2server;
+}
+
+location /crmProvider/ {
+    proxy_pass    http://crm2server;
+}
+
+location /SscOtp {
+    proxy_pass    http://crm2server;
+}
+
+location /promotion {
+    proxy_buffering        on;
+    proxy_cache_valid      200  60s;
+    proxy_cache            STATIC;
+    proxy_pass    http://crm2server;
+}
+
+#include crm2_path_maintenance.conf;
+
+include crm2_danger.conf;
+
+include crm2_fn_path.conf;

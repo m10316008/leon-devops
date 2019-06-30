@@ -1,0 +1,4 @@
+### If this is included in server directive, please make sure no add_header defined in subsequent location directives ###
+
+# For 301 redirect
+add_header Strict-Transport-Security "max-age=31536000;" always;

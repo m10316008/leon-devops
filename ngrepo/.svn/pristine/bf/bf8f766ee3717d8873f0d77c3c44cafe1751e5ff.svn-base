@@ -1,0 +1,31 @@
+server {
+    listen 80;
+
+    include domains_redirect.conf;
+
+    include crm2_headers_redirect.conf;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2 default_server;
+
+    server_name _ www.*;
+
+    ssl_certificate      certs/selfsigned.crt;
+    ssl_certificate_key  certs/selfsigned.key;
+
+    return 400;
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name  ak1717.com www.ak1717.com;
+
+    ssl_certificate      certs/ak1717.com.crt;
+    ssl_certificate_key  certs/ak1717.com.key;
+
+    include crm2_frontend_ssl.conf;
+}

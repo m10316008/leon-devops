@@ -1,0 +1,57 @@
+location /csrf {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /genCsrf {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /login {
+#	set $business "login";
+#	access_by_lua_file /usr/local/openresty/nginx/conf/access.lua;
+    include crm2_path_proxy_pass.conf;
+}
+
+location /logout {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /code_image {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /info/ {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /player/ {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /crmProvider/ {
+    include crm2_path_proxy_pass.conf;
+}
+
+location /crmSetting/ {
+    include crm2_path_proxy_pass.conf;
+}
+
+#location = /crmSetting/onOff {
+#    proxy_buffering        on;
+#	proxy_cache_valid      200  1m;
+#	proxy_cache            STATIC;
+#    include crm2_path_proxy_pass.conf;
+#}
+
+#include crm2_path_maintenance.conf;
+
+location /promotion {
+    proxy_buffering        on;
+    proxy_cache_valid      200  60s;
+    proxy_cache            STATIC;
+    include crm2_path_proxy_pass.conf;
+}
+
+include crm2_danger.conf;
+
+include crm2_fn_path.conf;

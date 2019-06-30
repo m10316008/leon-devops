@@ -1,0 +1,4 @@
+upstream crm2serverpay002{
+    ip_hash;
+    server 13.209.210.66:8080;
+}

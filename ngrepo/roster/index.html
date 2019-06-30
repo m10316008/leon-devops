@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/moment.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/lodash.min.js"></script>
+	<title>Document</title>
+</head>
+
+<body>
+	<h1>Roster</h1>
+	<div>
+		<ul id="rosterList">
+
+		</ul>
+	</div>
+</body>
+
+</html>
+<script>
+	async function renderElement(path) {
+        return new Promise(resolve => {
+            $.get(path, (response) => {
+                var res = response;
+                resolve(res);
+            });
+        });
+    }
+
+    async function loadScript(path) {
+        let ready = 0;
+        return new Promise(resolve => {
+            $.getScript(path, function (data, textStatus, jqxhr) {
+                console.log("Load completed.");
+                resolve();
+            });
+        });
+    }
+
+    async function json_gen_weekday_read(){
+        return new Promise((resolve => {
+            var rs={};
+            rs['weekdays_count'] = 0;
+            rs['weekdays_arr'] = new Array();
+            $('.weekdays').each(function(){
+                var ele = $(this);
+                //console.log(ele.data('weekday'));
+                if(ele.prop('checked')){
+                    console.log('chekced:',ele.data('weekday'));
+                    rs['weekdays_count']+=1;
+                    rs['weekdays_arr'].push(ele.data('weekday'));
+                }
+            });
+            resolve(rs);
+		}));
+	}
+    function zeroFill(number, width) {
+        width -= number.toString().length;
+        if (width > 0) {
+            return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
+        }
+        return number + ""; // always return a string
+    }
+    async function wait(time){
+        return new Promise(resolve => {
+            setTimeout(()=>{
+                console.log('wait done');
+                resolve(true);
+            },time)
+        });
+    }
+    async function checkRosterExists(path){
+	    return new Promise((resolve,reject)=>{
+	        var url = path+'/index.html';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data){
+                    resolve(true);
+                },
+                error: function(data) {
+                    resolve(false);
+                }
+            });
+		});
+	}
+    async function loadRosterList(){
+	    let startmonthmoment = moment().subtract(2,'months');
+	    for(var i=0;i<6;i++){
+	        let monthstr = startmonthmoment.format('YYYYMM');
+	        var exists = await checkRosterExists(monthstr);
+	        console.log('exists:',exists);
+	        console.log(i);
+	        console.log('monthstr:',monthstr);
+            startmonthmoment.add(1,'months')
+			let html = '';
+            if(exists){
+                html+='<li>';
+                html+='<a href="'+monthstr+'">';
+                html+='<h1>'+monthstr+'</h1>';
+                html+='</a>';
+                html+='</li>';
+			}else{
+                html+='<li>';
+                html+='<h1>'+monthstr+'</h1>';
+                html+='</li>';
+			}
+			$('#rosterList').append(html);
+		}
+	}
+    $(document).ready(async function () {
+        $("<link/>", {
+            rel: "stylesheet",
+            type: "text/css",
+            href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.css"
+        }).appendTo("head");
+        var html = await renderElement('./nav.html');
+        $(html).insertBefore('body');
+        await loadScript('js/jquery.tmpl.min.js');
+		await loadScript('js/datepicker/js/bootstrap-datepicker.js');
+		await loadScript('js/util.js');
+        $.tmpl('<li class="nav-item"><a class="nav-link" id="json_generator" href="">JSON 生成</a></li>').appendTo("#nav_ul");
+
+        await loadRosterList();
+
+        $('#json_generator').on('click', function () {
+            $('#jsonModal').modal('show')
+            return false;
+        });
+        $('#json_month').datepicker({
+            format: "yyyy-mm",
+            viewMode: "months",
+            minViewMode: "months",
+            container:'#jsonModal'
+		});
+
+        $('#json_gen_build').on('click',async function(){
+			let checkedArr=[0,0,0,0,0,0,0] //checkedArr[0]=Mon,checkedArr[6]=Sun
+			$('.weekdays').each(function () {
+                let ele = $(this);
+                if (ele.prop('checked')) {
+					console.log('checked:', ele.data('weekday'));
+					checkedArr[ele.data('weekday')-1]=1
+                }
+			});
+			console.log(checkedArr)
+			const output_json=await util.generateWorkJSON({
+				selectedMonth:$('#json_month').val(),
+				workStart:$('#workstart').val(),
+				workHours:$('#workhours').val(),
+				checkedArr
+			})
+			
+			$('#json_gen_result').html(output_json);
+		});
+        $('#json_gen_result').on('click',function(){
+            var $this = $(this);
+            var value = $this.html();
+            var $tempInput =  $("<textarea>");
+            $("body").append($tempInput);
+            $tempInput.val(value).select();
+            document.execCommand("copy");
+            $tempInput.remove();
+            $('.msg').html("JSON Copied");
+            $('.msg').fadeTo(2000, 500).slideUp(500, function(){
+                $("#success-alert").slideUp(500);
+            });
+		});
+        /*var now = moment();
+        var year = now.format('YYYY');
+        var month = now.format('MM');
+        var parsedUrl = new URL(window.location.href);
+        var url = parsedUrl.href+year+month;
+        console.log(url);
+        window.location.href=url;*/
+    });
+</script>
+<div class="modal fade" id="jsonModal" role="dialog" aria-labelledby="jsonModallLabel" aria-hidden="false">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="jsonModallLabel">Json 生成</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group date">
+						<label for="json_month" class="col-form-label">月份:</label>
+						<input type="text" class="form-control" data-provide="datepicker" data-date-container="#jsonModal" id="json_month">
+					</div>
+					<div class="form-group date">
+						<label for="json_month" class="col-form-label">開始時間 (e.g. 09:00):</label>
+						<input type="time" class="form-control" id="workstart" value="09:00" min="00:00" max="23:59">
+					</div>
+					<div class="form-group date">
+						<label for="json_month" class="col-form-label">工作時數:</label>
+						<input type="text" class="form-control" id="workhours" value="9">
+					</div>
+					<div class="form-group date">
+						<label for="json_month" class="col-form-label">重複:(不選代表全部重複)</label>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="1" id="weekdays1">
+							<label class="form-check-label" for="weekdays1">
+								星期一
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="2" id="weekdays2">
+							<label class="form-check-label" for="weekdays2">
+								星期二
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="3" id="weekdays3">
+							<label class="form-check-label" for="weekdays3">
+								星期三
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="4" id="weekdays4">
+							<label class="form-check-label" for="weekdays4">
+								星期四
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="5" id="weekdays5">
+							<label class="form-check-label" for="weekdays5">
+								星期五
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="6" id="weekdays6">
+							<label class="form-check-label" for="weekdays6">
+								星期六
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input weekdays" type="checkbox" data-weekday="7" id="weekdays7">
+							<label class="form-check-label" for="weekdays7">
+								星期日
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="json_gen_result" class="col-form-label">結果:</label>
+						<textarea class="form-control" id="json_gen_result" rows="20"></textarea>
+					</div>
+				</form>
+				<div class="msg alert alert-success fade" role="alert">
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="json_gen_build">生成</button>
+			</div>
+		</div>
+	</div>
+</div>

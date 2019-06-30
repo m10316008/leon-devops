@@ -1,0 +1,77 @@
+##
+
+
+#manyCloudFlareIPs_start
+set_real_ip_from 103.21.244.0/22;
+set_real_ip_from 103.22.200.0/22;
+set_real_ip_from 103.31.4.0/22;
+set_real_ip_from 104.16.0.0/12;
+set_real_ip_from 108.162.192.0/18;
+set_real_ip_from 131.0.72.0/22;
+set_real_ip_from 141.101.64.0/18;
+set_real_ip_from 162.158.0.0/15;
+set_real_ip_from 172.64.0.0/13;
+set_real_ip_from 173.245.48.0/20;
+set_real_ip_from 188.114.96.0/20;
+set_real_ip_from 190.93.240.0/20;
+set_real_ip_from 197.234.240.0/22;
+set_real_ip_from 198.41.128.0/17;
+set_real_ip_from 2400:cb00::/32;
+set_real_ip_from 2606:4700::/32;
+set_real_ip_from 2803:f800::/32;
+set_real_ip_from 2405:b500::/32;
+set_real_ip_from 2405:8100::/32;
+set_real_ip_from 2c0f:f248::/32;
+set_real_ip_from 2a06:98c0::/29;
+#manyCloudFlareIPs_end
+
+real_ip_header CF-Connecting-IP;
+
+
+    #geoip: start
+    geoip_country /apps/geoip/GeoIP.dat;
+    fastcgi_param GEOIP_COUNTRY_CODE $geoip_country_code;
+    fastcgi_param GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    fastcgi_param GEOIP_COUNTRY_NAME $geoip_country_name;
+    
+    # allow ip to view front end     # 容許互聯網地址，觀看前端手機版、電腦版
+
+    map $http_cf_connecting_ip $allow_ip_status {
+        default No;
+        42.200.197.192 Yes;
+        61.244.196.178 Yes;
+        203.186.83.238 Yes;
+        
+        #2018 05 11: start
+        58.32.7.157 Yes;  # client user's ip
+        #2018 05 11: end
+        
+        #2018 04 17: start
+        210.176.144.72 Yes;
+        #2018 04 17: end
+        
+        #2018 04 14: start
+        117.136.79.105 Yes;
+        #2018 04 14: end
+		
+		#2018 02 02: start
+		210.176.144.68 Yes;
+		#2018 02 02: end
+        
+    }
+	
+    map $geoip_country_code $allow_country_status {
+        default Yes;
+      #  HK No;  # 禁香港
+      #  PH No;  # 禁菲律賓
+      #  TW No;  # 禁臺灣
+      #  SG No;  # 禁新加坡
+      #  MY No;  # 禁馬來西亞
+    }
+	
+	
+    #geoip: end
+
+
+
+##

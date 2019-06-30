@@ -1,0 +1,38 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/rental.css"/>
+{{/extend}}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<h5>租務TAG管理</h5>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<form id="myform" method="POST" action="tag/api">
+				<input type="hidden" name="action" value="submit"/>
+				<div class="form-row">
+					<div class="col-md-12 mb-10">
+						<label for="tag" class="col-form-label">Tag</label>
+						<input id="tag" name="tag" data-role="tagsinput" value="{{tags}}"/>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="col-md-12 mb-10">
+						<label for="remark" class="col-form-label"></label>
+						<button type="submit" class="btn btn-success" >提交</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{{#extend "scripts"}}
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/jquery.validate.min.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/Bootstrap-4-Tag-Input-Plugin-jQuery/tagsinput.js"></script>
+	<link rel="stylesheet" href="/javascripts/Bootstrap-4-Tag-Input-Plugin-jQuery/tagsinput.css"/>
+	<script src="/javascripts/rental/tag.js"></script>
+{{/extend}}

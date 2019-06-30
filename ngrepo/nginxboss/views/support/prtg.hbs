@@ -1,0 +1,73 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/prtg.css"/>
+{{/extend}}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<label for="basic-url">Search</label>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon3">Example: va1 , vc3</span>
+				</div>
+				<input type="text" class="form-control" id="search">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<button class="btn btn-primary" id="show_detail">Detail Toggle</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="container" id="prtg-container">
+		</div>
+	</div>
+</div>
+
+<script id="prtg-card" type="text/x-handlebars-template">
+	<div class="card coscard" id="card_\{{mcode}}" data-mcode="\{{mcode}}">
+		<h5 class="card-header">\{{mcode}}
+			\{{#switch mtype}}
+				\{{#case "type7"}}
+					<td><label class="bg-primary">\{{mtype}}</label></td>
+				\{{/case}}
+				\{{#case "type8"}}
+					<td><label class="bg-success">\{{mtype}}</label></td>
+				\{{/case}}
+				\{{#case "protect"}}
+					<td><label class="bg-danger">\{{mtype}}</label></td>
+				\{{/case}}
+				\{{#case "ip64v2"}}
+					<td><label class="bg-warning">\{{mtype}}</label></td>
+				\{{/case}}
+				\{{#default}}
+					<td>\{{mtype}}</td>
+				\{{/default}}
+			\{{/switch}}
+		</h5>
+		<div class="card-body">
+			<div class="traffic" id="traffic_\{{mcode}}">
+				<canvas id="canvas_traffic_\{{mcode}}"></canvas>
+			</div>
+			<div class="cpu hide" id="cpu_\{{mcode}}">
+				<canvas id="canvas_cpu_\{{mcode}}"></canvas>
+			</div>
+			<div class="ram hide" id="ram_\{{mcode}}">
+				<canvas id="canvas_ram_\{{mcode}}"></canvas>
+			</div>
+			<div class="apps hide" id="apps_\{{mcode}}">
+				<canvas id="canvas_apps_\{{mcode}}"></canvas>
+			</div>
+			<!--<h5 class="card-title">Special title treatment</h5>
+			<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+			<a href="#" class="btn btn-primary">Go somewhere</a>-->
+		</div>
+	</div>
+</script>
+
+{{#extend "scripts"}}
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/prtg.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+{{/extend}}

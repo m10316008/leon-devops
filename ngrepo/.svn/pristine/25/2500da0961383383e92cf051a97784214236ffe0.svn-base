@@ -1,0 +1,7 @@
+location /loto/ {
+    return 404;
+}
+
+location /bridge/ {
+    return 404;
+}

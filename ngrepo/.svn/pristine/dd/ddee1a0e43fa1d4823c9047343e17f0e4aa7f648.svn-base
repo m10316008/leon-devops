@@ -1,0 +1,28 @@
+#include crm2_setting.conf;
+include crm2_odds_news.conf;
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+proxy_set_header    X-Scheme $scheme;
+
+location = / {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$  /vf6/prod/brand/brand/web-space/appa.app6686.com/index.html break;
+    include crm2_frontend_s3bucket.conf;
+}
+
+location / {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vf6/prod/brand/brand/web-space/appa.app6686.com$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vf6/prod/desktop188/ /;
+}
+
+
+
+

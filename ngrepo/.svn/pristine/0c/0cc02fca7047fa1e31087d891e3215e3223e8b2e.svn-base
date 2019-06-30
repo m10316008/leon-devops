@@ -1,0 +1,76 @@
+include crm2_headers_cache.conf;
+
+location /brand/ {
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location ~* ^/(brand|static|my-account|game-windows)/ {
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location ~ ^/([0-9a-zA-Z\-\_]+\.html)$ {
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location = /redirect.js {
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /mobile/ {
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /jetsostatic/ {
+    proxy_cache_valid      200  1m;
+    proxy_cache            x_cache_temp;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /promotion {
+    proxy_cache_valid      200  1m;
+    proxy_cache            x_cache_temp;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /odds5/ {
+    proxy_cache_valid      200  1m;
+    proxy_cache            x_cache_temp;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /zh-cn/info-centre/ {
+    proxy_cache_valid      200  120m;
+    proxy_cache            x_cache_temp;
+
+    include crm2_frontend_cache_common.conf;
+}
+
+location /public_result188 {
+    proxy_cache_valid      200  120m;
+    proxy_cache            x_cache_temp;
+
+    include crm2_frontend_cache_common.conf;
+}
+location /s3image/ {
+    proxy_cache_valid      200  2m;
+    proxy_cache            x_cache_fn;
+    include crm2_frontend_cache_common.conf;
+}

@@ -1,0 +1,20 @@
+location / {
+
+
+    #include /etc/nginx/nginx_check_geoip.conf;
+	
+    #geoip: start
+    #set $can_view  "${allow_ip_status}+${allow_country_status}";
+	
+	#if ($can_view = "No+No"){
+	#        return 403;
+	#}
+	#geoip: end	
+
+	if ($http_user_agent ~* '(MSIE 10.0|MSIE 9.0|MSIE 8.0|MSIE 7.0|MSIE 6.0)') {
+        	return 302 /brand/desktop/upgrade_your_browser.html;
+   	 }
+
+	root   /usr/share/nginx/web/desktop188;
+	index  main.html main.htm;
+}

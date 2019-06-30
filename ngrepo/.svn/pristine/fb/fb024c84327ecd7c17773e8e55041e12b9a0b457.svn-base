@@ -1,0 +1,269 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/machine.css"/>
+	<link rel="stylesheet"
+		  href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css"/>
+{{/extend}}
+
+
+<div class="container-fluid">
+	<div>
+		filter and sorting: Brand Machine name:<input id="search_value" autocomplete="off"/>
+		<button onclick="run_search()">Search</button>
+		Show disable:
+		<input type="checkbox" id="show_disable" value="ture"/>
+	</div>
+	<button type="button" class="btn btn-primary" onclick="clickShowForm('')">新增服務器</button>
+	<table class="machinelist table table-hover table-striped">
+		<thead>
+		<tr>
+			<th>狀態</th>
+			<th>mcode</th>
+			<th>品牌</th>
+			<th>組別</th>
+			<th>類型</th>
+			<th>IP</th>
+			<th>操作</th>
+			<th>Xterm
+				<input id="xcheck_all" type="checkbox"/>
+				{{#if xterm}}
+					<button class="btn-danger" id="start_xterm">開始xterm</button>
+				{{/if}}
+			</th>
+			<th class="d-none d-sm-table-cell">更新 / 建立</th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each machinelist}}
+			<tr>
+				<td>
+					<img class="active" src="/images/{{enable}}.png"/>
+				</td>
+				<td>
+					<span onclick="clickShowForm('{{mcode}}')" style="cursor: pointer;">{{mcode}}</span>
+				</td>
+				<td>{{vcode}} - {{brand}}</td>
+				<td>{{mclass}}</td>
+				{{#switch mtype}}
+					{{#case "type7"}}
+						<td><label class="bg-primary">{{mtype}}</label></td>
+					{{/case}}
+					{{#case "type8"}}
+						<td><label class="bg-success">{{mtype}}</label></td>
+					{{/case}}
+					{{#case "protect"}}
+						<td><label class="bg-danger">{{mtype}}</label></td>
+					{{/case}}
+					{{#case "ip64v2"}}
+						<td><label class="bg-warning">{{mtype}}</label></td>
+					{{/case}}
+					{{#default}}
+						<td>{{mtype}}</td>
+					{{/default}}
+				{{/switch}}
+				<td>
+					<span class="machine_ip" data-options='{
+						"mcode":"{{mcode}}"
+					}'>
+						{{primaryIp}}:{{primaryPort}}
+					</span>
+				</td>
+				<td>
+					<button class="btn btn-info action" target="_self" data-action_case="scp" data-mcode="{{mcode}}">
+						SCP
+					</button>
+				</td>
+				<td>
+					<div class="checkbox checkbox-primary">
+						<input class="xcheck" type="checkbox" value="{{mcode}}">
+					</div>
+				</td>
+				<td class="date d-none d-sm-table-cell">{{updatedAt}}
+					<br/>
+					<span class="create-at">{{createdAt}}</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="9">
+					{{#if rentalinfoalert}}
+						<i class="material-icons">
+							attach_money
+						</i><label class="text-danger">[Please Complete The Rental Info (購買日期 和 價錢)!!]</label> {{mcode}}
+					{{/if}}
+				</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
+</div>
+<div class="modal fade" id="ipsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ipsModalHeader">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col">
+							<div id="ipsModalContent">
+							</div>
+							<div class="alert alert-success fade" role="alert" id="copyipalert">
+								Auto Copy
+							</div>
+						</div>
+						<div class="col" id="ip64v2">
+							<div id="ip64v2_data">
+								ip64v2
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form id="formMachine">
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="username" class="col-form-label">mcode(Jenkins機器名字)</label>
+							<input type="text" class="form-control" id="mcode" name="mcode" required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="vcode" class="col-form-label">品牌</label>
+							<select id="vcode" name="vcode" class="form-control">
+								{{#each brandList}}
+									<option value="{{vcode}}">{{brand}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="password" class="col-form-label">密碼</label>
+							<input type="password" class="form-control" id="password" name="password" required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="password1" class="col-form-label">確認密碼</label>
+							<input type="password" class="form-control" id="password1" name="password1" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="username" class="col-form-label">登入名字</label>
+							<input type="username" class="form-control" id="username" name="username" required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="mtype" class="col-form-label">機種(type7,type8,protect)</label>
+							<select name="mtype" id="mtype" class="form-control">
+								{{#each mtypeList}}
+									<option value="{{name}}">{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="primaryIp" class="col-form-label">主IP</label>
+							<input type="text" class="form-control" id="primaryIp" name="primaryIp" required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="primaryPort" class="col-form-label">主Port</label>
+							<input type="text" class="form-control" id="primaryPort" name="primaryPort" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="remark" class="col-form-label">備注</label>
+							<textarea class="form-control" id="remark" name="remark"></textarea>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="sshKey" class="col-form-label">sshKey</label>
+							<input type="text" class="form-control" id="sshKey" name="sshKey" value="--" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-12 mb-10">
+							<label for="remarktag" class="col-form-label">TAG備注</label>
+							<textarea class="form-control" id="remarktag" name="remarktag"></textarea>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-4 mb-3">
+							<label for="enable" class="col-form-label">狀態</label>
+							<select id="enable" name="enable" class="form-control">
+								<option value="1" selected>正常</option>
+								<option value="0">停用</option>
+							</select>
+						</div>
+						<div class="col-md-8 mb-7">
+							<label for="vendor" class="col-form-label">機器廠商</label>
+							<select id="vendor" name="vendor" class="form-control">
+								{{#each machineVendorList}}
+									<option value="{{id}}" selected>{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="firstPayment" class="col-form-label">購買日期</label>
+							<input type="text" class="form-control datepicker" id="firstPayment" name="firstPayment"
+								   value="2018-01-01">
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="location" class="col-form-label">機房位置</label>
+							<select id="location" name="location" class="form-control">
+								{{#each machineLocation}}
+									<option value="{{name}}" selected>{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-4 mb-3">
+							<label for="mclass" class="col-form-label">Class</label>
+							<select id="mclass" name="mclass" class="form-control">
+								{{#each classList}}
+									<option value="{{name}}" selected>{{name}}</option>
+								{{/each}}
+							</select>
+						</div>
+						<div class="col-md-4 mb-3">
+							<label for="location" class="col-form-label">價錢</label>
+							<input type="text" class="form-control" id="price" name="price" value="{{price}}">
+						</div>
+						<div class="col-md-4 mb-4">
+							<label for="location" class="col-form-label">留位</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				<button type="button" id="btnUpdateMachine" class="btn btn-success" onclick="clickUpdateMachine()">
+					修改機器
+				</button>
+				<button type="button" id="btnCreateMachine" class="btn btn-primary" onclick="clickCreateMachine()">
+					建立機器
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{#extend "scripts"}}
+	<script src="/javascripts/machine.js"></script>
+	<script src="/javascripts/jquery.redirect.js"></script>
+	<script src="/javascripts/jquery.validate.min.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+{{/extend}}

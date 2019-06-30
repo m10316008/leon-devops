@@ -1,0 +1,7 @@
+upstream crm2serverpay{
+    ip_hash;
+
+    #seoul_mango_b
+    server 13.209.239.230:8080;  
+
+}

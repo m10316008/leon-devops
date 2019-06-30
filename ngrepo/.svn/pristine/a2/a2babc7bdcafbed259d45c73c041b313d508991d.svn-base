@@ -1,0 +1,475 @@
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       /usr/local/openresty/nginx/conf/mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+	gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    real_ip_header X-Forwarded-For;
+    proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;    
+	proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    include crm2_result188_loadbalance_setting.conf;  
+    upstream frontendcdn{
+		server 118.99.62.206:80; #002	
+		server 118.99.40.46:80; #010
+	}
+    upstream appscdn{
+        server 118.99.62.206:8011;
+		server 118.99.40.46:8011;
+    }
+    upstream appsios{
+        server 118.99.62.206:8012;
+		server 118.99.40.46:8012;
+    }
+    upstream appsapk{
+        server 118.99.62.206:8013;
+		server 118.99.40.46:8013;
+    }
+    upstream officeappsapk{
+        server 118.99.62.206:8027;
+		server 118.99.40.46:8027;
+    }
+    upstream officeappsios{
+        server 118.99.62.206:8028;
+		server 118.99.40.46:8028;
+    }
+    upstream officeappsapkv2{
+        server 118.99.62.206:8037;
+		server 118.99.40.46:8037;
+    }
+    upstream officeappsiosv2{
+        server 118.99.62.206:8038;
+		server 118.99.40.46:8038;
+    }
+    upstream coreagent{
+        server 118.99.62.206:8102;
+		server 118.99.40.46:8102;
+    }  
+
+
+
+    server {  ## default to 400 ##
+        include /apps/nginx/ip_type8_80.conf;
+        server_name  _ ;
+ 
+        return 400; 
+    }
+
+
+    server {  ## default to 404 ##
+        include /apps/nginx/ip_type8_80.conf;
+        server_name ubsvf6.com *.ubsvf6.com;
+        return 404;
+    }	
+	
+
+	
+    server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                       *.android6686.com  #android
+						android6686.com
+						1233865mmy.android6686.com
+						1106838928yyb.android6686.com
+						sscaz.android6686.com;
+
+        include crm2_frontend_apps_apk.conf;      
+    }    
+    
+    server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name   
+                       az1.app6686.com
+                       az2.app6686.com
+                       az3.app6686.com
+                       az4.app6686.com
+                       az5.app6686.com;
+
+        include crm2_frontend_apps_apk_office_app.conf;      
+    }   
+		
+    server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name v2apk.qm6686.com;
+
+        include crm2_frontend_apps_apkv2_office_app.conf;      
+    }
+
+    server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name v2apk.qm6686.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/qm6686.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/qm6686.com.key;
+
+        include crm2_frontend_apps_apkv2_office_app.conf;      
+    }
+
+     server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name v2android.qm6686.com;
+
+        return 301 https://$server_name$request_uri;     
+    }
+
+    server {    ###### frontend android ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name v2android.qm6686.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/qm6686.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/qm6686.com.key;
+
+        include crm2_frontend_apps_androidv2_office_app.conf;      
+    }
+	
+	
+    server {    ###### frontend ios ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                       *.hh6686.com        #ios
+                       1380197211zq.hh6686.com    www.1380197211zq.hh6686.com
+					   1364501021ty.hh6686.com    www.1364501021ty.hh6686.com
+                       *.ios6686.com 
+                       ios6686.com
+                        ios8.lebole5.com ;
+
+        include crm2_frontend_apps_ios.conf;      
+    }
+
+    
+    server {    ###### frontend ios ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name   
+                       ios1.app6686.com
+                       ios2.app6686.com
+                       ios3.app6686.com
+                       ios4.app6686.com
+                       ios5.app6686.com;
+
+        include crm2_frontend_apps_ios_office_app.conf;      
+    }   
+    
+    server {    ###### frontend ios ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name v2ios.qm6686.com;
+
+        include crm2_frontend_apps_iosv2_office_app.conf;      
+    }
+
+    server {    ###### frontend ios ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name v2ios.qm6686.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/qm6686.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/qm6686.com.key;
+
+        include crm2_frontend_apps_iosv2_office_app.conf;      
+    }
+	
+
+	
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name    
+                    6686tk.tv   www.6686tk.tv
+                    6686sky.me  www.6686sky.me;
+
+        include crm2_frontend.conf;
+    }
+
+
+    server {    ###### redirect ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name
+                    6686a1.com   www.6686a1.com
+                    6686a2.com   www.6686a2.com
+                    6686a3.com   www.6686a3.com
+                    6686a4.com   www.6686a4.com
+                    6686a5.com   www.6686a5.com
+                    6686a6.com   www.6686a6.com
+                    6686a7.com   www.6686a7.com
+                    6686a8.com   www.6686a8.com
+                    6686a9.com   www.6686a9.com
+					6686b1.com   www.6686b1.com
+                    hg0909.vip   www.hg0909.vip
+                    hk6686.co    www.hk6686.co
+                    ubs6686.com  www.ubs6686.com;
+		            
+
+        return 302 https://$host$request_uri;
+    }
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    
+                    6686a1.com   www.6686a1.com 
+                    6686a2.com   www.6686a2.com
+                    6686a3.com   www.6686a3.com
+                    6686a4.com   www.6686a4.com
+                    6686a5.com   www.6686a5.com
+                    6686a6.com   www.6686a6.com
+                    6686a7.com   www.6686a7.com
+                    6686a8.com   www.6686a8.com
+                    6686a9.com   www.6686a9.com	;
+					
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/6686a1.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/6686a1.com.key;
+        include crm2_frontend.conf;
+    }
+	
+	
+		 server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    
+                    6686b1.com www.6686b1.com  ;
+					
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/6686b1.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/6686b1.com.key;
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    6686tk.tv
+		               www.6686tk.tv;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/6686tk.tv.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/6686tk.tv.key;
+
+        include crm2_frontend.conf;
+    }
+    
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    hk6686.co
+		               www.hk6686.co ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hk6686.co.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hk6686.co.key;
+
+
+        include crm2_frontend.conf;
+    }
+    
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    6686sky.me
+		               www.6686sky.me ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/6686sky.me.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/6686sky.me.key;
+
+
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name    hg0909.vip
+		               www.hg0909.vip ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg0909.vip.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg0909.vip.key;
+
+
+        include crm2_frontend.conf;
+    }
+	server {   ###### agent ######
+        include /apps/nginx/ip_type8_80.conf;
+        server_name  sky6676.net
+                     www.sky6676.net;
+		
+        include crm2_setting.conf;        
+        include crm2_agent.conf;
+    }
+    
+#	server {   ###### agent ######
+#        listen       443 ssl http2;
+#        server_name  sky6676.net www.sky6676.net;
+#		
+#        ssl_certificate     /usr/local/openresty/nginx/conf/cert/sky6676.net.crt;
+#        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/sky6676.net.key;
+#        include crm2_setting.conf;        
+#        include crm2_agentv2.conf;
+#    }
+
+	server {  ## payment gateway ##
+		include /apps/nginx/ip_type8_80.conf;
+        server_name   newdadppy.ubssp.com; 
+                        # placeholder 只有補位作用，沒有實際作用
+		return 404;
+	}
+
+    server {    ###### pay : port 80 ######
+         include /apps/nginx/ip_type8_80.conf;
+         server_name
+                    # pay1.ubs6686.com
+                    # pay101.qm6686.com
+                    # pay110.qm6686.com
+                    # pay118.qm6686.com
+                    # pay122.qm6686.com
+                    # pay123.qm6686.com
+                    # pay146.qm6686.com
+                    # pay59.qm6686.com
+                    # pay76.qm6686.com
+                    # pay90.qm6686.com
+                    # pay98.qm6686.com
+                    pay.2835vip.com
+                    pay.66taobaovip.com
+                    pay.aaugz.cn
+                    pay.baojia99.com
+                    pay.bss17287.com
+                    pay.bssLx711.com
+                    pay.bssht1727.com
+                    pay.bty6686.com
+                    pay.daking101.com
+                    pay.dlqpj.cn
+                    pay.feiqing11.com
+                    pay.feiqing22.com
+                    pay.guanchenggg.com
+                    pay.gzpymy6666.com
+                    pay.haitaowang742.com
+                    pay.haod6686.com
+                    pay.haopinzhivip.com
+                    pay.hehebing99.com
+                    pay.hengben168.com
+                    pay.hexuan11.com
+                    pay.hpz6165vip.com
+                    pay.jyun6686.com
+                    pay.kaixingjiancai.com
+                    pay.kingvip6789.com
+                    pay.lianjuansb.com
+                    pay.mingjiesy.com
+                    pay.mingyuangong.com
+                    pay.minhjmy166.com
+                    pay.nuoen6789.com
+                    pay.ojhah.cn
+                    pay.shungding.com
+                    pay.songdaofeng22.com
+                    pay.tanglong88.com
+                    pay.tejiagouwu33.com
+                    pay.tzwygc88.com
+                    pay.uxytj.cn
+                    pay.vip67vip89.com
+                    pay.vnbcw.cn
+                    pay.xindafu66.com
+                    pay.xinghua8182.com
+                    pay.xthup.cn
+                    pay.yuanshun11.com
+                    pay.zhilimoyi.com
+                    pay1.daLangdianqi.com
+                    pay1.gljk11.com
+                    pay1.gzpymy6666.com
+                    pay1.hehebing99.com
+                    pay1.qm6686.com
+                    pay1.yeqianchen89.com
+                    pay1.yongzhan68.com
+                    pay2.qm6686.com
+                    pay3.qm6686.com 
+	                pay4.qm6686.com 
+	                pay5.qm6686.com 
+	                pay6.qm6686.com 
+	                pay7.qm6686.com 
+	                pay8.qm6686.com 
+	                pay9.qm6686.com 
+	                pay10.qm6686.com 
+	                pay11.qm6686.com 
+	                pay12.qm6686.com 
+	                pay13.qm6686.com 
+	                pay14.qm6686.com 
+	                pay15.qm6686.com 
+	                pay16.qm6686.com 
+	                pay17.qm6686.com 
+	                pay18.qm6686.com 
+	                pay19.qm6686.com 
+	                pay20.qm6686.com 
+	                pay21.qm6686.com 
+	                pay22.qm6686.com 
+	                pay23.qm6686.com 
+	                pay24.qm6686.com 
+	                pay25.qm6686.com 
+	                pay26.qm6686.com 
+	                pay27.qm6686.com 
+	                pay28.qm6686.com 
+	                pay29.qm6686.com 
+	                pay30.qm6686.com
+                    pay53.qm6686.com
+                    pay72.qm6686.com;
+
+         include nginx_pay.conf;
+    }
+
+    server {    ###### pay : ssl ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name   pay1.hg0909.vip;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg0909.vip.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg0909.vip.key;
+
+        include nginx_pay.conf;
+     }
+
+  #  server {    ###### pay : ssl ######
+  #      include /apps/nginx/ip_type8_443_ssl.conf;
+  #      server_name   pay1.ubs6686.com;
+  #      ssl_certificate     /usr/local/openresty/nginx/conf/cert/ubs6686.com.crt;
+  #      ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ubs6686.com.key;
+  #
+  #      include nginx_pay.conf;
+  #  }
+
+    server {    ###### pay : ssl ######
+        include /apps/nginx/ip_type8_443_ssl.conf;
+        server_name  
+            #    pay101.qm6686.com
+            #    pay110.qm6686.com
+            #    pay118.qm6686.com
+            #    pay122.qm6686.com
+            #    pay123.qm6686.com
+                pay1.qm6686.com
+                pay2.qm6686.com
+                pay3.qm6686.com 
+	            pay4.qm6686.com 
+	            pay5.qm6686.com 
+	            pay6.qm6686.com 
+	            pay7.qm6686.com 
+	            pay8.qm6686.com 
+	            pay9.qm6686.com 
+	            pay10.qm6686.com 
+	            pay11.qm6686.com 
+	            pay12.qm6686.com 
+	            pay13.qm6686.com
+                pay14.qm6686.com
+            #    pay146.qm6686.com  
+	            pay15.qm6686.com 
+	            pay16.qm6686.com 
+	            pay17.qm6686.com 
+	            pay18.qm6686.com 
+	            pay19.qm6686.com 
+	            pay20.qm6686.com
+                pay21.qm6686.com 
+	            pay22.qm6686.com
+                pay23.qm6686.com  
+	            pay24.qm6686.com 
+	            pay25.qm6686.com 
+	            pay26.qm6686.com 
+	            pay27.qm6686.com 
+	            pay28.qm6686.com 
+	            pay29.qm6686.com 
+	            pay30.qm6686.com
+                pay53.qm6686.com
+            #    pay59.qm6686.com
+                pay72.qm6686.com;
+            #    pay76.qm6686.com
+            #    pay90.qm6686.com
+            #    pay98.qm6686.com
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/qm6686.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/qm6686.com.key;
+
+        include nginx_pay.conf;
+    }
+
+    include crm2_backend_setting.conf;
+
+}

@@ -1,0 +1,21 @@
+location /mobile/ {
+______DEFINED_CACHE______
+
+    proxy_intercept_errors on;
+    error_page 404 @reactindexhtml;
+
+    rewrite ^(.*)$ /______BRAND______/______STAGE______/mobile188$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /______BRAND______/______STAGE______/mobile188/ /;
+}
+
+location @reactindexhtml {
+______DEFINED_CACHE______
+
+    rewrite ^(.*)$  /______BRAND______/______STAGE______/mobile188/mobile/index.html break;
+    include crm2_frontend_s3bucket.conf;
+    header_filter_by_lua '
+        ngx.status = 200
+    ';
+}
+

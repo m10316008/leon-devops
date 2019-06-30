@@ -1,0 +1,2 @@
+rm -rf /apps/temp/cache/
+mkdir -p /apps/temp/cache

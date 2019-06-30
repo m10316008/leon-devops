@@ -1,0 +1,608 @@
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  600;
+    
+    limit_req_zone $binary_remote_addr zone=req_limit001:10m rate=1r/s;
+    limit_conn_zone $binary_remote_addr zone=req_limit002:10m;
+
+	server_names_hash_max_size 131072;
+
+    #log_format myformat '$http_x_forwarded_for - $remote_user [$time_local] "$host" "$request" '
+    #        '$status $body_bytes_sent "$http_referer" '
+    #        '"$http_user_agent" $request_time';
+    
+    #access_log logs/access.log  myformat;
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    proxy_cache_path x_cache_fnagent levels=1:2 keys_zone=cache_fnagent:10m inactive=24h  max_size=10g; 
+    proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    proxy_cache_path x_cache_odds2 levels=1:2 keys_zone=cache_odds2:10m inactive=24h  max_size=10g;
+
+    include crm2_result188_loadbalance_setting.conf;
+	
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+    
+	include nginx_status.conf;
+
+    server {  ## default to 400 ##
+        listen       80 default_server;
+        server_name  _ www.*;
+ 
+        return 400; 
+    }
+
+    server {  ## default to 400 ##
+        listen       443 default_server;
+        server_name  _  www.*;
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/self-signed/nginx-selfsigned.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/self-signed/nginx-selfsigned.key;
+       return 400; 
+    }
+     
+
+    server {  ## default to 404 ##
+        listen       80 ;
+        server_name 
+                    funcityvb2.com *.funcityvb2.com;
+ 
+        return 404;  
+    }
+	
+    server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0000.conf;                                         
+
+        return 302 https://$host$request_uri;    
+    }
+    
+    server {    ######  frontend : mobile only ######
+        listen       80;
+
+        server_name   
+                        *.ldc456.com
+                        #*.ldc678.com						
+						*.ldc5588.com
+						*.ldc6688.com
+						*.ldc8855.com
+						*.ldc8856.com
+						*.ldc8857.com
+						*.ldc8858.com
+						*.ldc8859.com						
+						*.ldc8875.com
+						*.ldc8885.com						
+                        *.ldc9988.com
+                    	ldc456.com	www.ldc456.com
+                    	ldc5588.com	www.ldc5588.com
+                    	ldc6688.com	www.ldc6688.com
+                    	#ldc678.com	www.ldc678.com
+                    	ldc683.com	www.ldc683.com #20180905
+                        ldc719.com www.ldc719.com  #20190124
+                    	#ldc748.com	www.ldc748.com #20180905                    	
+                        ldc792.com  www.ldc792.com #2019024                    	
+                    	ldc8855.com	www.ldc8855.com
+                    	ldc8856.com	www.ldc8856.com
+                    	ldc8857.com	www.ldc8857.com
+                    	ldc8858.com	www.ldc8858.com
+                    	ldc8859.com	www.ldc8859.com                    	
+                    	ldc8875.com	www.ldc8875.com
+                    	ldc8885.com	www.ldc8885.com
+                    	ldc9988.com	www.ldc9988.com
+                        ldc6.cc www.ldc6.cc
+                        ldc9.cc www.ldc9.cc;
+
+        include crm2_frontend_mobile.conf;
+    }
+  
+#    server {    ######  frontend : mobile apps only ######
+#        listen       80;
+#
+#        server_name
+#                        *.ldc811.com           # iosyy
+#                        ldc811.com ;         # iosyy
+#
+#                    
+#        include crm2_frontend_apps_iosyy.conf;
+#    }
+    
+    server {    ######  frontend : mobile apps only ######
+        listen       80;
+
+        server_name
+                    pgldc.com # apk
+                    ldc552.com      www.ldc552.com
+                    ldc554.com      www.ldc554.com
+                    ldc155.com      www.ldc155.com
+                    ldc133.com       www.ldc133.com
+                    ldc557.com       www.ldc557.com 
+                    *.pgldc.com ;         # apk
+
+                    
+        include crm2_frontend_apps_apk_office_app.conf;
+    }
+    
+    server {    ######  frontend : mobile apps ios only ######
+        listen       80;
+
+        server_name
+                    ldcaos.com           # ios
+                    *.ldcaos.com;        # ios 
+        
+        include crm2_frontend_apps_ios.conf;
+    }
+
+    server {    
+        listen       80;
+
+        server_name
+                    ldc701.com  www.ldc701.com  ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    ldc770.com  www.ldc770.com  ######  frontend : ios v2 : crm2 front end : 20190311 ######   
+                    ldc835.com  www.ldc835.com  ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                    ldc8866.com  www.ldc8866.com ;   ######  frontend : ios v2 : crm2 front end : 20190311 ######
+                                     
+        location = /mobile/static/js/apps_inject.js {
+            return 302 /mobile/static/js/apps_inject_iosv2.js;
+        }
+
+        location = /mobile/static/js/app-service.js {
+            rewrite ^(.*)$  /vb2/prod/mobile188/mobile/static/js/app-service.js break;
+            include crm2_frontend_s3bucket.conf;
+	        sub_filter_types *;         
+	        sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+        }        
+
+        include crm2_frontend.conf;
+    }
+    
+    
+    server {    ######  frontend : mobile apps : ios office app ######
+        listen       80;
+
+        server_name
+                    ldc766.com	www.ldc766.com
+					ldcios.com
+                    *.ldcios.com;
+                    
+        include crm2_frontend_apps_ios_office_app.conf;
+    }
+    
+    
+    
+    
+    server {    ###### frontend ######
+        listen       80;
+
+        include nginx_fn_server_names_0001.conf;
+
+        include crm2_frontend.conf;
+    }
+
+    server {    #### web space ####
+        listen 443 ssl http2;
+
+        server_name ldciosapp.com www.ldciosapp.com;
+
+        
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldciosapp.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldciosapp.com.key;
+        
+        include crm2_frontend_webspace.conf;
+    }
+    server {    ###### frontend 20190606######
+        listen      443	ssl http2;
+        server_name   ldc756.com  www.ldc756.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc756.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc756.com.key;
+        
+        include crm2_frontend.conf;
+    }   
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc8.vip
+                      www.ldc8.vip;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc8.vip.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc8.vip.key;
+        
+        include crm2_frontend.conf;
+    }
+    
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc883.com
+                      www.ldc883.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc883.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc883.com.key;
+        
+        include crm2_frontend.conf;
+    }
+	
+	server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   
+                        ldc353.com www.ldc353.com
+                        ldc358.com www.ldc358.com
+						ldc363.com www.ldc363.com
+                        ldc361.com www.ldc361.com
+                        ldc359.com www.ldc359.com
+                        ldc355.com www.ldc355.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc353.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc353.com.key;
+        
+        include crm2_frontend.conf;
+    }
+	
+		server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   
+                        le807.com www.le807.com
+                        le944.com www.le944.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/le807.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/le807.com.key;
+        
+        include crm2_frontend.conf;
+    }
+	
+	server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc809.com
+                      www.ldc809.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc809.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc809.com.key;
+        
+        include crm2_frontend_apps_apk.conf;
+    }
+
+	server {
+        listen 80;
+        server_name	ldc707.com www.ldc707.com
+					ldc726.com www.ldc726.com 
+					ldc822.com www.ldc822.com; 
+                
+	#	location = /mobile/static/js/apps_inject.js {
+    #        return 302 /mobile/static/js/apps_inject_v2android.js;
+    #    }
+
+        include crm2_frontend.conf;
+    }
+
+
+	server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc826.com
+                      www.ldc826.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc826.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc826.com.key;
+        
+        include crm2_frontend.conf;
+    }
+    
+	server {    ###### frontend ######
+        listen      443	ssl http2;
+		server_name 	                        
+						ldc664.com	www.ldc664.com
+					#	ldc665.com	www.ldc665.com
+						ldc667.com	www.ldc667.com
+						ldc669.com	www.ldc669.com;
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc663.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc663.com.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {
+        listen 443 ssl http2;
+        server_name
+                    ldc.cn  www.ldc.cn;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc.cn.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc.cn.key;
+        
+        location = / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$  /vb2/prod/leduchenghotel/index.html break;
+            include crm2_frontend_s3bucket.conf;
+        }
+
+        location / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vb2/prod/leduchenghotel$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vb2/prod/leduchenghotel/ /;
+        }
+    }
+	
+	
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   
+						ldc666.me	www.ldc666.me
+						ldc666.net	www.ldc666.net
+						ldc666.tv	www.ldc666.tv;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc666.me.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc666.me.key;
+        
+        include crm2_frontend.conf;
+    }	
+	
+	
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   
+						ldc666.com	www.ldc666.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc666.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc666.com.key;
+        
+        include crm2_frontend.conf;
+    }		
+    
+    
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc817.com  www.ldc817.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc817.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc817.com.key;
+        
+        include crm2_frontend.conf;
+    } 
+    
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc881.com  www.ldc881.com
+                      ldc882.com  www.ldc882.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc881.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc881.com.key;
+        
+        include crm2_frontend.conf;
+    }
+    
+    
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc8.com  www.ldc8.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc8.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc8.com.key;
+        
+        include crm2_frontend.conf;
+    }
+	
+	server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc775.com  www.ldc775.com;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc775.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc775.com.key;
+        
+        include crm2_frontend.conf;
+    }
+
+    server {    ###### frontend ######
+        listen      443	ssl http2;
+        server_name   ldc66.tv  www.ldc66.tv;  
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc66.tv.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc66.tv.key;
+        
+        include crm2_frontend.conf;
+    }
+	
+    
+    
+#    server {    ###### frontend ######
+#        listen       443 ssl http2;
+#        server_name  ldc0.net;
+#
+#        include crm2_frontend.conf;
+#    }
+    
+
+    server {    ###### frontend: hotel ######
+        listen       80;
+        server_name  
+                     leducheng.com  www.leducheng.com
+                     ldc8888.com  www.ldc8888.com;
+
+        location = / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$  /vb2/prod/leduchenghotel/index.html break;
+            include crm2_frontend_s3bucket.conf;
+        }
+
+        location / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vb2/prod/leduchenghotel$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vb2/prod/leduchenghotel/ /;
+        }
+    }
+
+    server {    ###### frontend: hotel ######
+        listen       443 ssl;
+        server_name  
+                     leducheng.com  www.leducheng.com;
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/leducheng.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/leducheng.com.key;
+
+        location = / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$  /vb2/prod/leduchenghotel/index.html break;
+            include crm2_frontend_s3bucket.conf;
+        }
+
+        location / {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vb2/prod/leduchenghotel$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vb2/prod/leduchenghotel/ /;
+        }
+
+    }    
+    
+    server {    ###### agent ######
+        listen       80;
+        server_name  a.hh99880.com;
+        
+        include crm2_setting.conf;        
+        include crm2_agentv2.conf;
+    }
+
+	server {    ###### redirect:agent ######
+        listen       80;
+        server_name  
+		            ldc00.com  www.ldc00.com;
+        
+        return 302 https://$host$request_uri;
+    }
+	
+    
+    server {    ###### agent ######
+        listen       443 ssl http2;
+        server_name  ldc00.com  www.ldc00.com;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc0.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc0.com.key;
+
+        include crm2_setting.conf;
+        include crm2_agentv2.conf;
+    }
+
+    server {    ###### moblie_apps ######
+        listen       80;
+        server_name                    
+                    ldc8877.com    www.ldc8877.com
+                    ldccp999.com    www.ldccp999.com;
+
+        include crm2_frontend_apps.conf;
+    }
+    server {    ###### moblie_apps ######
+        listen       443 ssl http2;
+        server_name  
+                        ldccp999.com    www.ldccp999.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldccp999.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldccp999.com.key;       
+
+        include crm2_frontend_apps.conf;
+    }
+
+    server {    ###### moblie_apps apk ######
+        listen      443	ssl http2;
+		server_name 	
+                        ldc663.com	www.ldc663.com;
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc663.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc663.com.key;
+        
+        include crm2_frontend_apps_apk.conf;
+    }
+
+
+	server {    ###### moblie_apps apk ######
+        listen      80;
+		server_name
+                 	ldc335.com	www.ldc335.com;
+                    #ldc667.com	www.ldc667.com
+        
+        include crm2_frontend_apps_apk.conf;
+    }
+
+
+	server {    ###### moblie_apps apk ######
+        listen      443	ssl http2;
+		server_name 	                        
+						ldc665.com	www.ldc665.com;
+						#ldc667.com	www.ldc667.com;
+
+	    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc663.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc663.com.key;
+        
+        include crm2_frontend_apps_apk.conf;
+    }
+
+    
+	server {  ## payment gateway ##
+		listen		80;
+        server_name  txhs57766.ldc88.co; 
+                        # placeholder åªæœ‰è£œä½ä½œç”¨ï¼Œæ²’æœ‰å¯¦éš›ä½œç”¨
+		return 404;
+	}
+    
+    	
+    
+    server {  ## payment gateway ##
+        listen          80;
+        server_name     
+                    	*.ldczf.com
+                    	cc1.chuanyu1.cn
+                    	cc1.hanfud1.cn
+                    	cc1.jiajian1.cn
+                    	cc1.lqjz2.cn
+                    	cc1.shuxungwk1.cn
+                        cc1.tongmanj.cn
+                    	cc1.xckjc2.cn
+                    	cc1.xiangmanjyj1.cn
+                        cc1.yafuruis1.cn
+                    	cc1.yijuggs1.cn
+                    	cc1.zanziwlkj1.cn
+						cc1.hanjias1.cn 
+                    	cc2.ypeng2.cn
+                    	pay.fuhengjm.com
+                    	pay.henanxcl.com
+                    	pay1.sda231.cn
+                    	pay1.zxcfd367.cn
+                    	pay2.as2354.com
+                    	pay2.hsjz2.cn
+						cc1.shixues1.cn
+						pay.xinhuoyua1.cn
+						pay.dangxiuyi1.cn
+						pay.konggjq1.cn
+						cc1.minglangs1.cn
+						cc1.cunfenm2.cn
+                        cc1.zichuncy1.cn
+                        cc1.zhiyuanw2.cn
+						cc1.lsirunhui1.cn
+                        cc1.mingyoul2.cn
+                        cc1.wenxuys11.cn
+                        cc1.tianshanh1.cn
+						cc1.lisiwlhk1.cn
+                        cc1.laijinhe1.cn
+                        cc1.yusushiye.cn
+                        cc1.zhenyuanj1.cn;
+
+        include nginx_pay.conf;
+    }
+	
+    
+    server {  ## payment gateway ##
+                listen          443 ssl http2;
+                server_name      *.ldczf.com ;
+                ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldczf.com.crt;
+                ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldczf.com.key;
+
+
+                include nginx_pay.conf;
+
+    }
+    include crm2_upstream.conf;
+}
+

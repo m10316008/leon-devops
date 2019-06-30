@@ -1,0 +1,75 @@
+
+
+location /odds2/ {
+	proxy_buffering        on;           
+	proxy_cache_valid      200  60s;
+	proxy_cache            cache_odds2;
+	proxy_cache_key $uri$is_args$args;
+	add_header expire-tag "o2 60s";
+
+	error_page 410 = @odds210second;
+
+	if ($arg_pt = "4") {		
+		return 410;
+	}
+	if ($arg_iip = "true") {		
+		return 410;
+	}
+	if ($arg_reqUrl ~ "/sport/") {
+		return 410;
+	}
+	if ($arg_reqUrl ~ "/in-play/") {
+		return 410;
+	}
+	proxy_pass http://node188core;
+}
+location @odds210second {
+	add_header expire-tag "o2 10s";
+	proxy_buffering        on;           
+	proxy_cache_valid      200  10s;
+	proxy_cache            cache_odds2;
+	proxy_cache_key $uri$is_args$args;
+	proxy_pass http://node188core;
+}
+
+#location /odds2/ {
+#    proxy_pass    http://node188.local:8091;
+#}
+
+location /odds5/ {
+	proxy_buffering        on;
+	proxy_cache_valid      200  1m;
+	proxy_cache            STATIC;
+	proxy_cache_key $uri$is_args$args;
+    proxy_pass    http://odds5up;
+}
+
+location /odds5/mid2rid {
+  proxy_buffering        on;
+  proxy_cache_valid      200  20s;
+  proxy_cache            STATIC;
+    proxy_pass    http://node188core;
+}
+
+location /zh-cn/info-centre/ {	
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+    proxy_pass    http://lbresult188;
+}
+
+location /public_result188 {
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+   	proxy_pass    http://lbresult188;
+}
+
+
+location /smallSix/ {
+	#return 200 "{\"errorCode\":0,\"message\":\"操作成功\",\"result\":{\"businessCode\":0,\"data\":{\"serverTime\":\"2018-06-21 21:26:25\",\"fiveElements\":[0,0,0,0,0,0,0],\"chineseZodiac\":[0,0,0,0,0,0,0],\"color\":[0,0,0,0,0,0,0],\"preDrawTime\":\"2018-06-21 21:30:00\",\"preDrawIssue\":2018068,\"drawIssue\":2018069,\"drawTime\":\"2018-06-21 21:30:00\",\"preDrawCode\":\"\",\"sumTotal\":\"\",\"type\":6},\"message\":\"操作成功\"}}";
+	proxy_buffering        on;
+	proxy_cache_valid      200  120m;
+	proxy_cache            STATIC;
+	proxy_pass    http://lbresult188;
+}

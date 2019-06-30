@@ -1,0 +1,21 @@
+location / {
+    proxy_intercept_errors on;
+    error_page 404 @indexhtmlagentv2;
+
+    rewrite ^(.*)$ /vf6/prod/agentv2$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vf6/prod/agentv2/ /;
+}
+
+location @indexhtmlagentv2 {
+    rewrite ^(.*)$  /vf6/prod/agentv2/fnagent/index.html break;
+    include crm2_frontend_s3bucket.conf;
+    header_filter_by_lua '
+        ngx.status = 200
+    ';
+}
+
+location /bnagent/ {
+    include crm2_path_proxy_pass.conf;
+}
+include crm2_danger.conf;

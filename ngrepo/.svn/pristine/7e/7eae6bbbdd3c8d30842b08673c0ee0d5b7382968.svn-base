@@ -1,0 +1,65 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+
+location /brand/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vb2/prod/brand$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vb2/prod/brand/ /;
+  #  proxy_redirect ~http[s]*://[^/]+/(.*) $scheme://$host/$1;
+}
+
+location /jetsostatic/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  1m;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vb2/prod/jetsostatic$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vb2/prod/jetsostatic/ /;
+}
+
+location /mobile {	
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    proxy_intercept_errors on;
+    error_page 404 @reactindexhtml;
+
+    rewrite ^(.*)$ /vb2/prod/mobile188$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vb2/prod/mobile188/ /;
+}
+
+location @reactindexhtml {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$  /vb2/prod/mobile188/mobile/index.html break;
+    include crm2_frontend_s3bucket.conf;
+    header_filter_by_lua '
+        ngx.status = 200
+    ';
+}
+
+location = / {
+    return 302 /mobile;
+}
+
+
+#    tell the user to what type of module this domain belongs
+#    通知用戶，這是甚麼類型的域名
+location = /servingpage/which193.json{
+   set $module_type "front end mobile";
+   
+   return 200 "{    \"domain\":  \"$host\",
+                    \"server port\":  \"$server_port\", 
+                    \"type\":  \"$module_type\"    }";
+}

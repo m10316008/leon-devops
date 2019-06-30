@@ -1,0 +1,9 @@
+
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+location / {
+        root   $project_path/web/brand/web-space/;
+        index  index.html;
+}

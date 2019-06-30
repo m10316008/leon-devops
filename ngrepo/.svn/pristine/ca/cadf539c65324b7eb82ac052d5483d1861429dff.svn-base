@@ -1,0 +1,147 @@
+# server {
+#     listen 443 ssl http2;
+#     server_name v2android.228365365.app;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.key;
+    
+# #    location = /mobile/static/js/apps_inject.js {
+# #        return 302 /mobile/static/js/apps_inject_v2android.js;
+# #    }
+#     include crm2_frontend.conf;
+# }
+
+# server {
+#     listen 443 ssl http2;
+#     server_name v2android.bet338.app;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.key;
+    
+# #    location = /mobile/static/js/apps_inject.js {
+# #        return 302 /mobile/static/js/apps_inject_v2android.js;
+# #    }
+#     include crm2_frontend.conf;
+# }
+
+# server {
+#     listen 443 ssl http2;
+#     server_name v2ios.228365365.app;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.key;
+    
+#     location = /mobile/static/js/apps_inject.js {
+#         return 302 /mobile/static/js/apps_inject_iosv2.js;
+#     }
+
+#     location = /mobile/static/js/app-service.js {
+#         rewrite ^(.*)$  /vj10/prod/mobile188/mobile/static/js/app-service.js break;
+#         include crm2_frontend_s3bucket.conf;
+#         sub_filter_types *;         
+#         sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+#     }
+
+#     include crm2_frontend.conf;
+# }
+# server {
+#     #type 9 ios v2 debug
+#     listen 443 ssl http2;
+#     server_name v2iostest.228365365.app;
+
+#     #for fix ios double slash issue
+#     merge_slashes off;
+#     rewrite ^(.*?)//+(.*?)$ $1/$2 permanent;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.228365365.app.key;
+    
+#     location = /mobile/static/js/apps_inject.js {
+#         return 302 /mobile/static/js/apps_inject_iosv2.js;
+#     }
+
+#     location = /mobile/static/js/app-service.js {
+#         rewrite ^(.*)$  /vj10/prod/mobile188/mobile/static/js/app-service.js break;
+#         include crm2_frontend_s3bucket.conf;
+#         sub_filter_types *;         
+#         sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+#     }
+#     include crm2_frontend.conf;
+# }
+
+
+# server {
+#     listen 443 ssl http2;
+#     server_name v2ios.bet338.app;
+
+#     #for fix ios double slash issue
+#     merge_slashes off;
+#     rewrite ^(.*?)//+(.*?)$ $1/$2 permanent;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.key;
+    
+#     location = /mobile/static/js/apps_inject.js {
+#         return 302 /mobile/static/js/apps_inject_iosv2.js;
+#     }
+#     location = /mobile/static/js/app-service.js {
+#         rewrite ^(.*)$  /vj10/prod/mobile188/mobile/static/js/app-service.js break;
+#         include crm2_frontend_s3bucket.conf;
+#         sub_filter_types *;         
+#         sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+#     }
+#     include crm2_frontend.conf;
+# }
+
+
+# server {
+#     listen 443 ssl http2;
+#     server_name 188bcvip.com;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/188365vip.com.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/188365vip.com.key;
+    
+#      #for fix ios double slash issue
+#     merge_slashes off;
+#     rewrite ^(.*?)//+(.*?)$ $1/$2 permanent;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.key;
+    
+#     location = /mobile/static/js/apps_inject.js {
+#         return 302 /mobile/static/js/apps_inject_iosv2.js;
+#     }
+#     location = /mobile/static/js/app-service.js {
+#         rewrite ^(.*)$  /vj10/prod/mobile188/mobile/static/js/app-service.js break;
+#         include crm2_frontend_s3bucket.conf;
+#         sub_filter_types *;         
+#         sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+#     }
+#     include crm2_frontend.conf;
+# }
+
+# server {
+#     listen 443 ssl http2;
+#     server_name www.188bcvip.com;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/www.338bc.com.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/www.338bc.com.key;
+    
+#      #for fix ios double slash issue
+#     merge_slashes off;
+#     rewrite ^(.*?)//+(.*?)$ $1/$2 permanent;
+    
+#     ssl_certificate     /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.crt; 
+#     ssl_certificate_key /usr/local/openresty/nginx/conf/certs/asterisk.bet338.app.key;
+    
+#     location = /mobile/static/js/apps_inject.js {
+#         return 302 /mobile/static/js/apps_inject_iosv2.js;
+#     }
+#     location = /mobile/static/js/app-service.js {
+#         rewrite ^(.*)$  /vj10/prod/mobile188/mobile/static/js/app-service.js break;
+#         include crm2_frontend_s3bucket.conf;
+#         sub_filter_types *;         
+#         sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+#     }
+#     include crm2_frontend.conf;
+# }

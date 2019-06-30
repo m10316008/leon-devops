@@ -1,0 +1,99 @@
+server {
+    listen 443 ssl http2;
+    server_name
+        aws9527.funcityvb2.com;
+                
+    
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/aws9527.funcityvb2.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/aws9527.funcityvb2.com.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server { 
+    listen      443	ssl http2;
+    server_name   ldc883.com
+              www.ldc883.com;  
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc883.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc883.com.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server {    
+    listen      443	ssl http2;
+    server_name   
+                ldc882.com  www.ldc882.com;  
+	ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc881.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc881.com.key;
+    
+    include crm2_frontend.conf;
+}
+
+server {    
+    listen      443	ssl http2;
+    server_name   
+                ldc666.me		www.ldc666.me
+                ldc666.net		www.ldc666.net
+                ldc666.tv		www.ldc666.tv;  
+	ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc666.me.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc666.me.key;
+    
+    include crm2_frontend.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+        ldc663.com www.ldc663.com
+		ldc665.com www.ldc665.com;
+		               
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc663.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc663.com.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+        ldc8.vip www.ldc8.vip;
+		               
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc8.vip.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc8.vip.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+        ldc9.com www.ldc9.com;
+		               
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc9.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc9.com.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+        ldc756.com www.ldc756.com;
+		               
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/ldc756.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ldc756.com.key;
+    	
+    include crm2_frontend.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+        pgldc.com www.pgldc.com;
+		               
+    ssl_certificate     /usr/local/openresty/nginx/conf/cert/pgldc.com.crt;
+    ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pgldc.com.key;
+    	
+    include crm2_frontend.conf;
+}

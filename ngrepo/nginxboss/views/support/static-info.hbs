@@ -1,0 +1,178 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/static-info.css"/>
+{{/extend}}
+
+<div class="container-fluid">
+	<div class="col-md-8">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="cloudflare-tab" data-toggle="tab" href="#cloudflare" role="tab"
+				   aria-controls="cloudflare" aria-selected="true">Cloudflare</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="noip-tab" data-toggle="tab" href="#noip" role="tab" aria-controls="noip"
+				   aria-selected="false">No-ip</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="chinanetcenter-tab" data-toggle="tab" href="#chinanetcenter" role="tab"
+				   aria-controls="chinanetcenter" aria-selected="false">Chinanet Center</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="cloudflare" role="tabpanel" aria-labelledby="cloudflare-tab">
+				<table class="table">
+					<tr>
+						<td>
+							Username
+						</td>
+						<td>
+							Password
+						</td>
+						<td>
+							Remark
+						</td>
+						<td>
+							Action
+						</td>
+					</tr>
+					{{#each cloudflare}}
+						<tr>
+							<td>
+								<input class="form-control copyip" value="{{id}}" readonly>
+							</td>
+							<td>
+								<button class="form-control copypassword" data-value="{{value}}">複制密碼</button>
+							</td>
+							<td>
+								<textarea rows="5" class="form-control" readonly>{{remark}}</textarea>
+							</td>
+							{{#if ../isAdmin}}
+								<td>
+									<button class="from-control editpassword" data-id="{{id}}">修改</button>
+								</td>
+							{{else}}
+								<td>
+
+								</td>
+							{{/if}}
+						</tr>
+					{{/each}}
+				</table>
+			</div>
+			<div class="tab-pane" id="noip" role="tabpanel" aria-labelledby="noip-tab">
+				<table class="table">
+					<tr>
+						<td>
+							Username
+						</td>
+						<td>
+							Password
+						</td>
+						<td>
+							Remark
+						</td>
+					</tr>
+
+					{{#each noip}}
+						<tr>
+							<td>
+								<input class="form-control copyip" value="{{id}}" readonly>
+							</td>
+							<td>
+								<button class="form-control copypassword" data-value="{{value}}">複制密碼</button>
+							</td>
+							<td>
+								<textarea rows="5" class="form-control" readonly>{{remark}}</textarea>
+							</td>
+						</tr>
+					{{/each}}
+				</table>
+			</div>
+			<div class="tab-pane" id="chinanetcenter" role="tabpanel" aria-labelledby="chinanetcenter-tab">
+				<table class="table">
+					<tr>
+						<td>
+							Username
+						</td>
+						<td>
+							Password
+						</td>
+						<td>
+							Remark
+						</td>
+					</tr>
+
+					{{#each chinanetcenter}}
+						<tr>
+							<td>
+								<input class="form-control copyip" value="{{id}}" readonly>
+							</td>
+							<td>
+								<button class="form-control copypassword" data-value="{{value}}">複制密碼</button>
+							</td>
+							<td>
+								<textarea rows="5" class="form-control" readonly>{{remark}}</textarea>
+							</td>
+						</tr>
+					{{/each}}
+				</table>
+			</div>
+		</div>
+		<div class="msg alert alert-success fade" role="alert">
+		</div>
+	</div>
+	<div class="col-md-2">
+	</div>
+</div>
+
+<script id="static-info-tmpl" type="text/x-handlebars-template">
+
+</script>
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form id="form" action="static-info/api" method="post">
+					<input type="hidden" name="action" value="submit"/>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="id" class="col-form-label">ID</label>
+							<input type="text" class="form-control" id="id" name="id" required readonly>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="type" class="col-form-label">Type</label>
+							<input type="text" class="form-control" id="type" name="type" required readonly>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-6 mb-5">
+							<label for="value" class="col-form-label">密碼</label>
+							<input type="password" class="form-control" id="value" name="value" required>
+						</div>
+						<div class="col-md-6 mb-5">
+							<label for="value1" class="col-form-label">確認密碼</label>
+							<input type="password" class="form-control" id="value1" name="value1" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col-md-12 mb-10">
+							<label for="remark" class="col-form-label">備注</label>
+							<textarea class="form-control" id="remark" name="remark"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				<button type="button" id="btnUpdate" class="btn btn-success">修改</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/jquery.validate.min.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/static-info.js"></script>
+{{/extend}}

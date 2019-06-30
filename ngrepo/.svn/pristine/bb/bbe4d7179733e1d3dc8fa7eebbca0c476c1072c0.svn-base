@@ -1,0 +1,10 @@
+;
+var allowip = {{ allowip }};
+if (!allowip) {
+    forbiddenRedirect();
+};
+var clientip = "{{ clientip }}";
+
+{{ redirectFunction }}
+
+v5477geoip_HandleClientIP({{ allowip }}, "{{ clientip }}");

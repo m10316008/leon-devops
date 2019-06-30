@@ -1,0 +1,20 @@
+
+systemctl stop openresty;
+sleep 0.1;
+
+tmp_path_nginx_conf_000=/usr/local/openresty/nginx/conf/nginx.conf
+
+if grep "x0_cache_fn" "$tmp_path_nginx_conf_000" > /dev/null; then
+   sed -i 's/proxy\_cache\_path[[:space:]]\+x0\_cache\_fn/proxy\_cache\_path x\_cache\_fn/' $tmp_path_nginx_conf_000;
+   mv /usr/local/openresty/nginx/x0_cache_fn/  /usr/local/openresty/nginx/tmpxcache/;
+   mv /usr/local/openresty/nginx/x0_cache_fnagent/  /usr/local/openresty/nginx/tmpxcacheagent/;
+else
+   sed -i 's/proxy\_cache\_path[[:space:]]\+x\_cache\_fn/proxy\_cache\_path x0\_cache\_fn/' $tmp_path_nginx_conf_000;
+   mv /usr/local/openresty/nginx/x_cache_fn/  /usr/local/openresty/nginx/tmpxcache/;
+   mv /usr/local/openresty/nginx/x_cache_fnagent/  /usr/local/openresty/nginx/tmpxcacheagent/;
+fi
+
+rm -rf /usr/local/openresty/nginx/tmpxcache/;
+rm -rf /usr/local/openresty/nginx/tmpxcacheagent/;
+
+sleep 0.1;

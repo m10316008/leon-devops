@@ -1,0 +1,44 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+proxy_set_header    X-Scheme $scheme;
+location /brand/ {
+    
+    proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdntolottery;
+}
+
+
+
+
+location = / {
+    return 302 $scheme://$host:$server_port/landing_customize.html#lottery;
+}
+
+
+
+location / {
+    proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdntolottery;
+}
+
+
+
+
+
+
+
+#    tell the user to what type of module this domain belongs
+#    通知用戶，這是甚麼類型的域名
+location = /servingpage/which193.json{
+   set $module_type "front end to lottery";
+   
+   return 200 "{    \"domain\":  \"$host\",
+                    \"server port\":  \"$server_port\", 
+                    \"type\":  \"$module_type\"    }";
+}

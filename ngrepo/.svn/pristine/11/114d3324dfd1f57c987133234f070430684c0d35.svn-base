@@ -1,0 +1,98 @@
+{{#extend "stylesheets"}}
+<link rel="stylesheet" href="/stylesheets/staff.css" /> {{/extend}}
+
+
+<div class="container-fluid">
+    <table class="userlist table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>用戶</th>
+                <th>組別</th>
+                <th>品牌</th>
+                <th>狀態</th>
+                <th class="d-none d-sm-table-cell">最後更新</th>
+                <th class="d-none d-sm-table-cell">建立時間</th>
+                <th class="d-none d-sm-table-cell">建立者</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each userlist}}
+            <tr>
+                <td>
+                    <span onclick="clickShowForm('{{username}}')" style="cursor: pointer;">{{username}}</span>
+                </td>
+                <td>{{userRole}}</td>
+                <td>{{brand}}</td>
+                <td>
+                    <img class="active" src="/images/{{active}}.png" />
+                </td>
+                <td class="date d-none d-sm-table-cell">{{updatedAt}}</td>
+                <td class="date d-none d-sm-table-cell">{{createdAt}}</td>
+                <td class="date d-none d-sm-table-cell">{{createdBy}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" onclick="clickShowForm('')">新增用戶</button>
+</div>
+
+
+
+
+
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="formStaff">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-5">
+                            <label for="username" class="col-form-label">用戶名</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                        </div>
+                        <div class="col-md-6 mb-5">
+                            <label for="userRole" class="col-form-label">級別</label>
+                            <select id="userRole" name="userRole" class="form-control">
+                                <option value="support" selected>維護 - Support</option>
+                                <option value="admin">管理 - Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-5">
+                            <label for="password" class="col-form-label">密碼</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="col-md-6 mb-5">
+                            <label for="password1" class="col-form-label">確認密碼</label>
+                            <input type="password" class="form-control" id="password1" name="password1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="active" class="col-form-label">狀態</label>
+                            <select id="active" name="active" class="form-control">
+                                <option value="true" selected>正常</option>
+                                <option value="false">停用</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8 mb-7">
+                            <label for="brand" class="col-form-label">品牌 (用,分隔)</label>
+                            <input type="text" class="form-control" id="brand" name="brand">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" id="btnUpdateStaff" class="btn btn-success" onclick="clickUpdateStaff()">修改用戶</button>
+                <button type="button" id="btnCreateStaff" class="btn btn-primary" onclick="clickCreateStaff()">建立用戶</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#extend "scripts"}}
+<script src="/javascripts/staff.js"></script> {{/extend}}

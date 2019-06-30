@@ -1,0 +1,51 @@
+include crm2_header.conf;
+location /csrf {
+    proxy_pass    http://crm2server;
+}
+
+location /genCsrf {
+    proxy_pass    http://crm2server/genCsrf;
+}
+
+location /login {
+    include blacklist.conf;
+    proxy_pass    http://crm2server; 
+}
+
+location /logout {
+    include blacklist.conf;
+    proxy_pass    http://crm2server;
+}
+
+location /code_image {
+    proxy_pass    http://crm2server;
+}
+
+location /info/ {
+    include blacklist.conf;
+    proxy_pass    http://crm2server;
+}
+
+location /player/ {
+    include blacklist.conf;
+    proxy_pass    http://crm2server;
+}
+
+location /crmSetting/ {
+    include blacklist.conf;
+    proxy_pass    http://crm2server;
+}
+
+location /trial/ {
+    proxy_pass    http://crm2server;
+}
+
+location /crmProvider/ {
+    proxy_pass    http://crm2server;
+}
+
+location /SscOtp {
+    proxy_pass    http://crm2server;
+}
+
+include crm2_fn_path.conf;

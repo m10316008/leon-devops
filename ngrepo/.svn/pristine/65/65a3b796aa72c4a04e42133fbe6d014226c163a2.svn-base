@@ -1,0 +1,82 @@
+    #geoip: start
+    geoip_country /apps/geoip/GeoIP.dat;
+    fastcgi_param GEOIP_COUNTRY_CODE $geoip_country_code;
+    fastcgi_param GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    fastcgi_param GEOIP_COUNTRY_NAME $geoip_country_name;
+
+
+    
+    #   Front end files of mobile and desktop versions
+    #    前端手機版電腦版
+    #
+    #   allow your ip to view front end sites
+    #   (1) non-cdn, (2) cdn 
+    #   
+    #   (1)沒有內容傳輸網絡， (2)採用內容傳輸網絡  
+    #
+    #
+    #   Modify your ip address in 
+    #   在這個檔案，記錄一次
+    #   crm2_country_geoip_ngx_map_ip.conf
+    #
+    
+    # (1) non-cdn 沒有內容傳輸網絡
+    map $remote_addr $allow_ip_status_a {
+        include crm2_country_geoip_ngx_map_ip.conf;
+    }
+
+    
+    
+    
+include /etc/nginx/crm2_country_geoip_ngx_a03_whecloud_com.conf;
+    
+
+
+
+    #    only one of (2), (3) should work
+    #    but not both
+    #   
+    #    只可實行(2), (3)之中一個，不可兩個同時實行
+    #  
+    #  
+    #   If traffic goes through cloudflare
+    #   comment (2),  uncomment (3)
+    #  
+    #   啟動CF防禦，過濾流量
+    #   在 (2) 備註#,  而且在(3)移除備註#
+
+    #   (2) cdn 採用內容傳輸網絡 : start 
+    # ---------------------------------------這行以下實行cdn
+      real_ip_header Cdn-Src-Ip;
+      map $http_cdn_src_ip $allow_ip_status_b {
+          include crm2_country_geoip_ngx_map_ip.conf;
+      }
+    # ---------------------------------------這行以上實行cdn
+    #   (2) cdn 採用內容傳輸網絡 : end
+
+    
+    
+
+    
+    map "${allow_ip_status_a}+${allow_ip_status_b}" $allow_ip_status {
+     #   default No;
+     #   "Yes+No"    Yes;
+     #   "No+Yes"    Yes;  
+     #   "Yes+Yes"    Yes;        
+         default Yes;
+    }
+    
+    
+    
+
+    map $geoip_country_code $allow_country_status {
+        default Yes;
+      #  HK No;  # 禁香港
+      #  PH No;  # 禁菲律賓
+      #  TW No;  # 禁臺灣
+      #  SG No;  # 禁新加坡
+      #  MY No;  # 禁馬來西亞
+    }
+
+
+    #geoip: end

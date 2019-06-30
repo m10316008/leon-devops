@@ -1,0 +1,490 @@
+
+server {
+    listen 80;
+
+    include domains_redirect.conf;
+
+    include crm2_headers_redirect.conf;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2 default_server;
+
+    server_name _ www.*;
+
+    ssl_certificate      certs/selfsigned.crt;
+    ssl_certificate_key  certs/selfsigned.key;
+
+    return 400;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name ytw13.core.dist.cloudland2.com;
+
+    ssl_certificate      certs/star.cloudland2.com.crt;
+    ssl_certificate_key  certs/star.cloudland2.com.key;
+
+    location /odds6i/ {
+        include crm2_headers_redirect.conf;
+
+        add_header expire-tag "o2 10s";
+
+        proxy_buffering        on;
+        proxy_cache_valid      200  10s;
+        proxy_cache            cache_odds6;
+        proxy_cache_key $uri$is_args$args;
+        proxy_pass http://node188core;
+    }
+}
+
+server {
+        listen 443 ssl http2;
+        server_name
+            565ty01.com
+            www.565ty01.com
+        ;
+
+        ssl_certificate      certs/565ty.com.crt;
+        ssl_certificate_key  certs/565ty.com.key;
+
+        include crm2_agentv2_ssl.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+            565ty.com
+            565ty01.com
+            565ty888.com
+            m.565ty.com
+            m.565ty01.com
+            m.565ty888.com
+            www.565ty.com
+            www.565ty01.com
+    ;
+
+    ssl_certificate      certs/565ty.com.crt;
+    ssl_certificate_key  certs/565ty.com.key;
+
+    include crm2_frontend_ssl.conf;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name
+            565ty47.com
+            565ty48.com
+            565ty49.com
+            565ty50.com
+            565ty51.com
+            565ty52.com
+            565ty53.com
+            565ty54.com
+            565ty55.com
+            565ty555.com
+            565ty56.com
+            565ty57.com
+            565ty58.com
+            565ty59.com
+            565ty60.com
+            565ty61.com
+            565ty62.com
+            565ty63.com
+            565ty64.com
+            565ty65.com
+            565ty66.com
+            565ty666.com
+            565ty67.com
+            565ty68.com
+            565ty69.com
+            565ty70.com
+            565ty71.com
+            565ty72.com
+            565ty73.com
+            565ty74.com
+            565ty75.com
+            565ty76.com
+            565ty77.com
+            565ty777.com
+            565ty78.com
+            565ty79.com
+            565ty80.com
+            565ty81.com
+            565ty82.com
+            565ty83.com
+            565ty84.com
+            565ty85.com
+            565ty86.com
+            565ty87.com
+            565ty88.com
+            565ty89.com
+            565ty90.com
+            565ty91.com
+            565ty92.com
+            565ty93.com
+            565ty94.com
+            565ty95.com
+            565ty96.com
+            565ty97.com
+            565ty98.com
+            565ty99.com
+            565ty999.com
+            565zq.cc
+            565zq.com
+            565zq.net
+            565zq.vip
+            565zuqiu.cc
+            565zuqiu.com
+            565zuqiu.net
+            565zuqiu.vip
+            m.565ty47.com
+            m.565ty48.com
+            m.565ty49.com
+            m.565ty50.com
+            m.565ty51.com
+            m.565ty52.com
+            m.565ty53.com
+            m.565ty54.com
+            m.565ty55.com
+            m.565ty555.com
+            m.565ty56.com
+            m.565ty57.com
+            m.565ty58.com
+            m.565ty59.com
+            m.565ty60.com
+            m.565ty61.com
+            m.565ty62.com
+            m.565ty63.com
+            m.565ty64.com
+            m.565ty65.com
+            m.565ty66.com
+            m.565ty666.com
+            m.565ty67.com
+            m.565ty68.com
+            m.565ty69.com
+            m.565ty70.com
+            m.565ty71.com
+            m.565ty72.com
+            m.565ty73.com
+            m.565ty74.com
+            m.565ty75.com
+            m.565ty76.com
+            m.565ty77.com
+            m.565ty777.com
+            m.565ty78.com
+            m.565ty79.com
+            m.565ty80.com
+            m.565ty81.com
+            m.565ty82.com
+            m.565ty83.com
+            m.565ty84.com
+            m.565ty85.com
+            m.565ty86.com
+            m.565ty87.com
+            m.565ty88.com
+            m.565ty89.com
+            m.565ty90.com
+            m.565ty91.com
+            m.565ty92.com
+            m.565ty93.com
+            m.565ty94.com
+            m.565ty95.com
+            m.565ty96.com
+            m.565ty97.com
+            m.565ty98.com
+            m.565ty99.com
+            m.565ty999.com
+            m.565zq.cc
+            m.565zq.com
+            m.565zq.net
+            m.565zq.vip
+            m.565zuqiu.cc
+            m.565zuqiu.com
+            m.565zuqiu.net
+            m.565zuqiu.vip
+            www.565ty47.com
+            www.565ty48.com
+            www.565ty49.com
+            www.565ty50.com
+            www.565ty51.com
+            www.565ty52.com
+            www.565ty53.com
+            www.565ty54.com
+            www.565ty55.com
+            www.565ty555.com
+            www.565ty56.com
+            www.565ty57.com
+            www.565ty58.com
+            www.565ty59.com
+            www.565ty60.com
+            www.565ty61.com
+            www.565ty62.com
+            www.565ty63.com
+            www.565ty64.com
+            www.565ty65.com
+            www.565ty66.com
+            www.565ty666.com
+            www.565ty67.com
+            www.565ty68.com
+            www.565ty69.com
+            www.565ty70.com
+            www.565ty71.com
+            www.565ty72.com
+            www.565ty73.com
+            www.565ty74.com
+            www.565ty75.com
+            www.565ty76.com
+            www.565ty77.com
+            www.565ty777.com
+            www.565ty78.com
+            www.565ty79.com
+            www.565ty80.com
+            www.565ty81.com
+            www.565ty82.com
+            www.565ty83.com
+            www.565ty84.com
+            www.565ty85.com
+            www.565ty86.com
+            www.565ty87.com
+            www.565ty88.com
+            www.565ty89.com
+            www.565ty90.com
+            www.565ty91.com
+            www.565ty92.com
+            www.565ty93.com
+            www.565ty94.com
+            www.565ty95.com
+            www.565ty96.com
+            www.565ty97.com
+            www.565ty98.com
+            www.565ty99.com
+            www.565ty999.com
+            www.565zq.cc
+            www.565zq.com
+            www.565zq.net
+            www.565zq.vip
+            www.565zuqiu.cc
+            www.565zuqiu.com
+            www.565zuqiu.net
+    ;
+
+    ssl_certificate      certs/565ty47.com.crt;
+    ssl_certificate_key  certs/565ty47.com.key;
+
+    include crm2_frontend_ssl.conf;
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name
+            565lanqiu.cc
+            565lanqiu.com
+            565lanqiu.net
+            565lanqiu.vip
+            565lq.cc
+            565lq.com
+            565lq.net
+            565lq.vip
+            565tiyu.cc
+            565tiyu.com
+            565tiyu.net
+            565tiyu.vip
+            565ty.cc
+            565ty.net
+            565ty.vip
+            565ty00.com
+            565ty000.com
+            565ty02.com
+            565ty03.com
+            565ty04.com
+            565ty05.com
+            565ty06.com
+            565ty07.com
+            565ty08.com
+            565ty09.com
+            565ty10.com
+            565ty100.com
+            565ty11.com
+            565ty111.com
+            565ty12.com
+            565ty13.com
+            565ty14.com
+            565ty15.com
+            565ty16.com
+            565ty17.com
+            565ty18.com
+            565ty19.com
+            565ty20.com
+            565ty21.com
+            565ty22.com
+            565ty222.com
+            565ty23.com
+            565ty24.com
+            565ty25.com
+            565ty26.com
+            565ty27.com
+            565ty28.com
+            565ty29.com
+            565ty30.com
+            565ty31.com
+            565ty32.com
+            565ty33.com
+            565ty333.com
+            565ty34.com
+            565ty35.com
+            565ty36.com
+            565ty37.com
+            565ty38.com
+            565ty39.com
+            565ty40.com
+            565ty41.com
+            565ty42.com
+            565ty43.com
+            565ty44.com
+            565ty444.com
+            565ty45.com
+            565ty46.com
+            m.565lanqiu.cc
+            m.565lanqiu.com
+            m.565lanqiu.net
+            m.565lanqiu.vip
+            m.565lq.cc
+            m.565lq.com
+            m.565lq.net
+            m.565lq.vip
+            m.565tiyu.cc
+            m.565tiyu.com
+            m.565tiyu.net
+            m.565tiyu.vip
+            m.565ty.cc
+            m.565ty.net
+            m.565ty.vip
+            m.565ty00.com
+            m.565ty000.com
+            m.565ty02.com
+            m.565ty03.com
+            m.565ty04.com
+            m.565ty05.com
+            m.565ty06.com
+            m.565ty07.com
+            m.565ty08.com
+            m.565ty09.com
+            m.565ty10.com
+            m.565ty100.com
+            m.565ty11.com
+            m.565ty111.com
+            m.565ty12.com
+            m.565ty13.com
+            m.565ty14.com
+            m.565ty15.com
+            m.565ty16.com
+            m.565ty17.com
+            m.565ty18.com
+            m.565ty19.com
+            m.565ty20.com
+            m.565ty21.com
+            m.565ty22.com
+            m.565ty222.com
+            m.565ty23.com
+            m.565ty24.com
+            m.565ty25.com
+            m.565ty26.com
+            m.565ty27.com
+            m.565ty28.com
+            m.565ty29.com
+            m.565ty30.com
+            m.565ty31.com
+            m.565ty32.com
+            m.565ty33.com
+            m.565ty333.com
+            m.565ty34.com
+            m.565ty35.com
+            m.565ty36.com
+            m.565ty37.com
+            m.565ty38.com
+            m.565ty39.com
+            m.565ty40.com
+            m.565ty41.com
+            m.565ty42.com
+            m.565ty43.com
+            m.565ty44.com
+            m.565ty444.com
+            m.565ty45.com
+            m.565ty46.com
+            www.565lanqiu.cc
+            www.565lanqiu.com
+            www.565lanqiu.net
+            www.565lanqiu.vip
+            www.565lq.cc
+            www.565lq.com
+            www.565lq.net
+            www.565lq.vip
+            www.565tiyu.cc
+            www.565tiyu.com
+            www.565tiyu.net
+            www.565tiyu.vip
+            www.565ty.cc
+            www.565ty.net
+            www.565ty.vip
+            www.565ty00.com
+            www.565ty000.com
+            www.565ty02.com
+            www.565ty03.com
+            www.565ty04.com
+            www.565ty05.com
+            www.565ty06.com
+            www.565ty07.com
+            www.565ty08.com
+            www.565ty09.com
+            www.565ty10.com
+            www.565ty100.com
+            www.565ty11.com
+            www.565ty111.com
+            www.565ty12.com
+            www.565ty13.com
+            www.565ty14.com
+            www.565ty15.com
+            www.565ty16.com
+            www.565ty17.com
+            www.565ty18.com
+            www.565ty19.com
+            www.565ty20.com
+            www.565ty21.com
+            www.565ty22.com
+            www.565ty222.com
+            www.565ty23.com
+            www.565ty24.com
+            www.565ty25.com
+            www.565ty26.com
+            www.565ty27.com
+            www.565ty28.com
+            www.565ty29.com
+            www.565ty30.com
+            www.565ty31.com
+            www.565ty32.com
+            www.565ty33.com
+            www.565ty333.com
+            www.565ty34.com
+            www.565ty35.com
+            www.565ty36.com
+            www.565ty37.com
+            www.565ty38.com
+            www.565ty39.com
+            www.565ty40.com
+            www.565ty41.com
+            www.565ty42.com
+            www.565ty43.com
+            www.565ty44.com
+            www.565ty444.com
+            www.565ty45.com
+    ;
+
+    ssl_certificate      certs/565lanqiu.cc.crt;
+    ssl_certificate_key  certs/565lanqiu.cc.key;
+
+    include crm2_frontend_ssl.conf;
+}

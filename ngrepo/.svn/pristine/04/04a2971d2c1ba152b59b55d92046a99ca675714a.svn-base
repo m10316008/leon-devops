@@ -1,0 +1,60 @@
+    #geoip: start
+    geoip_country /apps/geoip/GeoIP.dat;
+    fastcgi_param GEOIP_COUNTRY_CODE $geoip_country_code;
+    fastcgi_param GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    fastcgi_param GEOIP_COUNTRY_NAME $geoip_country_name;
+
+    map $remote_addr $allow_ip_status {
+        default No;
+
+        #2018 04 29: start
+		210.176.144.70 Yes;
+		#2018 04 29: end
+
+        #2018 04 27: start
+        203.177.34.178 Yes;
+        180.232.108.141 Yes;
+        111.125.93.20 Yes;
+        203.177.34.179 Yes;
+        180.232.108.140 Yes;
+        111.125.93.11 Yes;
+        203.177.34.182 Yes;
+        180.232.108.142 Yes;
+        111.125.93.12 Yes;
+        203.177.34.181 Yes;
+        180.232.108.138 Yes;
+        111.125.93.5 Yes;
+        #2018 04 27: end        
+
+        42.200.197.192 Yes;      #testing site
+        61.244.196.178 Yes;      #testing site
+        203.186.83.238 Yes;      #testing site
+		202.59.250.77 Yes;        #outside testing site
+		202.59.250.204 Yes;      #outside testing site	
+        
+        #2018 02 13: start
+    	
+    	180.232.108.139	Yes;
+    	
+        #2018 02 13: end
+		
+        
+        
+		#2018 02 02: start
+		210.176.144.68 Yes;
+		#2018 02 02: end
+
+    }
+	
+    map $geoip_country_code $allow_country_status {
+        default Yes;
+      #  HK No;
+    }	
+	
+    map $geoip_country_code $allow_china_status {
+      #  default No;
+      #  CN Yes;
+         default Yes;
+    }
+	
+    #geoip: end

@@ -1,0 +1,157 @@
+include proxy_bind_random.conf;
+
+proxy_hide_header 'Access-Control-Allow-Origin';
+proxy_hide_header 'Access-Control-Allow-Methods';
+proxy_hide_header 'Access-Control-Allow-Headers';
+
+add_header 'Access-Control-Allow-Origin' '*';
+add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+add_header 'Access-Control-Allow-Headers'  'origin, x-requested-with, content-type, accept, cache-control, accept-encoding, accept-language';
+
+set $proxy_set_header_origin "https://landing-sb-asia.prdasbb18a1.com";
+set $proxy_set_header_referer "https://landing-sb-asia.prdasbb18a1.com/zh-cn/sports";
+
+location / {
+    root radar;
+    index index.html index.htm;
+}
+
+location ~ /([0-9a-z]+)/widgetloader {
+    proxy_buffering on;
+    proxy_cache_valid 200  1d;
+    proxy_cache radar_zone;
+
+    rewrite ^(.*)$ /radarlivematch$1?targethost=$host break;
+    proxy_pass http://node123456;
+}
+
+location ~ /([0-9a-z]+)/licensing {
+	add_header 'Access-Control-Allow-Origin' '*';
+	add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+	add_header 'Access-Control-Allow-Headers'  'origin, x-requested-with, content-type, accept, cache-control, accept-encoding, accept-language';
+
+    add_header Content-Type text/html;
+    return 200 "";
+}
+
+location ~ /assets/common_widgets.([0-9a-z]+).js {
+    proxy_buffering on;
+    proxy_cache_valid 200  1d;
+    proxy_cache radar_zone;
+
+    rewrite ^(.*)$ /radarlivematch$1?targethost=$host break;
+    proxy_pass http://node123456;
+}
+
+location /assets/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  1d;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass https://widgets.sir.sportradar.com;
+}
+
+location /sportradar/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  1d;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass https://widgets.sir.sportradar.com;
+}
+
+location /translations/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  1d;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass https://widgets.sir.sportradar.com;
+}
+
+location /188bet/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  1s;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass http://lmt.fn.sportradar.com;
+}
+
+location /common/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  1s;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass http://lmt.fn.sportradar.com;
+}
+
+location /ls/ {
+    proxy_ssl_server_name on;
+
+    proxy_buffering on;
+    proxy_cache_valid 200  10m;
+    proxy_cache radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+
+    proxy_pass http://ls.sportradar.com;
+}
+
+location /node123456info/ {
+    proxy_buffering on;
+    proxy_cache_valid 200  1s;
+    proxy_cache radar_zone;
+
+	proxy_pass   http://node123456;
+}
+
+location /odds5/ {
+	proxy_pass   http://node123456;
+}
+
+location /odds2/ {
+	proxy_pass   http://127.0.0.1:28091;
+}
+
+location /odds6i/ {
+	proxy_pass   http://127.0.0.1:8096;
+}
+
+location /odds6e/ {
+	proxy_pass   http://127.0.0.1:8096;
+}
+
+###### for testing ######
+location /headers {
+    #proxy_buffering        on;
+    #proxy_cache_valid      200  1s;
+    #proxy_cache            radar_zone;
+
+    proxy_set_header Origin $proxy_set_header_origin;
+    proxy_set_header Referer $proxy_set_header_referer;
+    proxy_pass http://node1.crm2myjava.com:8091;
+}

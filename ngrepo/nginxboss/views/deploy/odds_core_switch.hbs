@@ -1,0 +1,113 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/javascripts/xterm/dist/xterm.css"/>
+{{/extend}}
+
+<div class="container-fluid">
+	<h1>Switch odds</h1>
+	{{#each oddsGroups}}
+		<li>
+			<button class="btn btn-primary switch" data-id="{{this}}">{{this}}</button>
+		</li>
+	{{/each}}
+</div>
+
+<div class="container-fluid">
+	<dl class="row">
+		<dt class="col-sm-3">Current Zone</dt>
+		<dd id="existingZone" class="col-sm-9">{{existingZone}}</dd>
+		<dt class="col-sm-3">Last Update</dt>
+		<dd id="lastUpdate" class="col-sm-9">{{lastUpdate}}</dd>
+	</dl>
+</div>
+<div class="container-fluid">
+	<div id="loading" class="progress" style="display:none;">
+		<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+			 aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+	</div>
+</div>
+<div class="container-fluid">
+	<div>
+		<div class="term"></div>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script src="//ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/xterm/dist/xterm.js"></script>
+	<script src="/javascripts/xterm/dist/addons/fit/fit.js"></script>
+	<script>
+		var colors = {
+			'pink': '01;31m',
+			'white': '00m',
+			'dark_grey': '01:30m',
+			'green': '01;32m',
+			'purple': '01;35m',
+			'blue': '01;34m',
+			'yellow': '01;33m',
+			'grey': '1;1;33m'
+		}
+
+		function color(message, color) {
+			var temp_color = colors[color];
+			//console.log('temp_color:', temp_color);
+			return '\033[' + temp_color + message + '\033[0m';
+		}
+		async function process_restart(mcode) {
+			return new Promise((resolve, reject) => {
+				var url = 'restart_openresty/api';
+				var data = {
+					action_case: 'process_restart',
+					mcode: mcode
+				};
+				$.post(url, data, function (json) {
+					if (json.success == 1) {
+						resolve({
+							result: json.result
+						});
+					} else {
+						reject('fail');
+					}
+				});
+			});
+		}
+		var term;
+		async function initial() {
+			var terminalContainer = $('.term')[0];
+			term = new Terminal({
+				cursorBlink: true,
+				cols: 78,
+				rows: 20,
+				useStyle: true
+			});
+			term.open(terminalContainer);
+			let txt = 'Click odds button to start switch odds group';
+			term.writeln(color(txt, 'yellow'));
+			$('.switch').on('click', function () {
+				let id = $(this).data('id');
+				console.log({
+					id
+				});
+				$('.switch').prop('disabled', true);
+				$('#loading').show();
+				let postData={
+				    id:id
+				}
+				$.post('odds_core_switch/api',postData,function(res){
+				    console.log({
+						res
+					})
+					let txt = 'Switch Complete!!';
+					term.writeln(color(txt, 'green'));
+					$('.switch').prop('disabled', false);
+					$('#loading').hide();
+					$('#lastUpdate').html(new Date());
+					$('#existingZone').html(id);
+				})
+			});
+		}
+		$(document).ready(async function () {
+			console.log('ready');
+			await initial();
+		});
+	</script>
+{{/extend}}

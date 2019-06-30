@@ -1,0 +1,16 @@
+[Unit]
+Description=Loto Gateway 1.0
+After=redis.service
+
+[Service]
+ExecStart=/usr/bin/node /apps/lotogateway/bin/www
+Restart=always
+User=nobody
+Group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/apps/lotogateway/
+
+[Install]
+WantedBy=multi-user.target
+

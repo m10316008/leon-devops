@@ -1,0 +1,5 @@
+proxy_set_header    X-Forwarded-For  $remote_addr;
+
+absolute_redirect off;
+
+proxy_pass https://d1uqyht9kbib94.cloudfront.net;

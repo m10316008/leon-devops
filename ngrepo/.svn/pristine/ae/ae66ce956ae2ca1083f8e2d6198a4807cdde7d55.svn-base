@@ -1,0 +1,198 @@
+
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+	
+    
+    sendfile        on;
+	
+	client_max_body_size  200m;
+
+    keepalive_timeout  180s;
+    
+	gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    real_ip_header X-Forwarded-For;
+    proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+    include crm2_result188_loadbalance_setting.conf;
+
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+	
+	include nginx_status.conf;
+    
+    server {
+        include /apps/nginx/ip_one.conf;
+        include crm2_frontend.conf;
+    }
+    server {    ###### admin and op ######        
+        include /apps/nginx/ip_two.conf;        
+		server_name    
+                        data-vggames.com
+                        ubs6686.com
+                        www.data-vggames.com
+                        www.ubs6686.com;    
+                  
+      #  location /.well-known/ {
+      #      root /usr/local/openresty/nginx/sslforfree;            
+      #  } 
+        
+        return 302 https://$host$request_uri;
+    }
+
+
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;  
+        server_name    www2.ubs6686.com               #standby
+                       ubsoppan.app-store-update.com; 
+
+
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vf6/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vf6/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+	
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;  
+        server_name    www2.data-vggames.com; 
+		
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vf6/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vf6/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### admin and op ######
+        listen       443 ssl http2;
+        server_name  
+                    ubs6686.com
+					www.ubs6686.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ubs6686.com.3.crt;  # ubs6686.com.2.crt is old
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ubs6686.com.3.key;  # ubs6686.com.2.key becomes ubs6686.com.3.key
+
+
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vf6/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vf6/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### admin and op ######
+        listen       443 ssl http2;
+        server_name  
+                    data-vggames.com
+					www.data-vggames.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/data-vggames.com.crt;  
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/data-vggames.com.key;
+
+
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vf6/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vf6/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+
+
+    server {        
+        include /apps/nginx/ip_one_8011.conf;        
+        include crm2_frontend_apps.conf;
+    }
+    server {    
+        include /apps/nginx/ip_one_8012.conf; 
+        include crm2_frontend_apps_ios.conf;
+    }
+    server {       
+        include /apps/nginx/ip_one_8013.conf; 
+        include crm2_frontend_apps_apk.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8027.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_office_app.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8028.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios_office_app.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8037.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apkv2_office_app.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8038.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_iosv2_office_app.conf;
+    } 
+    server{
+        include /apps/nginx/ip_one_8102.conf; 
+        include crm2_agent.conf;
+    }
+
+    server {
+        listen       80;
+        server_name  localhost;
+        
+        location / {
+            root   /usr/local/openresty/nginx/html;
+            index  index.html index.htm;
+        }
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+            root   /usr/local/openresty/nginx/html;
+        }
+    }
+
+    
+    include crm2_internal_deploy.conf;
+    include crm2_backend_setting.conf;
+}

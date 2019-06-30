@@ -1,0 +1,7 @@
+完成 : {{ip}}
+<br />
+<script>
+    setTimeout(function () {
+        window.location = 'check?tt=' + (new Date()).getTime();
+    }, 5000);
+</script>

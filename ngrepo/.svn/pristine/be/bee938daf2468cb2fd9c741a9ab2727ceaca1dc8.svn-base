@@ -1,0 +1,55 @@
+#UBS op panel
+
+# 2018 09 15 : start
+   	allow 180.232.13.7;
+	allow 180.232.13.8;
+	allow 180.232.13.9;
+	allow 180.232.13.10;
+	allow 180.232.13.11;
+# 2018 09 15 : end
+
+
+# 2018 07 04 : start
+    allow 210.176.144.73;
+# 2018 07 04 : end
+
+# 2018 07 04 : start
+    allow 210.176.144.74;
+# 2018 07 04 : end
+
+
+# 2018 06 24 : start
+    allow 203.177.34.181;
+# 2018 06 24 : end
+
+# 2018 03 30 : start
+    allow 45.76.187.249;
+# 2018 03 30 : end
+
+# 2018 03 13 : start
+    allow 180.232.108.138;
+# 2018 03 13 : end
+
+# 2018 03 13 : start
+    allow 222.127.25.27;
+# 2018 03 13 : end
+
+# 2018 02 26 : start
+    allow 111.125.93.5;
+# 2018 02 26 : end
+
+# 2018 02 20 : start
+    allow 210.176.144.66;
+    allow 210.176.144.67;
+    allow 210.176.144.70;
+# 2018 02 20 : end
+
+# 2018 02 08 : start
+    allow 42.200.197.192 ;      #testing site
+    allow 61.244.196.178 ;      #testing site
+    allow 203.186.83.238 ;      #testing site
+    allow 202.59.250.77 ;        #outside testing site
+    allow 202.59.250.204 ;      #outside testing site
+# 2018 02 08 : end
+
+deny all;

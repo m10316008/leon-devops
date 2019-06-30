@@ -1,0 +1,15 @@
+[Unit]
+Description=Nginx Client
+
+[Service]
+ExecStart=/usr/bin/node /apps/nginxclient/app
+Restart=always
+User=nobody
+Group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/apps/nginxclient/
+
+[Install]
+WantedBy=multi-user.target
+

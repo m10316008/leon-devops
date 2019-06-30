@@ -1,0 +1,86 @@
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+
+    server_names_hash_max_size 131072;
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;    
+    access_by_lua_file /usr/local/openresty/nginx/conf/protect_check_ip.lua;
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    
+    #set_real_ip_from    0.0.0.0/0;
+    #real_ip_header      X-Forwarded-For;
+    #real_ip_recursive   off;
+    #proxy_set_header X-Forwarded-For $remote_addr;
+
+    include crm2_result188_loadbalance_setting.conf;
+
+	upstream frontendcdn{
+		server 180.178.32.125:18000;
+        server 180.178.37.237:18000;
+	}    
+    upstream appsios{
+        server 180.178.32.125:8012;
+        server 180.178.37.237:8012;
+    }
+
+    server {
+        listen 80;
+        server_name
+                    yazhouzuijiatiyupingtai.com
+                    *.yazhouzuijiatiyupingtai.com
+					jiechiwomendedoushidashab.com
+                    *.jiechiwomendedoushidashab.com;
+        return 302 https://$host$request_uri;
+    }
+    server {    ###### moblie_apps ######
+        listen  443 ssl http2;
+        server_name
+					   jiechiwomendedoushidashab.com
+                       *.jiechiwomendedoushidashab.com;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/jiechiwomendedoushidashab.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/jiechiwomendedoushidashab.com.key;                
+        include crm2_frontend_apps_ios.conf;
+    }
+    server {    ###### moblie_apps ######
+        listen  443 ssl http2;
+        server_name
+					   yazhouzuijiatiyupingtai.com 
+                       *.yazhouzuijiatiyupingtai.com ;
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/yazhouzuijiatiyupingtai.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yazhouzuijiatiyupingtai.com.key;                
+        include crm2_frontend_apps_ios.conf;
+    }
+    #######################################
+    #
+    #   these servers below are not apps
+    #
+    #
+    #
+    #######################################
+    server {    ###### frontend ######
+    	listen       80;
+        include crm2_frontend.conf;    
+    }
+    
+    server {    ###### frontend ######
+    	listen       443 ssl;
+        server_name _;
+        
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/www-hg3535.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/www-hg3535.com.key;
+        
+        include crm2_frontend.conf;    
+    }
+
+
+    include crm2_backend_setting.conf;
+}

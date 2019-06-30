@@ -1,0 +1,78 @@
+
+#user  nobody;
+worker_processes  4;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    ##### custom setting start #####
+
+    #rate limit login
+    limit_req_zone $binary_remote_addr zone=req_limit001:10m rate=5r/s;
+    limit_conn_zone $binary_remote_addr zone=req_limit002:10m;
+
+    #[Solved]could not build optimal proxy_headers_hash
+    proxy_headers_hash_max_size 51200;
+    proxy_headers_hash_bucket_size 6400;
+
+    server_names_hash_max_size 131072;
+
+	proxy_cache_path x_cache_fn    levels=1:2 keys_zone=x_cache_fn:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_temp  levels=1:2 keys_zone=x_cache_temp:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_fnagent levels=1:2 keys_zone=x_cache_fnagent:10m inactive=24h  max_size=10g;
+
+    include gzip.conf;
+
+    server {
+        listen 80 default_server;
+
+        server_name _ www.*;
+
+        return 400;
+    }
+
+    server {
+        listen 80;
+
+        server_name ve5t9.cloudland2.hello;
+
+        include crm2_pay_return.conf;
+    }
+
+    server {
+        listen 80;
+
+        server_name ve5t9.cloudland2.ag;
+
+        include crm2_agentv2.conf;
+    }
+
+    include crm2_servers_443.conf;
+}

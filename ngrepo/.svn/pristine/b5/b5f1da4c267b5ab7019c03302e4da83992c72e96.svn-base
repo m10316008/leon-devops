@@ -1,0 +1,134 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('nginxboss:server');
+var http = require('http');
+require('dotenv').config();
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '7900');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
+
+//Health check session
+
+//var hc=require('../tools/health-check');
+var hc = require('../tools/snmp-check');
+var cron = require('node-cron');
+const syncTime = require('../utils/sync-time');
+if(process.env.DEV.toString()=='false'){
+    cron.schedule('*/2 * * * *', function(){
+        hc.snmpcheck();
+    });
+    var takeAction = require('../tools/take-action');
+    cron.schedule('*/3 * * * *', function(){
+        var date = new Date();
+        var now_hour = date.getHours();
+        var now_min = date.getMinutes();
+        if(now_hour==8 && now_min>29 && now_min<50){
+            console.log('Skip Take Action');
+        }else{
+            takeAction.run();
+            syncTime.verify();
+        }
+    });
+    cron.schedule('0 */2 * * *',async function(){
+        await takeAction.autoSwitchCore();
+    });
+}
+
+/*var TelegramBot = require('node-telegram-bot-api');
+var token2='625882882:AAFxVFajvS1kzunXYpBwKYk6X-tT37PRO5I';
+var baBot = new TelegramBot(token2, {polling: true});
+
+baBot.onText(/\/echo (.+)/, (msg, match) => {
+    // 'msg' is the received Message from Telegram
+    // 'match' is the result of executing the regexp above on the text content
+    // of the message
+
+    const chatId = msg.chat.id;
+    const resp = match[1]; // the captured "whatever"
+    console.log('chatId:',chatId);
+    console.log('resp:',resp);
+
+    // send back the matched "whatever" to the chat
+    baBot.sendMessage(chatId, resp);
+});*/

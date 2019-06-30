@@ -1,0 +1,6 @@
+﻿curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+yum install -y nodejs
+npm -g update npm
+npm -g list --depth=0
+
+node -V

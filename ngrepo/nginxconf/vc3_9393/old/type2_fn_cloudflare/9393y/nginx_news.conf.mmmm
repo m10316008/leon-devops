@@ -1,0 +1,29 @@
+location /Contents/News/images {
+	proxy_pass   https://doc.188contents.com;
+}
+
+location /contents {
+	proxy_pass   https://doc-cdn.nsuh328kdkdklsd.com;
+}
+
+location /service {
+	proxy_pass   https://m.188bet.com;
+}
+
+location ~ ^/betstream-view/assets/(.*) {
+	proxy_cache my_cache;
+	proxy_cache_valid      200  1d;
+	proxy_pass   https://188bet.betstream.betgenius.com;
+}
+
+location /betstream-view/ {
+	proxy_pass   https://188bet.betstream.betgenius.com;
+}
+
+location /zh-cn/info-centre {
+	proxy_pass   http://result188.local:8092;
+}
+
+location /public_result188 {
+	proxy_pass   http://result188.local:8092;
+}

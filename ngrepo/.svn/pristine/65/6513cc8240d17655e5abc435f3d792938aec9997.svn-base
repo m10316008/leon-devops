@@ -1,0 +1,19 @@
+cd /apps/globalsetting/
+npm install --prefer-offline --only=production
+
+mv /apps/globalsetting/notes/globalsetting.service /etc/systemd/system/
+
+systemctl enable globalsetting
+systemctl restart globalsetting
+journalctl -f -u globalsetting
+
+
+
+
+
+
+
+
+example url :
+http://prod188nc.crm2myjava.com:8074/odds5/oddsHost6
+

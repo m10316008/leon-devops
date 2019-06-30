@@ -1,0 +1,204 @@
+
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    sendfile        on;
+	
+	client_max_body_size  200m;
+	
+    keepalive_timeout  180s;
+
+	server_names_hash_max_size 131072;
+    # many domain names calculated by CPU cache size
+	
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    real_ip_header X-Forwarded-For;  
+    proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;
+    include crm2_result188_loadbalance_setting.conf;
+	
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+
+    server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+
+	include nginx_status.conf;
+
+    server {        
+        include /apps/nginx/ip_one.conf; # port 80
+        #return 302 https://hg3535b.com;
+        return 400;
+    }
+    
+    #  use port 18000 to avoid leaking ip address
+    #  instead of port 80 : 
+    #  default desktop and mobile web browser version
+    server {        
+        include /apps/nginx/ip_one_18000.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend.conf;
+    }
+
+
+
+    server {    ###### show message : domain names of third parties ######
+        include /apps/nginx/ip_one.conf;
+        include /apps/nginx/ip_two.conf;
+        server_name 
+                    112244.cc *.112244.cc
+                    137999.cc *.137999.cc
+                    334477.cc *.334477.cc
+                    44556677.cc *.44556677.cc
+                    44557788.com *.44557788.com
+                    44558899.com *.44558899.com
+                    56756.cc *.56756.cc
+                    66778899.cc *.66778899.cc
+                    6fa.cc *.6fa.cc
+                    hg9393.cc *.hg9393.cc
+                    v333999.com *.v333999.com
+                    yt2009.com *.yt2009.com;
+                
+        return 302 https://hg3535b.com;
+    }
+
+
+    server {    ###### redirect ######
+        include /apps/nginx/ip_two.conf;
+        server_name  ufo8848.com;
+				   
+        return 302 https://$host$request_uri;
+
+    }
+
+
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;
+        server_name p1.ty6686.com
+		            p2.ty6686.com
+					p.h3535.top
+                    oppan.hg3535a.com
+					www.ufo8848.com;
+
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /va1/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /va1/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two_ssl.conf;
+        server_name  ufo8848.com;    
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/ufo8848.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/ufo8848.com.key;					
+
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /va1/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /va1/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;	
+    }
+	
+    server {        
+        include /apps/nginx/ip_one_8011.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8012.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8013.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8015.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios_fish_hunter.conf;
+    }  
+    server {        
+        include /apps/nginx/ip_one_8027.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_office_app_fish_hunter.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8028.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios_office_app.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8029.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_office_app_main_page.conf;
+    }
+ 
+    
+    
+    
+    
+    
+
+    server{
+        include /apps/nginx/ip_one_8102.conf; 
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_agent.conf;
+    }
+    server{
+        include /apps/nginx/ip_one_8103.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_raadmin.conf;
+    }
+
+    include crm2_internal_deploy.conf;
+    include crm2_backend_setting.conf;
+}

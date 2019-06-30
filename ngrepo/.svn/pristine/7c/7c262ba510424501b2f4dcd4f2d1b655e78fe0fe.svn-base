@@ -1,0 +1,4 @@
+### This is server section headers and will not be added to response of path having add_header defined in location section ###
+
+# Add nginx cache MISS or HIT header to response
+add_header cache-status $upstream_cache_status;

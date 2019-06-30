@@ -1,0 +1,7 @@
+upstream crm2server{
+    ip_hash;
+	
+	#server 52.79.38.46:8080;   
+	server 13.125.125.163:8080;
+	server 13.125.43.153:8080;
+}

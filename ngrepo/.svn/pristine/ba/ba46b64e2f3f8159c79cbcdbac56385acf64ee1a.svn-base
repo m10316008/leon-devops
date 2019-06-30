@@ -1,0 +1,7 @@
+# custom redirect
+
+            server_name    9393.world 
+                           www.9393.world
+                	       hg3131.ph;
+		    
+			return 302 https://h9393.net$request_uri; # canUseHTTPSIfPossible

@@ -1,0 +1,6 @@
+cd /apps/nginxclient
+sleep 1
+npm install
+sleep 1
+systemctl restart nginxclient
+echo 'complete'

@@ -1,0 +1,39 @@
+firewall-cmd --permanent --zone=public --add-port=8091/tcp
+firewall-cmd --permanent --zone=public --add-port=8092/tcp
+systemctl restart firewalld
+
+
+###### upload node188 to /apps/node188
+#cd /apps/node188
+#npm install
+###### upload node188.service to /etc/systemd/system
+systemctl daemon-reload
+systemctl enable node188
+systemctl restart node188
+curl http://localhost:8091/demo/
+
+
+
+
+###### upload result188 to /apps/result188
+#cd /apps/result188
+#npm install
+###### upload result188.service to /etc/systemd/system
+systemctl daemon-reload
+systemctl enable result188
+systemctl restart result188
+curl http://localhost:8092
+
+
+
+
+###### upload sync_time 
+###### to /apps/shell/
+
+
+###### setup the crontab job 
+crontab -e
+
+4 21 * * * /bin/bash /apps/shell/sync_time
+*/2 * * * * /bin/systemctl restart node188
+*/10 * * * * /bin/systemctl restart result188

@@ -1,0 +1,17 @@
+# hide desktop button : start
+           
+location /brand/common/show_desktop.json {  
+    root $project_path/web/; 
+    return 302 /brand/common/dont_show_desktop.json;
+}
+
+# hide desktop button : end
+
+# change ag to mobile : start
+    
+location /brand/common/ag_config.json {  
+    root $project_path/web/; 
+    return 302 /brand/common/ag_config_to_mobile.json;
+}
+
+# change ag to mobile : end

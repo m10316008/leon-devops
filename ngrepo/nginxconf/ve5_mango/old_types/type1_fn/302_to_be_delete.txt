@@ -1,0 +1,264 @@
+
+	
+	server {    ###### redirect to hg1717.ceo######
+        listen       80;
+        include crm2_frontend_redir_to_hg1717ceo.conf;                                         
+
+        return 302 https://hg1717.ceo$request_uri;    
+    }
+
+    server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0001.conf;     
+
+        return 302 http://1717h.co$request_uri;    
+    }
+    
+    server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0002.conf;     
+
+        return 302 http://www.1717h.co$request_uri;    
+    }
+    
+    server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0003.conf;     
+
+        return 302 https://hg1717.ceo$request_uri;    
+    }
+
+    server {    ###### redirect ######
+        listen       80;
+        include crm2_frontend_redir_0004.conf;     
+
+        return 302 https://www.hg1717.ceo$request_uri;    
+    }
+    
+
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    h1717.net
+		               ;
+        ssl_certificate     /etc/nginx/cert/h1717.net.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.net.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.h1717.net ;
+        ssl_certificate     /etc/nginx/cert/h1717.net.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.net.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    h1717.org;
+		               
+        ssl_certificate     /etc/nginx/cert/h1717.org.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.org.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.h1717.org ;
+        ssl_certificate     /etc/nginx/cert/h1717.org.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.org.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    h1717.vip;
+		               
+        ssl_certificate     /etc/nginx/cert/h1717.vip.2.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.vip.2.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.h1717.vip ;
+
+        ssl_certificate     /etc/nginx/cert/h1717.vip.2.crt;
+        ssl_certificate_key /etc/nginx/cert/h1717.vip.2.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    hg1717.com;
+        ssl_certificate     /etc/nginx/cert/hg1717.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg1717.com.key;
+        include crm2_ssl_setting.conf;
+
+        #include crm2_frontend.conf;    2018-4-30 redirect to hg1717.ceo
+        return 302 https://hg1717.ceo$request_uri;
+    }
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg1717.com ;
+        ssl_certificate     /etc/nginx/cert/hg1717.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg1717.com.key;
+        include crm2_ssl_setting.conf;
+
+        #include crm2_frontend.conf;    2018-4-30 redirect to hg1717.ceo
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+    
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    hg1717.org;
+		              
+        ssl_certificate     /etc/nginx/cert/hg1717.org.crt;
+        ssl_certificate_key /etc/nginx/cert/hg1717.org.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://h1717.org$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg1717.org ;
+
+        ssl_certificate     /etc/nginx/cert/hg1717.org.crt;
+        ssl_certificate_key /etc/nginx/cert/hg1717.org.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.h1717.org$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    hg2992.com;
+		                
+        ssl_certificate     /etc/nginx/cert/hg2992.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg2992.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg2992.com ;
+        ssl_certificate     /etc/nginx/cert/hg2992.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg2992.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+    
+    
+    
+#    2018-04-11 11:36 芒果 指示:
+#    hg171717.com 也不需要做加密 如果后续  需要在做加密吧
+#    server {    ###### frontend ######
+#        listen    443 ssl;
+#        server_name    hg171717.com;
+#		              
+#        ssl_certificate     /etc/nginx/cert/hg171717.com.crt;
+#        ssl_certificate_key /etc/nginx/cert/hg171717.com.key;
+#        include crm2_ssl_setting.conf;
+#
+#        return 302 http://1717hg.ceo$request_uri;
+#    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg171717.com ;
+        ssl_certificate     /etc/nginx/cert/hg171717.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg171717.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 http://www.1717hg.ceo$request_uri;
+    }
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    1717h.mx;
+        ssl_certificate     /etc/nginx/cert/1717h.mx.crt;
+        ssl_certificate_key /etc/nginx/cert/1717h.mx.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 http://1717h.co$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.1717h.mx;
+        ssl_certificate     /etc/nginx/cert/1717h.mx.crt;
+        ssl_certificate_key /etc/nginx/cert/1717h.mx.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 http://www.1717h.co$request_uri;
+    }
+    
+    
+    
+    
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    hg3553.com;
+		              
+        ssl_certificate     /etc/nginx/cert/hg3553.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg3553.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg3553.com ;
+        ssl_certificate     /etc/nginx/cert/hg3553.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg3553.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    hg6692.com;
+		              
+        ssl_certificate     /etc/nginx/cert/hg6692.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg6692.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://hg1717.ceo$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen    443 ssl;
+        server_name    www.hg6692.com ;
+
+        ssl_certificate     /etc/nginx/cert/hg6692.com.crt;
+        ssl_certificate_key /etc/nginx/cert/hg6692.com.key;
+        include crm2_ssl_setting.conf;
+
+        return 302 https://www.hg1717.ceo$request_uri;
+    }
+
+

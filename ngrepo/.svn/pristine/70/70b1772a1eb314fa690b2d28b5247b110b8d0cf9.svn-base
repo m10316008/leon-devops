@@ -1,0 +1,5 @@
+    server {    ###### frontend ######
+        listen       52.128.238.171:80 ;
+        server_name   52.128.238.171.of.us    ;
+        include crm2_frontend.conf;
+    }

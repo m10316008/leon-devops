@@ -1,0 +1,49 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;        
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+location /brand/ {
+	proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+    proxy_redirect ~http[s]*://[^/]+/(.*) $scheme://$host/$1;
+}
+
+location /jetsostatic/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  1m;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vc3/prod/jetsostatic$1 break;
+    include crm2_frontend_s3bucket.conf;
+    proxy_redirect /vc3/prod/jetsostatic/ /;
+}
+
+location /mobile {	
+	proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+    proxy_redirect ~http[s]*://[^/]+/(.*) $scheme://$host/$1;
+}
+
+location / {
+	proxy_buffering        on;
+	proxy_cache_valid      200  14d;
+	proxy_cache            STATIC;
+	proxy_pass http://frontendcdn;
+    proxy_redirect ~http[s]*://[^/]+/(.*) $scheme://$host/$1;
+}
+
+# agentv2 url to note agent code
+
+location /a/ {
+    default_type text/html;
+	content_by_lua_block {
+	    local a = string.gsub(ngx.var.request_uri, "/a/", "");
+		a = "/landing.html?upline=" .. a;
+		ngx.redirect(a, 302);
+	}	
+}
+

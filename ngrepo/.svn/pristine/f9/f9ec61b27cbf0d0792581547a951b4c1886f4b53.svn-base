@@ -1,0 +1,6 @@
+upstream lbresult188{
+    ip_hash;
+	
+	server result1.crm2myjava.com:8092;
+	server result2.crm2myjava.com:8092;
+}

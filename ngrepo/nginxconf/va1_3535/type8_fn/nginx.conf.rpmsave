@@ -1,0 +1,31 @@
+
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {    
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+	server_names_hash_max_size 131072;
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    real_ip_header X-Forwarded-For;
+    proxy_set_header    X-Forwarded-For  $proxy_add_x_forwarded_for;    
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    include crm2_result188_loadbalance_setting.conf;
+    upstream frontendcdn{
+		server 54.169.155.120:80; #002
+	}
+    server {    ###### frontend ######
+        listen       80;
+        include nginx_fn_server_names_0001.conf;
+        include crm2_frontend.conf;
+    }
+    include crm2_backend_setting.conf;
+}

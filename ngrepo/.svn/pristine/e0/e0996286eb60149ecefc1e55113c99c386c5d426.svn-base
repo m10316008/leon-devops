@@ -1,0 +1,223 @@
+
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+	
+	server_names_hash_max_size 131072;
+	
+	#proxy_set_header Host $host;
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    
+	#real_ip_header X-Forwarded-For;
+    proxy_cache_key $scheme$proxy_host$uri;
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+	
+	include crm2_result188_loadbalance_setting.conf;
+	upstream frontendcdn{
+	    #server static1.crm2myjava.com:9080;
+		#server static2.crm2myjava.com:9080;	
+        server 216.118.228.242:80;
+        server 216.118.240.26:80;
+	}    
+    upstream appscdn{
+        server 216.118.228.242:8011;
+        server 216.118.240.26:8011;
+    }
+    upstream appsios{
+        server 216.118.228.242:8012;
+        server 216.118.240.26:8012;
+    }
+    upstream appsapk{
+        server 216.118.228.242:8013;
+        server 216.118.240.26:8013;
+    }
+	upstream frontendcdntolottery{	
+        server 216.118.228.242:8016;
+        server 216.118.240.26:8016;
+	}
+    upstream officeappsapkmainpage {
+        server 216.118.228.242:8029;
+        server 216.118.240.26:8029;        
+    }
+    
+    upstream coreagent{
+        server 216.118.228.242:8102;
+        server 216.118.240.26:8102;
+    }	
+	
+    server {    ###### frontend ######
+        listen       80;
+        include nginx_fn_server_names_0001.conf;
+        include crm2_frontend_cdn.conf;
+    }
+    
+    server{     ###### frontend ######
+        listen 80;
+        include nginx_fn_server_names_0002_to_lottery.conf;
+        include crm2_frontend_to_lottery.conf;
+    }	
+
+		
+	server {    ###### frontend ######
+        listen       80;
+        server_name
+                    567bet.info www.567bet.info
+                    567bet.vip  www.567bet.vip
+                    567bet.tv   www.567bet.tv
+               
+                    567bet.cn   www.567bet.cn
+                    567bet.biz	www.567bet.biz
+                    567bet.bet	www.567bet.bet;                    
+
+        return 302 https://www-567bet.cc$request_uri;
+	}
+
+
+		
+		
+	server {    ###### frontend ######
+        listen       80;
+        server_name
+					567bet.co   www.567bet.co
+                    www-567bet.com	www.www-567bet.com                    
+                    www-567bet.cc  www.www-567bet.cc
+                    567bet.cc   www.567bet.cc;
+
+        return 302 https://$host$request_uri;
+		}
+	
+
+#	server {    ###### test ######
+#       listen       80;
+#        server_name
+#				8338833.com	www.8338833.com	;
+#		
+#		return 302 https://www-567bet.cc?upline=bess$request_uri;
+#   		}
+
+    server {    ###### frontend SSL######
+        listen       443 ssl http2;
+        server_name		
+                        567bet.co  www.567bet.co;
+                    
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/567bet.co.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/567bet.co.key;
+                    
+        include crm2_frontend_cdn.conf;        
+    }
+	
+
+		
+    server {    ###### frontend SSL######
+        listen       443 ssl http2;
+        server_name		
+                        567bet.com  www.567bet.com
+						567bet.cc	www.567bet.cc
+						www-567bet.com	www.www-567bet.com;
+                    
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/567bet.com.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/567bet.com.key;
+                    
+        include crm2_frontend_cdn.conf;        
+    }
+    server {    ###### frontend ssl ######
+        listen       443 ssl http2;
+        server_name		www-567bet.cc  www.www-567bet.cc;
+                    
+        ssl_certificate /usr/local/openresty/nginx/conf/cert/www-567bet.cc.crt;
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/www-567bet.cc.key;
+                    
+        include crm2_frontend_cdn.conf;        
+    }
+ 
+    
+
+    server {    ###### Agent ######
+        listen       80;
+        server_name
+                    567bet.org  www.567bet.org;
+
+        include crm2_cdn_agent.conf;
+    }
+
+    
+
+    server{
+        listen 80;
+        server_name cdnapps.com;
+        include crm2_frontend_apps_cdn_8011.conf;
+    }
+    server{
+        listen 80;
+        server_name cdnios.com;
+
+        include crm2_frontend_apps_ios_8012.conf;
+    }
+    server{
+        listen 80;
+        server_name cdnapk.com;
+        include crm2_frontend_apps_apk_8013.conf;
+    }
+    server{
+        listen 80;
+        server_name    8858855.com *.8858855.com;
+        include crm2_frontend_apps_apk_office_app_main_page.conf;
+    }
+
+    
+    
+
+    server{
+        listen 80;
+        server_name io6231.citivi9.com; # placeholder :
+                                        # prevent showing front end
+                                        # 避免顯示前端。
+        
+        return 404;
+    }
+
+    #server{
+    #    listen 80;
+    #    server_name 
+    #                0698mpay.com;
+
+    #    include nginx_pay.conf;
+    #}
+
+
+
+
+
+    server {
+        listen          80;
+        server_name   
+                    pay1.citi58.com
+                    pay2.citi58.com
+                    pay3.citi58.com
+                    pay4.citi58.com
+                    pay5.citi58.com
+                    pay6.citi58.com
+                    pay7.citi58.com
+                    pay8.citi58.com
+                    pay9.citi58.com
+                    pay10.citi58.com
+                	pay.cadsy888.com
+                	pay.mkskj188.com
+                	pay.myxg168.com
+                	pay.slhsy168.com
+                    pay.szsqtbkj.com
+                	pay.xhmy178.com
+                	pay.yhc198.com;
+
+        include nginx_pay.conf;
+     }
+
+    include crm2_backend_setting.conf;
+}

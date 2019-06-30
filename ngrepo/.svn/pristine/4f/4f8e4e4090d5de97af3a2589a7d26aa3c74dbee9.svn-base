@@ -1,0 +1,102 @@
+##
+
+
+#manyCloudFlareIPs_start
+set_real_ip_from 103.21.244.0/22;
+set_real_ip_from 103.22.200.0/22;
+set_real_ip_from 103.31.4.0/22;
+set_real_ip_from 104.16.0.0/12;
+set_real_ip_from 108.162.192.0/18;
+set_real_ip_from 131.0.72.0/22;
+set_real_ip_from 141.101.64.0/18;
+set_real_ip_from 162.158.0.0/15;
+set_real_ip_from 172.64.0.0/13;
+set_real_ip_from 173.245.48.0/20;
+set_real_ip_from 188.114.96.0/20;
+set_real_ip_from 190.93.240.0/20;
+set_real_ip_from 197.234.240.0/22;
+set_real_ip_from 198.41.128.0/17;
+set_real_ip_from 2400:cb00::/32;
+set_real_ip_from 2606:4700::/32;
+set_real_ip_from 2803:f800::/32;
+set_real_ip_from 2405:b500::/32;
+set_real_ip_from 2405:8100::/32;
+set_real_ip_from 2c0f:f248::/32;
+set_real_ip_from 2a06:98c0::/29;
+#manyCloudFlareIPs_end
+
+real_ip_header CF-Connecting-IP;
+
+
+    #geoip: start
+    geoip_country /apps/geoip/GeoIP.dat;
+    fastcgi_param GEOIP_COUNTRY_CODE $geoip_country_code;
+    fastcgi_param GEOIP_COUNTRY_CODE3 $geoip_country_code3;
+    fastcgi_param GEOIP_COUNTRY_NAME $geoip_country_name;
+
+    map $http_cf_connecting_ip $allow_ip_status {
+        default No;
+
+         # 2018 04 27 : start
+        180.232.108.141 Yes;
+		203.177.82.50 Yes;
+		203.177.82.51 Yes;
+		203.177.82.52 Yes;
+		203.177.82.53 Yes;
+		203.177.82.54 Yes;
+
+        210.213.138.241 Yes;
+        210.213.138.242 Yes;
+        210.213.138.243 Yes;
+        210.213.138.244 Yes;
+        210.213.138.245 Yes;
+        210.213.138.246 Yes;
+        # 2018 04 27 : end
+
+        # 2018 04 25 : start
+        118.184.46.15   Yes;
+        118.193.216.136 Yes;
+        # 2018 04 25 : end
+
+        42.200.197.192 Yes;
+        61.244.196.178 Yes;
+        203.186.83.238 Yes;
+        
+        # 2018 04 17 : start
+        124.105.239.76 Yes;
+        # 2018 04 17 : end
+        
+        # 2018 04 03: start
+        103.48.134.66 Yes;
+        # 2018 04 03: end
+        
+        111.125.93.20 Yes;
+        
+        # 2018 02 07: start
+        103.48.171.104 Yes;
+        111.125.93.10	Yes;
+        111.125.93.28	Yes;
+        111.125.93.6	Yes;
+        180.232.108.138	Yes;
+        180.232.108.139	Yes;
+        203.177.34.180	Yes;
+        210.176.144.68	Yes;
+        # 2018 02 07: end
+
+    }
+
+    map $geoip_country_code $allow_country_status {
+        default Yes;
+     #   HK No;  # 禁香港
+     #   PH No;  # 禁菲律賓
+     #   TW No;  # 禁臺灣
+     #   SG No;  # 禁新加坡
+     #   MY No;  # 禁馬來西亞
+    }
+
+
+    #geoip: end
+
+
+
+##

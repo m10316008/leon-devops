@@ -1,0 +1,242 @@
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       /usr/local/openresty/nginx/conf/mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+	server_names_hash_max_size 131072;
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    #real_ip_header X-Forwarded-For;
+	proxy_set_header Host $host;
+    
+	proxy_cache_path /apps/temp/cache/ levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+	proxy_cache_key $scheme$proxy_host$uri;
+	include crm2_result188_loadbalance_setting.conf;    
+    upstream frontendcdn{
+		server 112.121.177.82:80;	
+		server 182.16.50.66:80;
+	}
+    upstream appscdn{
+        server 112.121.177.82:8011;
+		server 182.16.50.66:8011;
+    }
+    upstream appsios{
+        server 112.121.177.82:8012;
+		server 182.16.50.66:8012;
+    }
+    upstream appsapk{
+        server 112.121.177.82:8013;
+		server 182.16.50.66:8013;
+    }
+    upstream officeappsapk{
+        server 112.121.177.82:8027;
+        server 182.16.50.66:8027;
+    }
+    upstream officeappsios{
+        server 112.121.177.82:8028;
+        server 182.16.50.66:8028;
+    }
+    
+    upstream coreagent{
+        server 112.121.177.82:8102;
+		server 182.16.50.66:8102;
+    }    
+
+    server {    ###### default to 404 ######
+        listen       80;
+        server_name regalvh8.com *.regalvh8.com ;
+
+        return 404;
+    }
+
+
+    server {    ###### frontend ######
+        listen       80;
+        server_name
+
+					68bet.vip		www.68bet.vip;
+
+        include crm2_frontend_cdn.conf;
+    }
+
+
+
+
+    server {    ###### frontend ######
+        listen       80;
+        server_name
+					
+					0698ll.com		www.0698ll.com
+					0698mm.com		www.0698mm.com
+					0698nn.com		www.0698nn.com
+					0698oo.com		www.0698oo.com
+					0698pp.com		www.0698pp.com
+					0698qq.com		www.0698qq.com
+					0698rr.com		www.0698rr.com
+					0698ss.com		www.0698ss.com
+					0698tt.com		www.0698tt.com
+					0698uu.com		www.0698uu.com
+					0698vv.com		www.0698vv.com
+					0698ww.com		www.0698ww.com
+					0698xx.com		www.0698xx.com
+					0698yy.com		www.0698yy.com
+					0698zz.com		www.0698zz.com
+		
+					0698aa.com    	www.0698aa.com
+                    0698bb.com		www.0698bb.com
+                    0698cc.com		www.0698cc.com
+                    0698dd.com		www.0698dd.com
+                    0698ee.com		www.0698ee.com
+                    0698ff.com		www.0698ff.com
+                    0698gg.com		www.0698gg.com
+                    0698hh.com		www.0698hh.com
+                    0698ii.com		www.0698ii.com
+                    0698jj.com		www.0698jj.com
+                    0698b.com       www.0698b.com
+                    0698d.com       www.0698d.com
+                    0698e.com       www.0698e.com
+                    0698f.com       www.0698f.com
+                    0698g.com       www.0698g.com
+                    0698h.com       www.0698h.com
+                    0698i.com       www.0698i.com
+                    0698j.com       www.0698j.com
+                    0698k.com       www.0698k.com
+                    0698l.com       www.0698l.com
+                    0698o.com       www.0698o.com;
+
+        #include crm2_frontend_cdn.conf;
+        return 302 https://$host$request_uri;
+    }
+
+    server {    ###### frontend ######
+        listen       443 ssl http2;
+        server_name  
+                    
+                    0698aa.com    	www.0698aa.com
+                    0698bb.com		www.0698bb.com
+                    0698cc.com		www.0698cc.com
+                    0698dd.com		www.0698dd.com
+                    0698ee.com		www.0698ee.com
+                    0698ff.com		www.0698ff.com
+                    0698gg.com		www.0698gg.com
+                    0698hh.com		www.0698hh.com
+                    0698ii.com		www.0698ii.com
+                    0698jj.com		www.0698jj.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/0698aa.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/0698aa.com.key;
+
+        include crm2_frontend_cdn.conf;
+    }
+
+    server {    ###### frontend ######
+        listen       443 ssl http2;
+        server_name  
+                    
+                    0698b.com       www.0698b.com
+                    0698d.com       www.0698d.com
+                    0698e.com       www.0698e.com
+                    0698f.com       www.0698f.com
+                    0698g.com       www.0698g.com
+                    0698h.com       www.0698h.com
+                    0698i.com       www.0698i.com
+                    0698j.com       www.0698j.com
+                    0698k.com       www.0698k.com
+                    0698l.com       www.0698l.com
+                    0698o.com       www.0698o.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/0698b.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/0698b.key;
+
+        include crm2_frontend_cdn.conf;
+    }
+	
+	
+	
+	    server {    ###### frontend ######
+        listen       443 ssl http2;
+        server_name                    
+					0698ll.com	www.0698ll.com
+					0698mm.com	www.0698mm.com
+					0698nn.com	www.0698nn.com
+					0698oo.com	www.0698oo.com
+					0698pp.com	www.0698pp.com
+					0698qq.com	www.0698qq.com
+					0698rr.com	www.0698rr.com
+					0698ss.com	www.0698ss.com
+					0698tt.com	www.0698tt.com
+					0698uu.com	www.0698uu.com
+					0698vv.com	www.0698vv.com
+					0698ww.com	www.0698ww.com
+					0698xx.com	www.0698xx.com
+					0698yy.com	www.0698yy.com
+					0698zz.com	www.0698zz.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/www.0698ll.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/www.0698ll.com.key;
+
+        include crm2_frontend_cdn.conf;
+    }
+	
+	
+	
+	
+
+
+    server {    ###### Agent ######
+        listen       80;
+        server_name
+                    ag.0698m.com;
+
+        include crm2_cdn_agent.conf;
+        #return 302 https://$host$request_uri;
+    }
+
+    server{
+        listen 80;
+        server_name cdnapps.com;
+
+        include crm2_frontend_apps_cdn_8011.conf;
+    }
+    server{
+        listen 80;
+        server_name cdnios.com;
+
+        include crm2_frontend_apps_ios_8012.conf;
+    }
+    server{
+        listen 80;
+        server_name cdnapk.com;
+
+        include crm2_frontend_apps_apk_8013.conf;
+    }
+    
+	server {    ###### frontend android ######
+        listen       80;
+		server_name     68bet.me    www.68bet.me;      # android
+        include crm2_frontend_apps_apk_office_app.conf;
+    }    
+    
+	server {    ###### frontend ios ######
+        listen       80;
+		server_name      68bet.pw  www.68bet.pw;      # ios
+        include crm2_frontend_apps_ios_office_app.conf;
+    }  
+
+
+    
+    
+    server{
+        listen 80;
+        server_name 
+                    0698mpay.com;
+
+        include nginx_pay.conf;
+    }
+    include crm2_backend_setting.conf;
+}

@@ -1,0 +1,36 @@
+.term {	
+	width: 600px;
+	height: 300px;
+	margin: 4 auto;
+	padding: 2px;
+	border:1px solid gray;
+}
+.terminal {
+	background-color: #111;
+	color: #fafafa;
+	padding: 2px;
+}
+
+.terminal:focus .terminal-cursor {
+	background-color: #fafafa;
+}
+.term_name{
+	padding: 2px;
+	overflow: hidden;
+	float: left;
+	border: 1px solid coral;
+}
+.term_header{
+	overflow: hidden;
+	border: 1px solid black;
+}
+.term_constainer{
+	padding:10px;
+	float: left;
+	border:1px solid red;
+}
+.term_op{
+	padding: 2px;
+	overflow: hidden;
+	border:1px solid green;
+}

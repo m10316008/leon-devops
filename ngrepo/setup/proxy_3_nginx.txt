@@ -1,0 +1,25 @@
+vi /etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=0
+enabled=1
+
+
+yum -y install nginx nginx-module-geoip.x86_64
+
+
+mkdir -p /apps/geoip/
+cd /apps/geoip/
+wget https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+gunzip GeoIP.dat.gz
+
+
+
+###### Nginx: start after 5 seconds
+mkdir -p /etc/systemd/system/nginx.service.d
+printf "[Service]\nExecStartPost=/bin/sleep 5\n" > /etc/systemd/system/nginx.service.d/override.conf
+systemctl daemon-reload
+systemctl enable nginx
+systemctl restart nginx

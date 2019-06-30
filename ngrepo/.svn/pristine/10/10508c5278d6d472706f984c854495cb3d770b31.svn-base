@@ -1,0 +1,248 @@
+
+server {
+    listen 80;
+
+    include domains_redirect.conf;
+
+    include crm2_headers_ssl.conf;
+
+    return 301 https://$host$request_uri;
+}
+
+server {    ###### redirect to h9393.org from different domains ######
+    listen 80;
+
+    server_name     hg9393.com	www.hg9393.com;
+
+    include crm2_headers_ssl.conf;
+
+    return 301 https://h9393.org$request_uri;
+}
+
+server {    ###### redirect to h9393.org from different domains ######
+    listen 443 ssl http2;
+
+    server_name     hg9393.com	www.hg9393.com;
+
+    ssl_certificate     certs/hg9393.com.crt;
+    ssl_certificate_key certs/hg9393.com.key;
+
+    include crm2_headers_ssl.conf;
+
+    return 301 https://h9393.org$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name
+        h9393.org
+        www.h9393.org
+        *.h9393.org
+        ;
+
+    ssl_certificate     certs/h9393.org.crt;
+    ssl_certificate_key certs/h9393.org.key;
+
+    include crm2_frontend_ssl.conf;
+}
+
+server {
+    listen 443 ssl http2 default_server;
+
+    server_name _ www.*;
+
+    ssl_certificate      certs/selfsigned.crt;
+    ssl_certificate_key  certs/selfsigned.key;
+
+    return 400;
+}
+
+server {
+    listen 443 ssl http2;
+
+    server_name
+            9393.world
+            *.9393.world
+    ;
+
+    ssl_certificate      certs/star.9393.world.crt;
+    ssl_certificate_key  certs/star.9393.world.key;
+
+    include crm2_frontend_ssl.conf;
+}
+	
+    
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name               
+                h9393.mobi	www.h9393.mobi;
+
+    ssl_certificate    certs/h9393.mobi.crt; 
+    ssl_certificate_key certs/h9393.mobi.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+                hg939305.com	www.hg939305.com;
+
+    ssl_certificate   certs/hg939305.com.crt; 
+    ssl_certificate_key certs/hg939305.com.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+                hg313108.com    www.hg313108.com;
+
+    ssl_certificate   certs/hg313108.com.crt; 
+    ssl_certificate_key certs/hg313108.com.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+                ab9393.com    www.ab9393.com
+                 #ae9393.com    www.ae9393.com
+                 #ah9393.com    www.ah9393.com
+                 ;
+
+    ssl_certificate   certs/ab9393.com.crt; 
+    ssl_certificate_key certs/ab9393.com.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+                ac9393.com    www.ac9393.com;
+
+    ssl_certificate   certs/ac9393.com.crt; 
+    ssl_certificate_key certs/ac9393.com.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               h939310.net	www.h939310.net;
+
+    ssl_certificate   certs/h939310.net.crt; 
+    ssl_certificate_key certs/h939310.net.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               h07072.net	www.h07072.net;
+
+    ssl_certificate   certs/h07072.net.crt; 
+    ssl_certificate_key certs/h07072.net.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               h9393.bz   www.h9393.bz;
+
+    ssl_certificate   certs/h9393.bz.crt; 
+    ssl_certificate_key certs/h9393.bz.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               h9393.tv    www.h9393.tv;
+
+    ssl_certificate   certs/h9393.tv.crt; 
+    ssl_certificate_key certs/h9393.tv.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               9393h.me www.9393h.me;
+
+    ssl_certificate   certs/9393h.me.crt; 
+    ssl_certificate_key certs/9393h.me.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {    ###### frontend ######
+    listen 443 ssl http2;
+    server_name 
+               h9393.in www.h9393.in;
+
+    ssl_certificate   certs/h9393.in.crt; 
+    ssl_certificate_key certs/h9393.in.key;
+    
+    include crm2_frontend_ssl.conf;
+}
+
+
+server {   ###### moblie_apps : front end : ios v2 ######
+    listen 443 ssl http2;
+
+    server_name v2ios.9393m.com; # front end : ios v2
+
+    ssl_certificate     certs/asterisk.9393m.com.crt;
+    ssl_certificate_key certs/asterisk.9393m.com.key;
+
+    location = /mobile/static/js/apps_inject.js {
+        return 302 /mobile/static/js/apps_inject_iosv2.js;
+    }
+
+    location = /mobile/static/js/app-service.js {
+        rewrite ^(.*)$  /vc3/prod/mobile188/mobile/static/js/app-service.js break;
+        include crm2_frontend_s3bucket.conf;
+        sub_filter_types *;
+        sub_filter "var isOurApp = false;"  "var isOurApp = true; console.log('modified my sub_filter aaa');"  ;
+    }
+
+    include crm2_frontend_ssl.conf;
+}
+
+server {    ###### agent ######
+    listen 443 ssl http2;
+
+    server_name tt9393.com www.tt9393.com;
+
+    ssl_certificate     certs/newtt9393.com.crt;
+    ssl_certificate_key certs/newtt9393.com.key;
+
+    include crm2_agentv2_ssl.conf;
+}
+
+server {    ###### payment ######
+    listen 443 ssl http2;
+
+    server_name      pay.ppaqo.cn;
+
+    ssl_certificate     certs/pay.ppaqo.cn.crt;
+    ssl_certificate_key certs/pay.ppaqo.cn.key;
+
+    include crm2_payment_ssl.conf;
+}

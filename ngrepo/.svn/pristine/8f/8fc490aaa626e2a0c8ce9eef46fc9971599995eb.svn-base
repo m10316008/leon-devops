@@ -1,0 +1,121 @@
+
+#user  nobody;
+worker_processes  4;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    #rate limit login
+    limit_req_zone $binary_remote_addr zone=req_limit001:10m rate=5r/s;
+    limit_conn_zone $binary_remote_addr zone=req_limit002:10m;
+
+    #[Solved]could not build optimal proxy_headers_hash
+    proxy_headers_hash_max_size 51200;
+    proxy_headers_hash_bucket_size 6400;
+
+    server_names_hash_max_size 131072;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include gzip.conf;
+    include crm2_upstream.conf;
+
+    proxy_cache_path x_cache_fn   levels=1:2 keys_zone=x_cache_fn:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_temp levels=1:2 keys_zone=x_cache_temp:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_odds6 levels=1:2 keys_zone=cache_odds6:10m inactive=24h  max_size=10g;
+    proxy_cache_path x_cache_fnagent levels=1:2 keys_zone=x_cache_fnagent:10m inactive=24h  max_size=10g;
+
+    server {
+        listen 80 default_server;
+
+        server_name _ www.*;
+
+        return 400;
+    }
+
+    server {
+        listen 80;
+
+        server_name
+            zhifuzhifuym01.com
+            pay1.zhifuzhifuym01.com pay2.zhifuzhifuym01.com pay3.zhifuzhifuym01.com pay4.zhifuzhifuym01.com pay5.zhifuzhifuym01.com 
+            pay6.zhifuzhifuym01.com pay7.zhifuzhifuym01.com pay8.zhifuzhifuym01.com pay9.zhifuzhifuym01.com pay10.zhifuzhifuym01.com
+            pay11.zhifuzhifuym01.com pay12.zhifuzhifuym01.com pay13.zhifuzhifuym01.com pay14.zhifuzhifuym01.com pay15.zhifuzhifuym01.com
+            pay16.zhifuzhifuym01.com pay17.zhifuzhifuym01.com pay18.zhifuzhifuym01.com pay19.zhifuzhifuym01.com pay20.zhifuzhifuym01.com
+            zhifuzhifuym02.com
+            pay1.hifuzhifuym02.com pay2.hifuzhifuym02.com pay3.hifuzhifuym02.com pay4.hifuzhifuym02.com pay5.hifuzhifuym02.com
+            pay6.hifuzhifuym02.com pay7.hifuzhifuym02.com pay8.hifuzhifuym02.com pay9.hifuzhifuym02.com pay10.hifuzhifuym02.com
+            pay11.hifuzhifuym02.com pay12.hifuzhifuym02.com pay13.hifuzhifuym02.com pay14.hifuzhifuym02.com pay15.hifuzhifuym02.com
+            pay16.hifuzhifuym02.com pay17.hifuzhifuym02.com pay18.hifuzhifuym02.com pay19.hifuzhifuym02.com pay20.hifuzhifuym02.com
+            zhifuzhifuym03.com
+            pay1.zhifuzhifuym03.com pay2.zhifuzhifuym03.com pay3.zhifuzhifuym03.com pay4.zhifuzhifuym03.com pay5.zhifuzhifuym03.com
+            pay6.zhifuzhifuym03.com pay7.zhifuzhifuym03.com pay8.zhifuzhifuym03.com pay9.zhifuzhifuym03.com pay10.zhifuzhifuym03.com
+            pay11.zhifuzhifuym03.com pay12.zhifuzhifuym03.com pay13.zhifuzhifuym03.com pay14.zhifuzhifuym03.com pay15.zhifuzhifuym03.com
+            pay16.zhifuzhifuym03.com pay17.zhifuzhifuym03.com pay18.zhifuzhifuym03.com pay19.zhifuzhifuym03.com pay20.zhifuzhifuym03.com
+            zhifuzhifuym04.com
+            pay1.zhifuzhifuym04.com pay2.zhifuzhifuym04.com pay3.zhifuzhifuym04.com pay4.zhifuzhifuym04.com pay5.zhifuzhifuym04.com
+            pay6.zhifuzhifuym04.com pay7.zhifuzhifuym04.com pay8.zhifuzhifuym04.com pay9.zhifuzhifuym04.com pay10.zhifuzhifuym04.com
+            pay11.zhifuzhifuym04.com pay12.zhifuzhifuym04.com pay13.zhifuzhifuym04.com pay14.zhifuzhifuym04.com pay15.zhifuzhifuym04.com
+            pay16.zhifuzhifuym04.com pay17.zhifuzhifuym04.com pay18.zhifuzhifuym04.com pay19.zhifuzhifuym04.com pay20.zhifuzhifuym04.com
+            zhifuzhifuym05.com
+            pay1.zhifuzhifuym05.com pay2.zhifuzhifuym05.com pay3.zhifuzhifuym05.com pay4.zhifuzhifuym05.com pay5.zhifuzhifuym05.com
+            pay6.zhifuzhifuym05.com pay7.zhifuzhifuym05.com pay8.zhifuzhifuym05.com pay9.zhifuzhifuym05.com pay10.zhifuzhifuym05.com
+            pay11.zhifuzhifuym05.com pay12.zhifuzhifuym05.com pay13.zhifuzhifuym05.com pay14.zhifuzhifuym05.com pay15.zhifuzhifuym05.com
+            pay16.zhifuzhifuym05.com pay17.zhifuzhifuym05.com pay18.zhifuzhifuym05.com pay19.zhifuzhifuym05.com pay20.zhifuzhifuym05.com
+            zhifuzhifuym06.com
+            pay1.zhifuzhifuym06.com pay2.zhifuzhifuym06.com pay3.zhifuzhifuym06.com pay4.zhifuzhifuym06.com pay5.zhifuzhifuym06.com
+            pay6.zhifuzhifuym06.com pay7.zhifuzhifuym06.com pay8.zhifuzhifuym06.com pay9.zhifuzhifuym06.com pay10.zhifuzhifuym06.com
+            pay11.zhifuzhifuym06.com pay12.zhifuzhifuym06.com pay13.zhifuzhifuym06.com pay14.zhifuzhifuym06.com pay15.zhifuzhifuym06.com
+            pay16.zhifuzhifuym06.com pay17.zhifuzhifuym06.com pay18.zhifuzhifuym06.com pay19.zhifuzhifuym06.com pay20.zhifuzhifuym06.com
+            zhifuzhifuym07.com
+            pay1.zhifuzhifuym07.com pay2.zhifuzhifuym07.com pay3.zhifuzhifuym07.com pay4.zhifuzhifuym07.com pay5.zhifuzhifuym07.com
+            pay6.zhifuzhifuym07.com pay7.zhifuzhifuym07.com pay8.zhifuzhifuym07.com pay9.zhifuzhifuym07.com pay10.zhifuzhifuym07.com
+            pay11.zhifuzhifuym07.com pay12.zhifuzhifuym07.com pay13.zhifuzhifuym07.com pay14.zhifuzhifuym07.com pay15.zhifuzhifuym07.com
+            pay16.zhifuzhifuym07.com pay17.zhifuzhifuym07.com pay18.zhifuzhifuym07.com pay19.zhifuzhifuym07.com pay20.zhifuzhifuym07.com
+            zhifuzhifuym08.com
+            pay1.zhifuzhifuym08.com pay2.zhifuzhifuym08.com pay3.zhifuzhifuym08.com pay4.zhifuzhifuym08.com pay5.zhifuzhifuym08.com
+            pay6.zhifuzhifuym08.com pay7.zhifuzhifuym08.com pay8.zhifuzhifuym08.com pay9.zhifuzhifuym08.com pay10.zhifuzhifuym08.com
+            pay11.zhifuzhifuym08.com pay12.zhifuzhifuym08.com pay13.zhifuzhifuym08.com pay14.zhifuzhifuym08.com pay15.zhifuzhifuym08.com
+            pay16.zhifuzhifuym08.com pay17.zhifuzhifuym08.com pay18.zhifuzhifuym08.com pay19.zhifuzhifuym08.com pay20.zhifuzhifuym08.com
+            zhifuzhifuym09.com
+            pay1.zhifuzhifuym09.com pay2.zhifuzhifuym09.com pay3.zhifuzhifuym09.com pay4.zhifuzhifuym09.com pay5.zhifuzhifuym09.com
+            pay6.zhifuzhifuym09.com pay7.zhifuzhifuym09.com pay8.zhifuzhifuym09.com pay9.zhifuzhifuym09.com pay10.zhifuzhifuym09.com
+            pay11.zhifuzhifuym09.com pay12.zhifuzhifuym09.com pay13.zhifuzhifuym09.com pay14.zhifuzhifuym09.com pay15.zhifuzhifuym09.com
+            pay16.zhifuzhifuym09.com pay17.zhifuzhifuym09.com pay18.zhifuzhifuym09.com pay19.zhifuzhifuym09.com pay20.zhifuzhifuym09.com
+            zhifuzhifuym10.com
+            pay1.zhifuzhifuym10.com pay2.zhifuzhifuym10.com pay3.zhifuzhifuym10.com pay4.zhifuzhifuym10.com pay5.zhifuzhifuym10.com
+            pay6.zhifuzhifuym10.com pay7.zhifuzhifuym10.com pay8.zhifuzhifuym10.com pay9.zhifuzhifuym10.com pay10.zhifuzhifuym10.com
+            pay11.zhifuzhifuym10.com pay12.zhifuzhifuym10.com pay13.zhifuzhifuym10.com pay14.zhifuzhifuym10.com pay15.zhifuzhifuym10.com
+            pay16.zhifuzhifuym10.com pay17.zhifuzhifuym10.com pay18.zhifuzhifuym10.com pay19.zhifuzhifuym10.com pay20.zhifuzhifuym10.com
+        ;
+
+        include crm2_payment.conf;
+    }
+
+    include crm2_servers_443.conf;
+}

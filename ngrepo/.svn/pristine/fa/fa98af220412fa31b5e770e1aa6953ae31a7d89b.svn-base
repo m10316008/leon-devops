@@ -1,0 +1,28 @@
+# from http to https
+
+            server_name    
+                           33909h.com
+                           www.33909h.com
+			               h9393.in
+                           www.h9393.in
+                           h9393.info                           
+                           www.h9393.info                           
+                           h9393.la
+                           www.h9393.la
+                           h9393.io
+                           www.h9393.io
+                           h9393.biz
+                           www.h9393.biz
+                           h9393.com.co
+                           www.h9393.com.co
+                           h68897.com
+                           www.h68897.com
+                           9393h.co
+                           h9393.ag
+                           www.h9393.ag
+                           1331437749bjl.9393m.com
+						   1333071646bjl.9393m.com
+                           h939310.net	www.h939310.net
+						   h07072.net	www.h07072.net;
+                           
+            return 302 https://$host$request_uri;					   

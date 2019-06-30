@@ -1,0 +1,16 @@
+            server_name      
+                    					
+                #	www.hg07072.com
+                	www.hg21989.com
+                	www.hg68897.com
+                	www.hg69006.com
+					www.68897h.com	                	
+                    					
+                #	hg07072.com
+                	hg21989.com
+                	hg68897.com
+                	hg69006.com 
+					68897h.com;
+
+            
+			return 302 https://hg07072.com$request_uri;

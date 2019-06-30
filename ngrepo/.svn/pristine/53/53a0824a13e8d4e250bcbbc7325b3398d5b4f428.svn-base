@@ -1,0 +1,56 @@
+include crm2_setting.conf;
+include crm2_odds_news.conf;
+include crm2_path.conf;
+include crm2_redirect_to_mobile.conf;
+proxy_set_header    X-Scheme $scheme;
+
+set_by_lua_block $prod_current {
+    local get_prod_current = require("/usr/local/openresty/nginx/conf/prod_current").current
+    return get_prod_current();
+}
+
+location /brand/ {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$ /vg7/$prod_current/brand$1 break;
+    proxy_pass http://crm2frontend.s3-website-ap-northeast-1.amazonaws.com;
+    proxy_redirect /vg7/$prod_current/brand/ /;
+}
+
+location / {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    proxy_intercept_errors on;
+    error_page 404 @reactindexhtml;
+
+    rewrite ^(.*)$ /vg7/$prod_current/mobile188$1 break;
+    proxy_pass http://crm2frontend.s3-website-ap-northeast-1.amazonaws.com;
+    proxy_redirect /vg7/$prod_current/mobile188/ /;
+}
+
+location @reactindexhtml {
+    proxy_buffering        on;
+    proxy_cache_valid      200  14d;
+    proxy_cache            STATIC;
+
+    rewrite ^(.*)$  /vg7/$prod_current/mobile188/mobile/index.html break;
+    proxy_pass http://crm2frontend.s3-website-ap-northeast-1.amazonaws.com;
+    header_filter_by_lua '
+        ngx.status = 200
+    ';
+}#    tell the user to what type of module this domain belongs
+location = /servingpage/which193.json{
+   set $module_type "mobile188";
+   return 200 "{    \"domain\":  \"$host\",
+                    \"server port\":  \"$server_port\", 
+                    \"type\":  \"$module_type\",    
+                    \"brand\": \"vg7\",
+                    \"stage\": \"prod\",
+                    \"prod_current\": \"$prod_current\",
+                    \"project\": \"mobile188\" }";
+}
+

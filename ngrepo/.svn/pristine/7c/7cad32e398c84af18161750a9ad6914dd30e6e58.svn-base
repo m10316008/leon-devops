@@ -1,0 +1,37 @@
+
+include crm2_cache_speed_up.conf;
+include crm2_odds256.conf;
+include crm2_danger.conf;
+
+
+location = /login {
+    #limit_req zone=req_limit001;
+    #limit_conn req_limit002 5;
+	set $business "login";
+	access_by_lua_file /usr/local/openresty/nginx/conf/access.lua;
+	absolute_redirect off;
+	include crm2_path_proxy_pass.conf;
+}
+
+location / {
+	absolute_redirect off;
+	include crm2_path_proxy_pass.conf;
+}
+
+
+location /a/ {
+    default_type text/html;
+	content_by_lua_block {
+	    local a = string.gsub(ngx.var.request_uri, "/a/", "");
+		a = "/landing.html?upline=" .. a;
+		ngx.redirect(a, 302);
+	}	
+}
+
+error_page   500 502 503 504  /50x.html;
+location = /50x.html {
+	root   html;
+}
+
+
+#include crm2_path_maintenance.conf;

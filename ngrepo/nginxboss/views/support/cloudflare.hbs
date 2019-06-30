@@ -1,0 +1,95 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/cloudflare.css"/>
+{{/extend}}
+
+
+<div class="container-fluid">
+	<div>
+		<button type="button" class="btn btn-info" onclick="cf_update()" id="cf_update">Update CF domains</button>
+	</div>
+	<table class="table table-hover table-striped" id="cf_table">
+		<thead>
+		<tr>
+			<th>域名</th>
+			<th>NAMESERVER</th>
+			<th>vcode</th>
+			<th>狀態</th>
+			<th>指向</th>
+			<th>帳號</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody id="cf_tbody">
+		</tbody>
+	</table>
+</div>
+<script id="cf_tr_hbs" type="text/x-handlebars-template">
+	<tr id="cf_tr_\{{domain}}">
+		<td>
+			\{{domain}}
+		</td>
+		<td>
+			\{{nsname}}
+		</td>
+		<td>
+			\{{#if vcode}}
+			\{{vcode}}
+			\{{else}}
+			<button class="btn btn-info action" data-action_case="update_vcode" data-domain="\{{domain}}">
+				Please select a vcode
+			</button>
+			\{{/if}}
+		</td>
+		<td>
+			<label class="proxy" data-placement="left" data-delay="100">
+				<div class="cf_proxied_\{{proxied}}" data-vcode="\{{vcode}}">&nbsp;</div>
+			</label>
+		</td>
+		<td>
+			\{{content}}
+		</td>
+		<td>
+			\{{cf_ac}}
+		</td>
+		<td>
+			\{{{action}}}
+		</td>
+	</tr>
+</script>
+<div class="modal fade" id="brandformModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form id="brandform" method="post" action="cloudflare/api">
+					<input type="text" name="action_case" value="update_vcode"/>
+					<input type="text" name="domain" id="brandform_domain"/>
+					<div class="form-row">
+						<div class="col-md-12 mb-5">
+							<label for="vcode" class="col-form-label">品牌</label>
+							<select id="vcode" name="vcode" class="form-control">
+								{{#each brandList}}
+									<option value="{{vcode}}">{{brand}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+				<button type="button" id="btnSelectBrand" class="btn btn-primary">
+					決定品牌
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<!--<script src="/javascripts/jquery.validate.min.js"></script>-->
+	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/cloudflare.js"></script>
+{{/extend}}

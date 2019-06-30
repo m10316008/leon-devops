@@ -1,0 +1,16 @@
+[Unit]
+Description=GeoIP 2.0
+After=redis.service
+
+[Service]
+ExecStart=/usr/bin/node /apps/geoip/bin/www
+Restart=always
+User=nobody
+Group=nobody
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/apps/geoip/
+
+[Install]
+WantedBy=multi-user.target
+

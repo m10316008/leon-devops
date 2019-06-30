@@ -1,0 +1,4 @@
+{
+    "cloudfront_cname": "http://crm2frontend.s3-website-ap-northeast-1.amazonaws.com",
+    "cloudfront_cname_backup": "http://crm2frontend-backup.s3-website.ap-northeast-2.amazonaws.com "
+}

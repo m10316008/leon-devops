@@ -1,0 +1,45 @@
+
+location /promotion {
+    proxy_buffering        on;
+    proxy_cache_valid      200  60s;
+    proxy_cache            x_cache_fn;
+    include crm2_path_proxy_pass.conf;
+}
+
+location ~* ^/(mobile|brand|static|my-account|game-windows)/ {
+    proxy_buffering        on;           
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+    proxy_cache_key "$uri";
+    add_header debug-label cache_fn_files;
+    include crm2_path_proxy_pass.conf;
+}
+
+location ~ ^/([0-9a-zA-Z\-\_]+\.html)$ {
+    proxy_buffering        on;           
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+    proxy_cache_key "$uri";
+    add_header debug-label cache_root_any_html;
+    include crm2_path_proxy_pass.conf;
+}
+
+location = /redirect.js {
+    proxy_buffering        on;           
+    proxy_cache_valid      200  14d;
+    proxy_cache            x_cache_fn;
+    proxy_cache_key "$uri";
+    add_header debug-label cache_redirectjs;
+    include crm2_path_proxy_pass.conf;
+}
+
+location /jetsostatic/ {    
+    proxy_buffering        on;           
+    proxy_cache_valid      200  1m;
+    proxy_cache            x_cache_odds2;
+    proxy_cache_key "$uri";
+    add_header debug-label cache_redirectjs;
+    include crm2_path_proxy_pass.conf;
+}
+
+#include crm2_fn_path.conf;

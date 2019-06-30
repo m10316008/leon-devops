@@ -1,0 +1,184 @@
+#user  nobody;
+worker_processes  1;
+
+################################
+#  geoip : read me
+#
+#  Cloudflare files:
+#  crm2_cloudflare_geoip_a01.conf
+#               included in nginx.conf near top of file
+#  crm2_cloudflare_geoip_a02.conf
+#               included in nginx.conf in http {}
+#               -> should update the ip addresses : set_real_ip_from ___;
+#               -> https://www.cloudflare.com/ips/
+#  crm2_cloudflare_geoip_ban.conf
+#               included in crm2_frontend.conf, 
+#               crm2_frontend_apps.conf near top of file
+#  crm2_cloudflare_geoip_ban_b.conf
+#               included in crm2_frontend.conf, 
+#               crm2_frontend_apps.conf in location {}
+#  
+################################
+
+    include crm2_cloudflare_geoip_a01.conf;
+    
+#pid        logs/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+
+
+    include crm2_cloudflare_geoip_a02.conf;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+
+    keepalive_timeout  600;
+      # allow long time report handling
+    
+	server_names_hash_max_size 131072;  
+      # many domain names calculated by CPU cache size
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+
+    include crm2_backend_setting.conf;
+
+    server {    ## frontend ##
+        listen       52.128.238.171:80;
+		server_name hg9393.net;
+		include crm2_frontend.conf;     
+
+    }
+    
+    
+  #  server {    ## redirect ##
+  #      listen       52.128.238.171:80;
+  #		 server_name hg9393.net
+  #                   www.hg9393.net;
+  #      include crm2_frontend.conf;       
+  #
+  #  }
+  
+
+
+    server {    ## redirect ##
+        listen       52.128.238.171:80;
+		server_name h9393.co;
+		return 302 https://h9393.co$request_uri;       
+
+    }
+    
+#    server {    ## redirect ##    
+#        listen        52.128.238.174:80;
+#        return 302 https://$host$request_uri;
+#    }
+
+
+
+
+
+
+    
+    server {    ###### frontend ######
+        listen       80 default_server;
+        include crm2_frontend.conf;
+    }
+    
+
+    
+#    server {    ###### frontend ######
+#        listen       52.128.238.171:80 default_server;
+#        include crm2_frontend.conf;
+#    }
+
+    
+    server {    ###### frontend ######
+        listen       52.128.238.171:443	ssl;
+	    ssl_certificate     /etc/nginx/cert/h9393.co.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.co.key;
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend.conf;
+    }
+
+    server {    ## redirect ##
+        listen       52.128.238.172:80;
+		server_name h9393.co;
+		return 302 https://h9393.co$request_uri;       
+
+    }  
+    
+    server {    ###### frontend ######
+        listen       52.128.238.172:443	ssl;
+	    ssl_certificate     /etc/nginx/cert/h9393.co.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.co.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    } 
+    
+    server {    ###### frontend ######
+        listen     52.128.238.174:443	ssl;
+	    ssl_certificate     /etc/nginx/cert/h9393.ag.crt;
+        ssl_certificate_key /etc/nginx/cert/h9393.ag.key;
+        include crm2_ssl_setting.conf;
+        
+        include crm2_frontend.conf;
+    }
+    
+	server {    ###### frontend ######
+        listen       443 ssl;
+        server_name               
+                    h939310.net	www.h939310.net
+                    h07072.net	www.h07072.net;
+
+        ssl_certificate     /etc/nginx/cert/h939310.net.crt; 
+        ssl_certificate_key /etc/nginx/cert/h939310.net.key;
+        include crm2_ssl_setting.conf;
+
+        include crm2_frontend.conf;
+    }
+	
+	
+	
+    server {    ###### admin and op ######
+        listen       52.128.238.174:80;
+		server_name cp3131.vip
+                    ag3131.co;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    server {    ###### agent ######
+        listen       52.128.238.173:80;
+
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            alias    $project_path/web/brand/;
+        }
+        include crm2_agent.conf;
+    }
+    
+    server {    ###### moblie_apps ######
+        listen       84;
+        server_name  localhost;
+
+        include crm2_frontend_apps.conf;
+    }
+    
+    include nginx_show_version.conf;
+    include crm2_internal_deploy.conf;
+    
+}

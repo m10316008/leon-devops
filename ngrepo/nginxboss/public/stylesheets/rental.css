@@ -1,0 +1,19 @@
+#card-container{
+    max-width: 100%;
+    /*border:1px solid green;*/
+    margin: 20px;
+}
+.debtcard{
+    margin: 4px;
+    float:left;
+    width: 400px;
+}
+.bootstrap-tagsinput {
+    min-height: 100px;
+}
+.table-wrapper-scroll-y {
+    display: block;
+    max-height: 680px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}

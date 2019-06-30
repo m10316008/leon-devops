@@ -1,0 +1,266 @@
+
+#####################################
+#    
+#
+#    include /apps/nginx/ip_one.conf;   # this is front end
+#
+#    include /apps/nginx/ip_two.conf;   # this is admin and op
+#
+#
+######################################
+
+worker_processes  1;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+    
+
+    sendfile        on;
+	
+	client_max_body_size  200m;
+	
+    keepalive_timeout  180s;
+	
+
+    gzip  on;
+    gzip_types text/css text/javascript application/xml application/json application/javascript;
+    proxy_cache_path xcache levels=1:2 keys_zone=STATIC:10m inactive=24h  max_size=30g;
+    
+    include crm2_header.conf;
+    include crm2_result188_loadbalance_setting.conf;
+	
+	ssl_session_cache   shared:SSL:2048m;
+    ssl_session_timeout 60m;
+    
+	include nginx_status.conf;
+
+    # default if not matched
+    server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+
+    # front end : listen 1 ip
+    server {        
+        include /apps/nginx/ip_one.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend.conf;
+    }
+
+    #  use port 18000 to avoid leaking ip address
+    #  instead of port 80 : 
+    #  default desktop and mobile web browser version
+    server {        
+        include /apps/nginx/ip_one_18000.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend.conf;
+    }
+    
+    # admin : listen 1 ip
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;
+		server_name 
+                    cp3131.vip
+                    ag3131.co;
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vc3/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vc3/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+    
+    server {    ###### admin and op ######
+        include /apps/nginx/ip_two.conf;
+		server_name 
+		            hg08877.com
+                    www.hg08877.com;
+        return 302 https://$host$request_uri;	
+    }
+    server {    ###### admin and op ######
+        listen       443 ssl;
+		server_name 
+		            hg08877.com
+                    www.hg08877.com;
+
+        ssl_certificate     /usr/local/openresty/nginx/conf/cert/hg08877.com.crt; 
+        ssl_certificate_key /usr/local/openresty/nginx/conf/cert/hg08877.com.key;
+
+        
+        include crm2_setting.conf;
+        location /brand/ {
+            proxy_buffering        on;
+            proxy_cache_valid      200  14d;
+            proxy_cache            STATIC;
+
+            rewrite ^(.*)$ /vc3/prod/brand$1 break;
+            include crm2_frontend_s3bucket.conf;
+            proxy_redirect /vc3/prod/brand/ /;
+        }
+        include crm2_admin_op.conf;
+    }
+
+    # pay
+    server {
+            include /apps/nginx/ip_pay_443.conf;
+            server_name      pay.ppaqo.cn;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/pay.ppaqo.cn.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pay.ppaqo.cn.key;         
+            include nginx_pay.conf;
+    }
+    # pay
+    server {
+            include /apps/nginx/ip_pay_443.conf;
+            server_name     yy9393.com;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/yy9393.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yy9393.com.key;
+            
+
+
+            include nginx_pay.conf;
+    }
+    server {
+            include /apps/nginx/ip_pay_80.conf;
+            server_name   pay10.yy9393.com  
+                            pay11.yy9393.com
+                            pay12.yy9393.com
+                            pay13.yy9393.com
+                            pay14.yy9393.com
+                            pay15.yy9393.com
+                            pay16.yy9393.com
+                            pay17.yy9393.com
+                            pay18.yy9393.com
+                            pay19.yy9393.com
+                            pay20.yy9393.com
+                            pay21.yy9393.com
+                            pay22.yy9393.com
+                            pay23.yy9393.com
+                            pay24.yy9393.com
+                            pay25.yy9393.com
+                            pay26.yy9393.com
+                            pay27.yy9393.com
+                            pay28.yy9393.com
+                            pay29.yy9393.com
+                            pay30.yy9393.com	;
+
+            include nginx_pay.conf;
+    }
+    # pay
+        server {
+            include /apps/nginx/ip_pay_443.conf;
+            server_name   pay10.yy9393.com  
+                            pay11.yy9393.com
+                            pay12.yy9393.com
+                            pay13.yy9393.com
+                            pay14.yy9393.com
+                            pay15.yy9393.com
+                            pay16.yy9393.com
+                            pay17.yy9393.com
+                            pay18.yy9393.com
+                            pay19.yy9393.com
+                            pay20.yy9393.com
+                            pay21.yy9393.com
+                            pay22.yy9393.com
+                            pay23.yy9393.com
+                            pay24.yy9393.com
+                            pay25.yy9393.com
+                            pay26.yy9393.com
+                            pay27.yy9393.com
+                            pay28.yy9393.com
+                            pay29.yy9393.com
+                            pay30.yy9393.com	;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/yy9393.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/yy9393.com.key;
+            
+
+            
+            include nginx_pay.conf;
+    }
+    # pay
+    server {
+            include /apps/nginx/ip_pay_443.conf;
+            server_name      pay.shang27.com ;
+            ssl_certificate     /usr/local/openresty/nginx/conf/cert/pay.shang27.com.crt;
+            ssl_certificate_key /usr/local/openresty/nginx/conf/cert/pay.shang27.com.key;
+            
+
+            include nginx_pay.conf;
+
+    }
+    
+    
+    # front end : listen 1 ip for app
+    server {        
+        include /apps/nginx/ip_one_8011.conf;
+        include crm2_frontend_apps_8011.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8012.conf;
+        include crm2_frontend_apps_ios_china_8012.conf;
+    }
+    server {        
+        include /apps/nginx/ip_one_8013.conf;
+        include crm2_frontend_apps_apk_china_8013.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8015.conf;
+        include crm2_frontend_mobile_8015.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8027.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_apk_office_app.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8028.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_apps_ios_office_app.conf;
+    } 
+    server {        
+        include /apps/nginx/ip_one_8017.conf;
+        port_in_redirect off;
+        absolute_redirect off;
+        include crm2_frontend_webspace.conf;
+    } 
+    server{
+        include /apps/nginx/ip_one_8101.conf;
+        include crm2_app_promotion.conf;        
+    }
+    server{
+        include /apps/nginx/ip_one_8102.conf;
+        include crm2_agent.conf;        
+    }
+
+    include crm2_internal_deploy.conf;
+    include crm2_backend_setting.conf;
+    include crm2_backend_setting_pay.conf;
+}

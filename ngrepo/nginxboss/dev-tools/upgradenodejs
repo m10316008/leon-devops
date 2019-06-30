@@ -1,0 +1,10 @@
+/bin/rm -rf /var/cache/yum
+/usr/bin/yum remove -y nodejs
+/bin/rm /etc/yum.repos.d/nodesource*
+/usr/bin/yum clean all
+/usr/bin/curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
+sudo yum install -y nodejs
+npm -g update npm
+node -v
+systemctl restart node188
+systemctl status node188

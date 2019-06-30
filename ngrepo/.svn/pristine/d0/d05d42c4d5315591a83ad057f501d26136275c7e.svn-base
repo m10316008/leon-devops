@@ -1,0 +1,18 @@
+#reboot
+
+
+###### firewalld setup
+firewall-cmd --permanent --zone=public --add-port=9822
+systemctl restart firewalld
+
+
+###### change port 22 to 9822
+#vi /etc/ssh/sshd_config
+#systemctl restart sshd
+
+
+###### change root password to 20 character
+###### 密碼需要20個字: 英文大小寫及數字，不建議符號
+
+
+#reboot

@@ -1,0 +1,48 @@
+## yum -y rdate     ## aws donot install rdate for sync time
+yum -y install gcc wget rdate
+yum -y update
+
+
+setenforce 0
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+
+mkdir /apps
+mkdir /apps/shell
+mkdir /apps/node188
+mkdir /apps/result188
+mkdir /apps/downloads
+mkdir /apps/softwares
+mkdir /apps/backup
+mkdir /apps/jobs
+mkdir /apps/logs
+mkdir /apps/temp
+mkdir /apps/temp/append
+chmod 777 /apps/temp/ -R
+
+
+sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i 's/#PermitEmptyPasswords no/PermitEmptyPasswords no/g' /etc/ssh/sshd_config
+sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
+
+
+timedatectl set-timezone America/New_York
+timedatectl set-timezone Etc/GMT+4
+#timedatectl set-timezone Asia/Hong_Kong
+
+
+echo 'net.ipv4.tcp_syncookies = 1' >> /etc/sysctl.conf
+echo 'net.ipv4.tcp_tw_reuse = 1' >> /etc/sysctl.conf
+echo 'net.ipv4.tcp_tw_recycle = 1' >> /etc/sysctl.conf
+echo 'net.ipv4.tcp_fin_timeout = 30' >> /etc/sysctl.conf
+echo 'net.ipv6.conf.all.disable_ipv6 = 1' >> /etc/sysctl.conf
+echo 'net.ipv6.conf.default.disable_ipv6 = 1' >> /etc/sysctl.conf
+sysctl -p
+cat /etc/sysctl.conf
+
+
+echo '*    soft    nofile 8192' >> /etc/security/limits.d/nofile.conf
+echo '*    hard    nofile 8192' >> /etc/security/limits.d/nofile.conf
+cat /etc/security/limits.d/nofile.conf
+
+

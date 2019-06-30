@@ -1,0 +1,42 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/xterm.css"/>
+	<link rel="stylesheet" href="/javascripts/xterm/dist/xterm.css"/>
+{{/extend}}
+<div class="container-fluid">
+	常用指令 : <select id="comment_cmd">
+	{{#each cmdList}}
+		<option value="{{id}}">{{name}}</option>
+	{{/each}}
+</select>
+	<button class="btn btn-warning action" data-action_case="run_cmd">RUN</button>
+	<input type="hidden" id="xport" value="{{xtermport}}">
+</div>
+<div class="container-fluid">
+	{{#each serverList}}
+		<div class="term_constainer" id="con_{{name}}" data-name="{{name}}">
+			<div class="term_header">
+				<div class="term_name">
+					<label>{{name}}</label>
+				</div>
+				<div class="term_op">
+					<button class="btn btn-danger action" data-mcode="{{name}}" data-action_case="close">Close</button>
+					<button id="start_{{name}}" class="btn btn-success action start" data-mcode="{{name}}"
+							data-action_case="start">start
+					</button>
+				</div>
+			</div>
+			<div id="terminal-container_{{name}}" data-mcode="{{name}}" class="term">
+			</div>
+		</div>
+	{{/each}}
+</div>
+<script>
+	var serverListJson = {{{ serverListJson }}};
+</script>
+
+{{#extend "scripts"}}
+	<script src="/javascripts/xterm.js"></script>
+	<script src="/javascripts/xterm/dist/xterm.js"></script>
+	<script src="/javascripts/xterm/dist/addons/fit/fit.js"></script>
+	<script src="/javascripts/socket.io-client/dist/socket.io.js"></script>
+{{/extend}}

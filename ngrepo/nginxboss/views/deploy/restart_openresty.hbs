@@ -1,0 +1,163 @@
+{{#extend "stylesheets"}}
+	<link rel="stylesheet" href="/stylesheets/chinanetcenter.css"/>
+	<link rel="stylesheet" href="/javascripts/xterm/dist/xterm.css"/>
+{{/extend}}
+<div class="container-fluid">
+	<div>
+		<table class="table">
+			<thead>
+			<tr>
+				<th scope="col">Brand</th>
+				<th scope="col">Control</th>
+				<th scope="col">Log</th>
+			</tr>
+			</thead>
+			<tbody id="tbody">
+			</tbody>
+		</table>
+	</div>
+</div>
+{{#extend "scripts"}}
+	<script id="brandTr" type="text/x-jquery-tmpl">
+		<tr>
+			<td data-brand="test">
+				${vcode} - ${brand}
+			</td>
+			<td>
+				<button class="btn btn-primary restart" data-vcode="${vcode}">Restart</button>
+			</td>
+			<td width="50%">
+				<div class="term" data-vcode="${vcode}"></div>
+			</td>
+		</tr>
+	</script>
+	<script src="//ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<!--<script src="/javascripts/jquery.validate.min.js"></script>-->
+	<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+	<script src="/javascripts/jquery.form.min.js"></script>
+	<script src="/javascripts/handlebars-v4.0.11.js"></script>
+	<script src="/javascripts/xterm/dist/xterm.js"></script>
+	<script src="/javascripts/xterm/dist/addons/fit/fit.js"></script>
+	<script>
+		var colors = {
+			'pink': '01;31m',
+			'white': '00m',
+			'dark_grey': '01:30m',
+			'green': '01;32m',
+			'purple': '01;35m',
+			'blue': '01;34m',
+			'yellow': '01;33m',
+			'grey': '1;1;33m'
+		}
+		function color(message, color) {
+			var temp_color = colors[color];
+			//console.log('temp_color:', temp_color);
+			return '\033[' + temp_color + message + '\033[0m';
+		}
+		function initial_table(){
+		    var url = 'restart_openresty/api';
+			var data = {
+				action_case: 'initial_table'
+			}
+			$.post(url,data,function(json){
+			    if(json.success==1){
+			        var brands = json.brands;
+			        var exception = ["all"];
+			        for(var brandIdx in brands){
+			            var brandName = brands[brandIdx].brand;
+			            var vcode = brands[brandIdx].vcode;
+			            if(exception.indexOf(vcode)==-1){
+							var data = {
+								brand:brandName,
+								vcode:vcode
+							}
+							$( "#brandTr" ).tmpl( data ).appendTo( "#tbody" );
+							var terminalContainer = $('.term[data-vcode="'+vcode+'"]')[0];
+							//console.log(terminalContainer);
+							Terminal.applyAddon(fit);
+							var term = new Terminal({
+								cursorBlink: true,
+								cols: 78,
+								rows:20,
+								useStyle: true
+							});
+							term.open(terminalContainer);
+							term.fit();
+							term_arr.push({
+								vcode:vcode,
+								term:term
+							});
+						}
+					}
+					//console.log(term_arr);
+					$('.restart').on('click',function(){
+					    var ele = $(this);
+						ele.prop('disabled',true);
+					    var vcode = $(this).data('vcode');
+					    //console.log('vcode:',vcode);
+					    var url = 'restart_openresty/api';
+						var data = {
+							action_case: 'initial_restart',
+							vcode:vcode
+						}
+						$.post(url,data,async function(json){
+						    var machines = json.machines;
+							var _term = _.find(term_arr,function(o){
+								return (o.vcode==vcode);
+							});
+							//console.log(_term);
+							var txt = '開始 restart '+vcode+' 所有機器';
+							_term.term.writeln(color(txt, 'yellow'));
+						    for(var machineIdx in machines){
+						        var mcode = machines[machineIdx];
+								var txt = '正在 Restart '+mcode;
+								_term.term.writeln(color(txt, 'white'));
+						        var restartResult = await process_restart(mcode);
+						        if(restartResult!='fail'){
+									var txt = mcode+' Restart 完成';
+									_term.term.writeln(color(txt, 'green'));
+									var _result_arr = restartResult.result.split('\n');
+									//console.log('_result_arr:',_result_arr);
+									for(var textIdx in _result_arr){
+										var txt = _result_arr[textIdx];
+										_term.term.writeln(txt);
+									}
+								}else{
+									var txt = mcode+' Restart 失敗';
+									_term.term.writeln(color(txt, 'pink'));
+								}
+							}
+							var txt = '所有 Restart 完成';
+							_term.term.writeln(color(txt, 'green'));
+							ele.prop('disabled',false);
+						});
+					});
+				}
+			});
+		}
+		async function process_restart(mcode){
+		    return new Promise((resolve,reject)=>{
+				var url = 'restart_openresty/api';
+				var data = {
+					action_case: 'process_restart',
+					mcode:mcode
+				};
+				$.post(url,data,function(json){
+				    if(json.success==1){
+				        resolve({
+							result:json.result
+						});
+					}else{
+				        reject('fail');
+					}
+				});
+			});
+		}
+		var term_arr=[];
+		var domainCount = 0;
+		$(document).ready(function () {
+		    initial_table();
+		});
+	</script>
+{{/extend}}
