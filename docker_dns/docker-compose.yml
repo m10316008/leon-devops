@@ -1,0 +1,46 @@
+version: '3.1'
+
+services:
+
+  nginx:
+    image: nginx:1.15.2-alpine
+    #name: nginx
+    hostname: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+    restart: always
+    command: [nginx-debug, '-g', 'daemon off;']
+
+  dnsmasq:
+    image: leon/dnsmasq
+    hostname: dnsmasq
+    ports:
+      - 53:53/udp
+      - 53:53/tcp
+      - 8080:8080
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    environment:
+      - "HTTP_USER=root"
+      - "HTTP_PASS=123456"
+    restart: always
+
+
+
+
+  # dnsmasq:
+  #   image: andyshinn/dnsmasq   #strm/dnsmasq
+  #   #name: dnsmasq-server
+  #   hostname: dnsmasq
+  #   ports:
+  #     - 53:53/tcp
+  #     - 53:53/udp
+  #   volumes:
+  #       - ./dnsmasq.conf:/etc/dnsmasq.conf
+  #       - ./dnsmasqhosts:/etc/dnsmasqhosts
+  #       - ./resolv.dnsmasq:/etc/resolv.dnsmasq
+  #   cap_add:
+  #       - NET_ADMIN

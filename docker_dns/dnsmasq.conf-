@@ -1,0 +1,15 @@
+#log all dns queries
+#log-queries
+#log-facility=-
+#dont use hosts nameservers
+#no-resolv
+#use google as default nameservers
+#server=127.0.0.1
+#server=8.8.8.8
+#server=8.8.4.4
+#explicitly define host-ip mappings
+#address=/#/1.2.3.4
+#address=/z/192.168.2.200
+
+resolv-file=/etc/resolv.dnsmasq
+addn-hosts=/etc/dnsmasqhosts

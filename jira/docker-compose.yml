@@ -1,0 +1,144 @@
+version: '3'
+# https://docs.docker.com/compose/compose-file/
+# support Docker version 17.05.0-ce
+services:
+
+##############################
+# mysql
+##############################
+  mysql:
+    image: "idoall/mysql:5.7"
+    hostname: jira_mysql
+    ports:
+     - "20000:3306"
+    volumes:
+     - ./my.ini:/etc/mysql/my.cnf
+     - jira_mysql:/var/lib/mysql
+    networks:
+     - jira
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - character-set-server=utf8
+      - collation-server=utf8_bin
+      - MYSQL_DATABASE=jira
+
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 1s
+      restart_policy:
+        condition: on-failure
+##############################
+# phpmyadmin
+##############################
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    hostname: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 20010:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_PORTS=23306
+    networks:
+     - jira
+    depends_on:
+     - mysql
+##############################
+# jira
+# 使用最多不超过50%的CPU和2G内存，总是有25%的CPU以及1G内存可用
+##############################
+  jira:
+    image: "idoall/ubuntu16.04-jira-software:7.12.3"
+    hostname: jira
+    ports:
+     - "20030:8080"
+     - "20031:8005"
+    networks:
+     - jira
+    volumes:
+     - jira_opt:/opt/atlassian
+     - jira_var:/var/atlassian
+    depends_on:
+     - mysql
+     - phpmyadmin
+    #command: rm -rf /opt/atlassian/jira/work/catalina.pid 
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 1s
+      restart_policy:
+        condition: on-failure
+
+
+##############################
+# confluence
+# 使用最多不超过50%的CPU和2G内存，总是有25%的CPU以及1G内存可用
+##############################
+  confluence:
+    image: "idoall/ubuntu16.04-jdk10-confluence:6.12.2"
+    hostname: confluence
+    ports:
+     - "20040:8090"
+     - "20041:8000"
+    networks:
+     - jira
+    volumes:
+     - confluence_opt:/opt/atlassian
+     - confluence_var:/var/atlassian
+    depends_on:
+     - mysql
+     - phpmyadmin
+     - jira
+    #command: rm -rf /opt/atlassian/confluence/work/catalina.pid
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 1s
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 2048M
+        reservations:
+          cpus: '0.25'
+          memory: 1024M
+
+##############################
+# crowd
+##############################
+  crowd:
+    image: "idoall/ubuntu16.04-jira-crowd:3.3.2"
+    hostname: crowd
+    ports:
+     - "20020:8095"
+    networks:
+      - jira
+    depends_on:
+     - mysql
+     - phpmyadmin
+     - jira
+     - confluence
+    #command: rm -rf /home/work/_app/_jira_crowd/apache-tomcat/work/catalina.pid
+
+    deploy:
+      replicas: 1
+      update_config:
+        delay: 1s
+      restart_policy:
+        condition: on-failure
+
+
+      
+# 统一网络设置
+networks:
+  jira:
+    driver: overlay
+
+volumes:
+  jira_var:
+  jira_opt:
+  confluence_opt:
+  confluence_var:
+  jira_mysql:
