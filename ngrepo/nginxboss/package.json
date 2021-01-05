@@ -12,7 +12,7 @@
     "await-exec": "^0.1.1",
     "await-sleep": "0.0.1",
     "aws-sdk": "^2.403.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "axios-https-proxy-fix": "^0.17.1",
     "bcryptjs": "^2.4.3",
     "big-integer": "^1.6.34",
