@@ -51,7 +51,7 @@
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "sequelize": "^4.38.0",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.4.0",
     "sort-object": "^3.0.2",
     "ssh2": "^0.6.1",
     "ssh2-promise": "0.0.9",
