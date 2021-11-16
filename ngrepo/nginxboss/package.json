@@ -11,7 +11,7 @@
     "app-root-path": "^2.1.0",
     "await-exec": "^0.1.1",
     "await-sleep": "0.0.1",
-    "aws-sdk": "^2.403.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.18.0",
     "axios-https-proxy-fix": "^0.17.1",
     "bcryptjs": "^2.4.3",
